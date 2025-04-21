@@ -1,31 +1,33 @@
 <?php
+// Config
 $exeFile = 'Gypsy AutoTyper.exe';
-$countFile = 'download_count.txt';
+$countFile = __DIR__ . '/download_count.txt';
 $startingCount = 5;
 
-// Handle download logic
+// Handle file download request
 if (isset($_GET['download'])) {
-    $count = is_file($countFile) ? (int)file_get_contents($countFile) : 0;
-    $count++;
-    file_put_contents($countFile, $count);
+    $currentCount = is_file($countFile) ? (int)file_get_contents($countFile) : 0;
+    $currentCount++;
+    file_put_contents($countFile, $currentCount);
 
     $filePath = __DIR__ . '/' . $exeFile;
-    if (file_exists($filePath)) {
-        header('Content-Description: File Transfer');
-        header('Content-Type: application/octet-stream');
-        header('Content-Disposition: attachment; filename="' . basename($exeFile) . '"');
-        header('Content-Length: ' . filesize($filePath));
-        flush();
-        readfile($filePath);
-        exit;
-    } else {
-        exit('File not found.');
+    if (!file_exists($filePath)) {
+        exit("Error: File not found at: $filePath");
     }
+
+    // Force download
+    header('Content-Description: File Transfer');
+    header('Content-Type: application/octet-stream');
+    header('Content-Disposition: attachment; filename="' . basename($exeFile) . '"');
+    header('Content-Length: ' . filesize($filePath));
+    flush();
+    readfile($filePath);
+    exit;
 }
 
-// Get current count
-$count = is_file($countFile) ? (int)file_get_contents($countFile) : 0;
-$totalDownloads = $count + $startingCount;
+// Get current count (for page display)
+$currentCount = is_file($countFile) ? (int)file_get_contents($countFile) : 0;
+$totalDownloads = $startingCount + $currentCount;
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -82,7 +84,7 @@ $totalDownloads = $count + $startingCount;
     <h1>Download Gypsy AutoTyper</h1>
     <p>Thank you for your interest! Click below to download the software.</p>
 
-    <!-- Download triggers the PHP block to update count and serve file -->
+    <!-- Button that triggers the download -->
     <a class="download-link" href="?download=1">Download Now</a>
 
     <p class="counter">Total downloads so far: <strong><?php echo $totalDownloads; ?></strong></p>
