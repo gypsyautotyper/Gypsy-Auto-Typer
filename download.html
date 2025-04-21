@@ -1,94 +1,26 @@
 <?php
-// Config
-$exeFile = 'Gypsy AutoTyper.exe';
-$countFile = __DIR__ . '/download_count.txt';
-$startingCount = 5;
+// Path to your counter
+$counterFile = __DIR__ . '/count.txt';
+// Read current count
+$count = (int)file_get_contents($counterFile);
+// Increment
+$count++;
+// Save it
+file_put_contents($counterFile, $count);
 
-// Handle file download request
-if (isset($_GET['download'])) {
-    $currentCount = is_file($countFile) ? (int)file_get_contents($countFile) : 0;
-    $currentCount++;
-    file_put_contents($countFile, $currentCount);
-
-    $filePath = __DIR__ . '/' . $exeFile;
-    if (!file_exists($filePath)) {
-        exit("Error: File not found at: $filePath");
-    }
-
-    // Force download
-    header('Content-Description: File Transfer');
-    header('Content-Type: application/octet-stream');
-    header('Content-Disposition: attachment; filename="' . basename($exeFile) . '"');
-    header('Content-Length: ' . filesize($filePath));
-    flush();
-    readfile($filePath);
-    exit;
+// Now stream the EXE
+$file = __DIR__ . '/Gypsy AutoTyper.exe';
+if (!file_exists($file)) {
+  header("HTTP/1.0 404 Not Found");
+  exit("File not found.");
 }
 
-// Get current count (for page display)
-$currentCount = is_file($countFile) ? (int)file_get_contents($countFile) : 0;
-$totalDownloads = $startingCount + $currentCount;
+// Send headers and the file
+header('Content-Description: File Transfer');
+header('Content-Type: application/octet-stream');
+header('Content-Disposition: attachment; filename="'.basename($file).'"');
+header('Content-Length: ' . filesize($file));
+flush();
+readfile($file);
+exit;
 ?>
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Download Gypsy AutoTyper</title>
-  <style>
-    body {
-      font-family: 'Times New Roman', Times, serif;
-      margin: 0;
-      padding: 0;
-      background-color: #f7f7f7;
-      color: #333;
-      text-align: center;
-    }
-    .container {
-      width: 90%;
-      max-width: 800px;
-      margin: 40px auto;
-      background: #f5f0e6;
-      border: 2px solid #8b4513;
-      border-radius: 8px;
-      padding: 30px;
-    }
-    h1 {
-      color: #900;
-      margin-bottom: 20px;
-    }
-    a.download-link {
-      display: inline-block;
-      background-color: #900;
-      color: #fff;
-      padding: 15px 30px;
-      text-decoration: none;
-      font-size: 1.2em;
-      border-radius: 5px;
-      box-shadow: 0 4px 6px rgba(0,0,0,0.2);
-      transition: background 0.3s, transform 0.3s;
-    }
-    a.download-link:hover {
-      background-color: #a00;
-      transform: translateY(-2px);
-    }
-    .counter {
-      margin-top: 30px;
-      color: #555;
-      font-style: italic;
-    }
-  </style>
-</head>
-<body>
-  <div class="container">
-    <h1>Download Gypsy AutoTyper</h1>
-    <p>Thank you for your interest! Click below to download the software.</p>
-
-    <!-- Button that triggers the download -->
-    <a class="download-link" href="?download=1">Download Now</a>
-
-    <p class="counter">Total downloads so far: <strong><?php echo $totalDownloads; ?></strong></p>
-    <p><a href="index.html">Return to Home</a></p>
-  </div>
-</body>
-</html>
