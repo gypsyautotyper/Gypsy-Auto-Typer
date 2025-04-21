@@ -1,26 +1,39 @@
-<?php
-// Path to your counter
-$counterFile = __DIR__ . '/count.txt';
-// Read current count
-$count = (int)file_get_contents($counterFile);
-// Increment
-$count++;
-// Save it
-file_put_contents($counterFile, $count);
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Download Gypsy AutoTyper</title>
+  <style>
+    /* your existing styles… */
+    #download-counter { margin-top: 1em; color: #555; }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>Download Gypsy AutoTyper</h1>
+    <p>Thank you for your interest in Gypsy AutoTyper.</p>
 
-// Now stream the EXE
-$file = __DIR__ . '/Gypsy AutoTyper.exe';
-if (!file_exists($file)) {
-  header("HTTP/1.0 404 Not Found");
-  exit("File not found.");
-}
+    <!-- Goes to PHP script, not directly to the EXE -->
+    <a class="download-link" href="download.php">Download Now</a>
 
-// Send headers and the file
-header('Content-Description: File Transfer');
-header('Content-Type: application/octet-stream');
-header('Content-Disposition: attachment; filename="'.basename($file).'"');
-header('Content-Length: ' . filesize($file));
-flush();
-readfile($file);
-exit;
-?>
+    <p id="download-counter">Loading download count…</p>
+    <p><a href="index.html">Return to Home</a></p>
+  </div>
+
+  <script>
+    fetch('get_count.php')
+      .then(r => r.json())
+      .then(data => {
+        const el = document.getElementById('download-counter');
+        el.textContent = data.count === 1
+          ? 'Downloaded 1 time'
+          : `Downloaded ${data.count} times`;
+      })
+      .catch(() => {
+        document.getElementById('download-counter')
+                .textContent = 'Couldn’t load count';
+      });
+  </script>
+</body>
+</html>
