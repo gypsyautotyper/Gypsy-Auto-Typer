@@ -1,3 +1,42 @@
+<?php
+// === CONFIGURATION ===
+$exeFilename    = 'Gypsy AutoTyper.exe';             // your EXE
+$counterPath    = __DIR__ . '/download_count.txt';   // where the raw counter lives
+$initialOffset  = 5;                                 // pre-existing downloads
+
+// === DOWNLOAD LOGIC ===
+if (isset($_GET['dl'])) {
+    // 1) Read+increment the counter
+    $count = is_file($counterPath)
+           ? (int)file_get_contents($counterPath)
+           : 0;
+    $count++;
+    file_put_contents($counterPath, $count);
+
+    // 2) Stream the .exe
+    $file = __DIR__ . "/$exeFilename";
+    if (!is_file($file)) {
+        header("HTTP/1.0 404 Not Found");
+        exit("Error: File not found.");
+    }
+
+    header('Content-Description: File Transfer');
+    header('Content-Type: application/octet-stream');
+    header('Content-Disposition: attachment; filename="' . basename($exeFilename) . '"');
+    header('Expires: 0');
+    header('Cache-Control: must-revalidate');
+    header('Pragma: public');
+    header('Content-Length: ' . filesize($file));
+    flush();
+    readfile($file);
+    exit;
+}
+
+// === PAGE DISPLAY ===
+// Read current counter (0 if missing), add your offset
+$rawCount   = is_file($counterPath) ? (int)file_get_contents($counterPath) : 0;
+$totalCount = $rawCount + $initialOffset;
+?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -5,39 +44,28 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Download Gypsy AutoTyper</title>
   <style>
-    /* Base Styles */
     body {
       font-family: 'Times New Roman', Times, serif;
-      margin: 0;
-      padding: 0;
+      margin: 0; padding: 0;
       background-color: #f7f7f7;
-      color: #333;
-      line-height: 1.6;
+      color: #333; line-height: 1.6;
       text-align: center;
     }
     .container {
-      width: 90%;
-      max-width: 800px;
+      width: 90%; max-width: 800px;
       margin: 40px auto;
       background: #f5f0e6;
       border: 2px solid #8b4513;
       border-radius: 8px;
       padding: 30px;
     }
-    h1 {
-      color: #900;
-      margin-bottom: 20px;
-    }
-    p {
-      margin-bottom: 20px;
-    }
+    h1 { color: #900; margin-bottom: 20px; }
+    p { margin-bottom: 20px; }
     a.download-link {
       display: inline-block;
-      background-color: #900;
-      color: #fff;
+      background-color: #900; color: #fff;
       padding: 15px 30px;
-      text-decoration: none;
-      font-size: 1.2em;
+      text-decoration: none; font-size: 1.2em;
       border-radius: 5px;
       box-shadow: 0 4px 6px rgba(0,0,0,0.2);
       transition: background 0.3s, transform 0.3s;
@@ -46,16 +74,27 @@
       background-color: #a00;
       transform: translateY(-2px);
     }
+    .counter {
+      margin-top: 40px;
+      font-style: italic;
+      color: #555;
+    }
   </style>
 </head>
 <body>
   <div class="container">
     <h1>Download Gypsy AutoTyper</h1>
     <p>Thank you for your interest in Gypsy AutoTyper. Click the button below to download the software.</p>
-    <!-- Updated to download the EXE from this repo -->
-    <a class="download-link" href="Gypsy%20AutoTyper.exe" download>Download Now</a>
+
+    <!-- Note the "?dl=1" query triggers the download logic above -->
+    <a class="download-link" href="download.php?dl=1">Download Now</a>
 
     <p><a href="index.html">Return to Home</a></p>
+
+    <!-- download counter -->
+    <p class="counter">
+      Total downloads so far: <strong><?php echo $totalCount; ?></strong>
+    </p>
   </div>
 </body>
 </html>
