@@ -1,2 +1,3 @@
-https://gypsytyper.online/ads.txt
+curl -L https://srv.adstxtmanager.com/19390/gypsytyper.online > ads.txt
+
 
