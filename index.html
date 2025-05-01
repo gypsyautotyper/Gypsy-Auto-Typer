@@ -41,14 +41,14 @@
     .flex {
       display: flex;
       gap: 20px;
-      flex-wrap: nowrap;        /* prevent wrapping */
-      align-items: flex-start;  /* align items at top */
+      flex-wrap: nowrap;
+      align-items: flex-start;
     }
     .flex-center {
       display: flex;
       gap: 20px;
-      flex-wrap: wrap;
-      align-items: center;
+      flex-wrap: nowrap;       /* <-- changed to nowrap */
+      align-items: center;     /* vertically center contents */
       justify-content: center;
     }
     .ad-banner {
@@ -75,7 +75,8 @@
       border-radius: 3px;
       display: inline-block;
     }
-    /* NEW: Column wrapper for vertical ads */
+
+    /* Column wrapper for vertical ads in Features */
     .ad-column {
       display: flex;
       flex-direction: column;
@@ -102,6 +103,7 @@
       border-bottom: 3px solid #900;
     }
     #cta { background: #fff; }
+
     .feature-item {
       background: #fafafa;
       border: 1px solid #ddd;
@@ -111,6 +113,7 @@
       transition: transform 0.2s;
     }
     .feature-item:hover { transform: scale(1.02); }
+
     button.download-btn {
       background: #900; color: #fff; border: none;
       padding: 15px 30px; font-size: 1.2em;
@@ -119,6 +122,7 @@
       margin: 0 10px;
     }
     button.download-btn:hover { background: #a00; transform: translateY(-2px); }
+
     #instructions {
       background: #f5f0e6;
       border-top: 2px solid #8b4513;
@@ -139,27 +143,22 @@
       <img src="Gypsy.png" alt="Gypsy Icon" style="max-width:350px; margin-bottom:30px;">
       <h1>Gypsy AutoTyper</h1>
       <div id="gypsy-quote" style="font-style:italic; color:#eee; margin-bottom:30px;"></div>
-      <p style="font-size:1.2em;">
-        With Gypsy AutoTyper experience human-like typing simulation that saves your time while producing
-        authentic, dynamic text. And it's 100% FREE
-      </p>
-      <p style="font-size:1.2em;">
-        Gypsy AutoTyper is an ongoing project—please submit your feedback!
-      </p>
+      <p style="font-size:1.2em;">With Gypsy AutoTyper experience human-like typing simulation that saves your time while producing authentic, dynamic text. And it's 100% FREE</p>
+      <p style="font-size:1.2em;">Gypsy AutoTyper is an ongoing project—please submit your feedback!</p>
       <button class="download-btn" onclick="location.href='download.html'">Get Gypsy AutoTyper Now!</button>
       <button class="download-btn" onclick="location.href='about.html'">About</button>
       <button class="download-btn" onclick="window.open('https://docs.google.com/forms/d/e/...','_blank')">Send Feedback</button>
     </div>
   </section>
 
-  <!-- Why Use Section with Banner 1 on Left -->
+  <!-- Why Use Section -->
   <section id="why-use">
     <div class="container flex">
       <div class="ad-banner">
         <script>
         (function(eheddq){
           var d=document, s=d.createElement('script'), l=d.scripts[d.scripts.length-1];
-          s.settings=eheddq||{};
+          s.settings=eheddq||{}; 
           s.src="//runnyextent.com/bXXvVjsld.GTlr0yYRW/cR/helmW9-uwZbUvl/kAPaT/Y/z/McT/chyZMbTdABtYNmjEMBxaNNzuIWxcMPQP";
           s.async=true; s.referrerPolicy='no-referrer-when-downgrade';
           l.parentNode.insertBefore(s,l);
@@ -169,19 +168,14 @@
       </div>
       <div style="flex:1 1 auto; text-align:left; padding-left:20px;">
         <h2>Why Use Gypsy AutoTyper?</h2>
-        <p>
-          If you're under time constraints or tired of tedious manual typing, the free Gypsy AutoTyper
-          is the best solution to help you write essays, papers, or scripts effortlessly. Its realistic
-          simulation ensures authenticity—saving you valuable time while delivering human-like results.
-        </p>
+        <p>If you're under time constraints or tired of tedious manual typing, the free Gypsy AutoTyper is the best solution to help you write essays, papers, or scripts effortlessly. Its realistic simulation ensures authenticity—saving you valuable time while delivering human-like results.</p>
       </div>
     </div>
   </section>
 
-  <!-- Features Section with Vertical Ads on Right -->
+  <!-- Features Section -->
   <section id="features">
     <div class="container flex">
-      <!-- Features List -->
       <div style="flex:1 1 auto;">
         <h2>Features</h2>
         <div class="feature-item">
@@ -201,14 +195,12 @@
           <p>Enjoy better accuracy, usability, and customization compared to other free auto typers.</p>
         </div>
       </div>
-      <!-- NEW: Vertical Ad Column -->
       <div class="ad-column">
-        <!-- Banner 2 -->
         <div class="ad-banner">
           <script>
           (function(pmphc){
             var d=document, s=d.createElement('script'), l=d.scripts[d.scripts.length-1];
-            s.settings=pmphc||{};
+            s.settings=pmphc||{}; 
             s.src="//runnyextent.com/b_XMV.sgd/GClI0rYGWWci/beNmX9fubZ/U/l/k/PVTQYXz/MYTKgI0/OJTbk/tDNejEM-xlO/D/UnwEMSAO";
             s.async=true; s.referrerPolicy='no-referrer-when-downgrade';
             l.parentNode.insertBefore(s,l);
@@ -216,12 +208,11 @@
           </script>
           <div class="ad-label">Ad</div>
         </div>
-        <!-- Banner 3 -->
         <div class="ad-banner">
           <script>
           (function(vnvq){
             var d=document, s=d.createElement('script'), l=d.scripts[d.scripts.length-1];
-            s.settings=vnvq||{};
+            s.settings=vnvq||{}; 
             s.src="//runnyextent.com/bxX.VqsmdYGAlh0AYhWmcD/Kefmu9wu-Z/U/lmkoPOT/Yaz/MrTXgs1VMsDMkTtLNdjSMdxeOhDzUAxaM/AT";
             s.async=true; s.referrerPolicy='no-referrer-when-downgrade';
             l.parentNode.insertBefore(s,l);
@@ -233,7 +224,7 @@
     </div>
   </section>
 
-  <!-- CTA Section with Banners 4 & 5 -->
+  <!-- CTA Section -->
   <section id="cta">
     <div class="container flex-center">
       <div class="ad-banner">
@@ -296,6 +287,7 @@
     </div>
   </section>
 
+  <!-- Random Gypsy Quote -->
   <script>
     const gypsyQuotes = [
       "Gypsies cannot be touched, they must be felt with the heart. - Hellen Keller",
