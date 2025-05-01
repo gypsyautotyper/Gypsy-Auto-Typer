@@ -10,7 +10,7 @@
 
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Best FREE Auto Typer - Gypsy AutoTyper</title>
+  <title>Best FREE Auto Typer - Gypsy Auto Typer</title>
   <link rel="icon" href="favicon.ico" />
 
   <!-- Google Analytics -->
@@ -36,6 +36,11 @@
     h1, h2 { color: #900; margin-bottom: 0.5em; }
     p { margin-bottom: 1em; }
     .container { width: 90%; max-width: 1200px; margin: auto; }
+
+    /* Hero title white */
+    #hero h1 {
+      color: #fff;   /* override to white */
+    }
 
     /* Flex Helpers */
     .flex {
@@ -75,8 +80,6 @@
       border-radius: 3px;
       display: inline-block;
     }
-
-    /* Column wrapper for vertical ads in Features */
     .ad-column {
       display: flex;
       flex-direction: column;
@@ -133,6 +136,17 @@
       margin: auto;
       text-align: left;
     }
+
+    /* Hide all ads on mobile */
+    @media (max-width: 767px) {
+      .ad-banner {
+        display: none;
+      }
+      /* allow text sections to use full width on mobile */
+      .flex, .flex-center {
+        flex-wrap: wrap;
+      }
+    }
   </style>
 </head>
 <body>
@@ -141,11 +155,11 @@
   <section id="hero">
     <div class="container">
       <img src="Gypsy.png" alt="Gypsy Icon" style="max-width:350px; margin-bottom:30px;">
-      <h1>Gypsy AutoTyper</h1>
+      <h1>Gypsy Auto Typer</h1>
       <div id="gypsy-quote" style="font-style:italic; color:#eee; margin-bottom:30px;"></div>
-      <p style="font-size:1.2em;">With Gypsy AutoTyper experience human-like typing simulation that saves your time while producing authentic, dynamic text. And it's 100% FREE</p>
-      <p style="font-size:1.2em;">Gypsy AutoTyper is an ongoing project—please submit your feedback!</p>
-      <button class="download-btn" onclick="location.href='download.html'">Get Gypsy AutoTyper Now!</button>
+      <p style="font-size:1.2em;">With Gypsy Auto Typer experience human-like typing simulation that saves your time while producing authentic, dynamic text. And it's 100% FREE</p>
+      <p style="font-size:1.2em;">Gypsy Auto Typer is an ongoing project—please submit your feedback!</p>
+      <button class="download-btn" onclick="location.href='download.html'">Get Gypsy Auto Typer Now!</button>
       <button class="download-btn" onclick="location.href='about.html'">About</button>
       <button class="download-btn" onclick="window.open('https://docs.google.com/forms/d/e/...','_blank')">Send Feedback</button>
     </div>
@@ -167,8 +181,8 @@
         <div class="ad-label">Ad</div>
       </div>
       <div style="flex:1 1 auto; text-align:left; padding-left:20px;">
-        <h2>Why Use Gypsy AutoTyper?</h2>
-        <p>If you're under time constraints or tired of tedious manual typing, the free Gypsy AutoTyper is the best solution to help you write essays, papers, or scripts effortlessly. Its realistic simulation ensures authenticity—saving you valuable time while delivering human-like results.</p>
+        <h2>Why Use Gypsy Auto Typer?</h2>
+        <p>If you're under time constraints or tired of tedious manual typing, the free Gypsy Auto Typer is the best solution to help you write essays, papers, or scripts effortlessly. Its realistic simulation ensures authenticity—saving you valuable time while delivering human-like results.</p>
       </div>
     </div>
   </section>
@@ -191,7 +205,7 @@
           <p>Output appears to be manually typed, even under systems like Draftback or Revision History.</p>
         </div>
         <div class="feature-item">
-          <h3>Superior AutoTyper</h3>
+          <h3>Superior Auto Typer</h3>
           <p>Enjoy better accuracy, usability, and customization compared to other free auto typers.</p>
         </div>
       </div>
@@ -224,16 +238,14 @@
     </div>
   </section>
 
-  <!-- CTA Section (left ad removed) -->
+  <!-- CTA Section -->
   <section id="cta">
     <div class="container flex-center">
-      <!-- CTA Text -->
       <div style="flex:1 1 auto; text-align:center;">
         <h2>Ready to Get Started?</h2>
-        <p>Explore Gypsy AutoTyper and discover how effortlessly you can produce authentic text.</p>
-        <button class="download-btn" onclick="location.href='download.html'">Get Gypsy AutoTyper Now!</button>
+        <p>Explore Gypsy Auto Typer and discover how effortlessly you can produce authentic text.</p>
+        <button class="download-btn" onclick="location.href='download.html'">Get Gypsy Auto Typer Now!</button>
       </div>
-      <!-- Banner 5 (only right ad now) -->
       <div class="ad-banner">
         <script>
         (function(sfpi){
@@ -267,7 +279,7 @@
       <p>
         Just paste in the text and let the gypsy do the rest.<br><br>
         Use the sliders to choose characters per minute and typo frequency.<br>
-        The AutoTyper will start 5 seconds after the start button is pressed.<br><br>
+        The Auto Typer will start 5 seconds after the start button is pressed.<br><br>
         <strong>Pause Duration Instructions:</strong><br>
         All pauses will happen after a paragraph that is 200–characters or longer.<br>
         Short = 10–15 seconds<br>
@@ -293,5 +305,6 @@
     document.getElementById("gypsy-quote").textContent =
       gypsyQuotes[Math.floor(Math.random()*gypsyQuotes.length)];
   </script>
+
 </body>
 </html>
