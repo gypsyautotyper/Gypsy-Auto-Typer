@@ -39,7 +39,21 @@
     /* Flex Helpers */
     .flex { display: flex; gap: 20px; flex-wrap: wrap; align-items: center; }
     .flex-center { display: flex; gap: 20px; flex-wrap: wrap; align-items: center; justify-content: center; }
-    .ad-banner { flex: 0 0 auto; text-align: center; }
+    .ad-banner {
+      flex: 0 0 auto;
+      width: 300px;
+      height: 250px;
+      border: 2px solid maroon;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+    }
+    .ad-banner script {
+      max-width: 100%;
+      max-height: 100%;
+    }
     .ad-label {
       background-color: maroon;
       color: #fff;
@@ -117,12 +131,11 @@
   <!-- Why Use Section with Banner 1 on Left -->
   <section id="why-use">
     <div class="container flex">
-      <!-- Banner 1 -->
+      <!-- Banner 1 (300×250 maroon border) -->
       <div class="ad-banner">
         <script>
         (function(eheddq){
-          var d=document,s=d.createElement('script'),
-              l=d.scripts[d.scripts.length-1];
+          var d=document, s=d.createElement('script'), l=d.scripts[d.scripts.length-1];
           s.settings=eheddq||{};
           s.src="//runnyextent.com/bXXvVjsld.GTlr0yYRW/cR/helmW9-uwZbUvl/kAPaT/Y/z/McT/chyZMbTdABtYNmjEMBxaNNzuIWxcMPQP";
           s.async=true; s.referrerPolicy='no-referrer-when-downgrade';
@@ -131,10 +144,10 @@
         </script>
         <div class="ad-label">Ad</div>
       </div>
-      <!-- Text Content -->
-      <div style="flex:1 1 auto; text-align:left;">
+      <!-- Text Content to the right -->
+      <div style="flex:1 1 auto; text-align:left; padding-left:20px;">
         <h2>Why Use Gypsy AutoTyper?</h2>
-        <p>If you're under time constraints or tired of tedious manual typing, Free to use Gypsy AutoTyper is the best solution to help you write essays, papers, or scripts effortlessly. Its realistic simulation ensures authenticity, making it perfect for bypassing review tools while saving you valuable time.</p>
+        <p>If you're under time constraints or tired of tedious manual typing, the free Gypsy AutoTyper is the best solution to help you write essays, papers, or scripts effortlessly. Its realistic simulation ensures authenticity—saving you valuable time while delivering human-like results.</p>
       </div>
     </div>
   </section>
