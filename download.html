@@ -3,9 +3,12 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Download for Free - Gypsy AutoTyper</title>
+  <title>Download Gypsy AutoTyper</title>
 
-  <!-- Google tag (gtag.js) -->
+  <!-- Video.js CSS -->
+  <link href="https://vjs.zencdn.net/7.24.1/video-js.css" rel="stylesheet"/>
+
+  <!-- Google Analytics -->
   <script async src="https://www.googletagmanager.com/gtag/js?id=G-EJN43EPM49"></script>
   <script>
     window.dataLayer = window.dataLayer || [];
@@ -15,125 +18,141 @@
   </script>
 
   <style>
-    /* Base Styles */
     body {
       font-family: 'Times New Roman', Times, serif;
-      margin: 0; padding: 0;
-      background-color: #f7f7f7; color: #333;
-      line-height: 1.6; text-align: center;
+      margin:0; padding:0;
+      background:#f7f7f7; color:#333;
+      line-height:1.6; text-align:center;
     }
     .container {
-      width: 90%; max-width: 800px;
-      margin: 40px auto;
-      background: #f5f0e6;
-      border: 2px solid #8b4513;
-      border-radius: 8px;
-      padding: 30px;
+      width:90%; max-width:800px;
+      margin:40px auto;
+      background:#f5f0e6; border:2px solid #8b4513;
+      border-radius:8px; padding:30px;
     }
-    h1, h2 { color: #900; margin-bottom: 20px; }
-    p { margin-bottom: 20px; }
-    ul { text-align: left; display: inline-block; margin-bottom: 20px; }
+    h1,h2 { color:#900; margin-bottom:20px; }
+    p, ul { margin-bottom:20px; }
+    ul { text-align:left; display:inline-block; }
     a.download-link {
-      display: inline-block;
-      background-color: #900; color: #fff;
-      padding: 15px 30px; text-decoration: none;
-      font-size: 1.2em; border-radius: 5px;
-      box-shadow: 0 4px 6px rgba(0,0,0,0.2);
-      transition: background 0.3s, transform 0.3s;
-      margin: 0 10px;
+      display:inline-block; background:#900; color:#fff;
+      padding:15px 30px; text-decoration:none;
+      font-size:1.2em; border-radius:5px;
+      box-shadow:0 4px 6px rgba(0,0,0,0.2);
+      transition:background .3s,transform .3s;
+      margin:0 10px;
     }
     a.download-link:hover {
-      background-color: #a00; transform: translateY(-2px);
+      background:#a00; transform:translateY(-2px);
     }
 
-    /* Video ad overlay */
+    /* Overlay */
     #adOverlay {
-      position: fixed; top: 0; left: 0; right: 0; bottom: 0;
-      background: rgba(0,0,0,0.75);
-      display: none; align-items: center; justify-content: center;
-      z-index: 1000;
+      position:fixed; top:0; left:0; right:0; bottom:0;
+      background:rgba(0,0,0,0.8);
+      display:none; align-items:center; justify-content:center;
+      z-index:1000;
+      flex-direction:column;
     }
     #adContainer {
-      background: #000; padding: 10px; border: 4px solid maroon;
+      position:relative;
+      width:640px; max-width:90vw;
     }
-    #adVideo {
-      width: 640px; height: 360px;
+    .vjs-video-js {
+      border:4px solid maroon;
     }
-    #fallback {
-      margin-top: 15px; font-size: 0.9em;
-      color: #333;
-    }
-    #fallback a {
-      color: maroon; text-decoration: underline;
-      cursor: pointer;
+    #skipBtn {
+      position:absolute; top:10px; right:10px;
+      background:rgba(0,0,0,0.5); color:#fff;
+      border:none; padding:8px 12px; cursor:pointer;
+      font-size:0.9em; display:none;
     }
   </style>
 </head>
 <body>
+
   <div class="container">
     <h1>Download Gypsy AutoTyper</h1>
     <h2>Version 2.1</h2>
-    <p>Gypsy AutoTyper is a work in progress! Be sure to check back regularly for new updates and improvements. Recent updates in Version 2.1 include:</p>
+    <p>Gypsy AutoTyper is a work in progress! Check back for updates. New in 2.1:</p>
     <ul>
       <li>Adjustable typo rate</li>
       <li>Pause duration feature</li>
     </ul>
-    <p>Click the button below to download the latest software.</p>
-
-    <!-- Download triggers the ad overlay -->
+    <p>Click below to download.</p>
     <a id="startDownload" class="download-link">Download Now</a>
     <a class="download-link" href="about.html">About</a>
     <p><a href="index.html">Return to Home</a></p>
   </div>
 
-  <!-- Video Ad Overlay -->
+  <!-- Ad Overlay -->
   <div id="adOverlay">
     <div id="adContainer">
-      <video id="adVideo" autoplay muted>
-        <source src="https://speedyswim.com/d/m.FqzCdAGdNuvgZyGqUw/_eimP9HuyZGU/lykUP/TAYTz/MuTbgO0zMSDzE/tvNCjVMExUO/DHQlw_M/gc" type="application/vnd.apple.mpegurl">
-        <!-- Fallback: if browser doesn't support HLS/VAST directly -->
-        Your browser does not support video playback.
+      <button id="skipBtn">Skip Ad</button>
+      <video
+        id="adVideo"
+        class="video-js vjs-default-skin"
+        controls
+        preload="auto"
+        width="640"
+        height="360"
+        data-setup='{}'
+      >
+        <source
+          src="https://speedyswim.com/d/m.FqzCdAGdNuvgZyGqUw/_eimP9HuyZGU/lykUP/TAYTz/MuTbgO0zMSDzE/tvNCjVMExUO/DHQlw_M/gc.m3u8"
+          type="application/x-mpegURL"
+        />
+        <p>Your browser does not support HTML5 video.</p>
       </video>
-      <div id="fallback" style="display:none;">
-        If download did not happen automatically <a id="manualLink">here</a>.
-      </div>
     </div>
   </div>
 
+  <!-- Video.js Script -->
+  <script src="https://vjs.zencdn.net/7.24.1/video.min.js"></script>
   <script>
-    const DOWNLOAD_URL = 'Gypsy AutoTyper.exe';
-
-    // Helper to start the file download
-    function triggerDownload() {
-      const a = document.createElement('a');
-      a.href = DOWNLOAD_URL;
-      a.download = '';
-      document.body.appendChild(a);
-      a.click();
-      document.body.removeChild(a);
-    }
-
-    // When user clicks Download Now
-    document.getElementById('startDownload').addEventListener('click', () => {
-      // Show the ad overlay
+    (function(){
+      const DOWNLOAD_URL = 'Gypsy AutoTyper.exe';
       const overlay = document.getElementById('adOverlay');
-      overlay.style.display = 'flex';
+      const skipBtn = document.getElementById('skipBtn');
+      const player = videojs('adVideo');
+      let timer;
 
-      const video = document.getElementById('adVideo');
-      video.muted = false;      // unmute if desired
-      video.play().catch(()=>{});
+      function triggerDownload(){
+        const a = document.createElement('a');
+        a.href = DOWNLOAD_URL;
+        a.download = '';
+        document.body.appendChild(a);
+        a.click();
+        document.body.removeChild(a);
+      }
 
-      // After 5 seconds, trigger download & show fallback text
-      setTimeout(() => {
+      function showOverlay(){
+        overlay.style.display = 'flex';
+        player.play();
+
+        // show skip after 5s
+        timer = setTimeout(()=>{
+          skipBtn.style.display = 'block';
+        }, 5000);
+      }
+
+      function closeOverlayAndDownload(){
+        overlay.style.display = 'none';
+        clearTimeout(timer);
         triggerDownload();
-        document.getElementById('fallback').style.display = 'block';
-      }, 5000);
-    });
+        player.pause();
+        player.currentTime(0);
+      }
 
-    // Manual fallback link
-    document.getElementById('manualLink').addEventListener('click', () => {
-      triggerDownload();
-    });
+      document.getElementById('startDownload')
+        .addEventListener('click', showOverlay);
+
+      // when video ends
+      player.on('ended', closeOverlayAndDownload);
+
+      // skip button
+      skipBtn.addEventListener('click', closeOverlayAndDownload);
+    })();
   </script>
+
 </body>
 </html>
