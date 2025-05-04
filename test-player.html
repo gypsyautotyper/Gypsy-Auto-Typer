@@ -3,57 +3,69 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Test Video Ad Player</title>
+  <title>VAST Test Player</title>
+
+  <!-- Video.js core -->
+  <link
+    href="https://vjs.zencdn.net/7.24.1/video-js.css"
+    rel="stylesheet"
+  />
+  <script src="https://vjs.zencdn.net/7.24.1/video.min.js"></script>
+
+  <!-- videojs-ima plugin -->
+  <link
+    href="https://cdn.jsdelivr.net/npm/videojs-ima@1.8.0/dist/videojs.ima.css"
+    rel="stylesheet"
+  />
+  <script src="https://cdn.jsdelivr.net/npm/videojs-ima@1.8.0/dist/videojs.ima.js"></script>
 
   <style>
     body {
-      background: #111;
-      color: #fff;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      height: 100vh;
       margin: 0;
+      background: #000;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
     }
-    #video {
+    .video-js {
       width: 90vw;
       max-width: 800px;
       height: auto;
-      background: #000;
     }
   </style>
-
-  <!-- hls.js for HLS/VAST playback -->
-  <script src="https://cdn.jsdelivr.net/npm/hls.js@latest"></script>
 </head>
 <body>
 
-  <video id="video" controls></video>
+  <video
+    id="adVideo"
+    class="video-js vjs-default-skin"
+    controls
+    playsinline
+    poster=""
+    data-setup='{}'
+  ></video>
 
   <script>
-    const video = document.getElementById('video');
-    const adUrl = 'https://speedyswim.com/d/m.FqzCdAGdNuvgZyGqUw/_eimP9HuyZGU/lykUP/TAYTz/MuTbgO0zMSDzE/tvNCjVMExUO/DHQlw_M/gc';
+    // 1) Initialize Video.js
+    const player = videojs('adVideo');
 
-    // If the browser supports MediaSource Extensions, use hls.js
-    if (Hls.isSupported()) {
-      const hls = new Hls();
-      hls.loadSource(adUrl);
-      hls.attachMedia(video);
-      hls.on(Hls.Events.MANIFEST_PARSED, () => {
-        video.play();
-      });
-    }
-    // Fallback: if HLS isn't supported natively, try to play the URL directly
-    else if (video.canPlayType('application/vnd.apple.mpegurl')) {
-      video.src = adUrl;
-      video.addEventListener('loadedmetadata', () => {
-        video.play();
-      });
-    }
-    else {
-      alert('Your browser does not support HLS playback.');
-    }
+    // 2) Initialize IMA with your VAST tag URL
+    player.ima({
+      adTagUrl: 'https://speedyswim.com/d/m.FqzCdAGdNuvgZyGqUw/_eimP9HuyZGU/lykUP/TAYTz/MuTbgO0zMSDzE/tvNCjVMExUO/DHQlw_M/gc'
+    });
+
+    // 3) Request ads, then start playback
+    player.ready(() => {
+      // this will fetch the VAST, play the ad, then revert to content.
+      player.ima.requestAds();
+      player.play();
+    });
+
+    // 4) Optionally listen for when ad ends
+    player.on('ima-ad-end', () => {
+      console.log('Ad finished!');
+    });
   </script>
-
 </body>
 </html>
