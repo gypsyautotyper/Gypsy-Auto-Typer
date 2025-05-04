@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Test Video Ad Player</title>
+
+  <style>
+    body {
+      background: #111;
+      color: #fff;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      height: 100vh;
+      margin: 0;
+    }
+    #video {
+      width: 90vw;
+      max-width: 800px;
+      height: auto;
+      background: #000;
+    }
+  </style>
+
+  <!-- hls.js for HLS/VAST playback -->
+  <script src="https://cdn.jsdelivr.net/npm/hls.js@latest"></script>
+</head>
+<body>
+
+  <video id="video" controls></video>
+
+  <script>
+    const video = document.getElementById('video');
+    const adUrl = 'https://speedyswim.com/d/m.FqzCdAGdNuvgZyGqUw/_eimP9HuyZGU/lykUP/TAYTz/MuTbgO0zMSDzE/tvNCjVMExUO/DHQlw_M/gc';
+
+    // If the browser supports MediaSource Extensions, use hls.js
+    if (Hls.isSupported()) {
+      const hls = new Hls();
+      hls.loadSource(adUrl);
+      hls.attachMedia(video);
+      hls.on(Hls.Events.MANIFEST_PARSED, () => {
+        video.play();
+      });
+    }
+    // Fallback: if HLS isn't supported natively, try to play the URL directly
+    else if (video.canPlayType('application/vnd.apple.mpegurl')) {
+      video.src = adUrl;
+      video.addEventListener('loadedmetadata', () => {
+        video.play();
+      });
+    }
+    else {
+      alert('Your browser does not support HLS playback.');
+    }
+  </script>
+
+</body>
+</html>
