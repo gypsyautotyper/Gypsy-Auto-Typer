@@ -2,114 +2,108 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title>Download Gypsy Hype</title>
+  <title>Download Gypsy Hype (Test)</title>
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <style>
     body {
       font-family: sans-serif;
+      margin: 0; padding: 20px;
       background: #f7f7f7;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      height: 100vh;
-      margin: 0;
     }
-    button#downloadBtn {
-      background: #900;
-      color: #fff;
-      border: none;
-      padding: 15px 30px;
-      font-size: 1.2em;
-      border-radius: 5px;
-      cursor: pointer;
+    h1 {
+      color: #900;
     }
-    button#downloadBtn:hover {
-      background: #a00;
-    }
-
-    /* Overlay */
-    #videoOverlay {
-      position: fixed;
-      top: 0; left: 0; right: 0; bottom: 0;
-      background: rgba(0,0,0,0.8);
-      display: none;
-      align-items: center;
-      justify-content: center;
-      z-index: 9999;
-    }
+    /* Floating video container */
     #videoContainer {
-      position: relative;
-      width: 80%;
-      max-width: 800px;
+      position: fixed;
+      bottom: 20px;
+      right: 20px;
+      width: 320px;
+      background: rgba(0,0,0,0.7);
+      padding: 10px;
+      border-radius: 8px;
+      display: none;
+      z-index: 1000;
     }
     #videoContainer video {
       width: 100%;
       height: auto;
+      display: block;
       background: #000;
     }
-    /* Close button */
     #closeBtn {
-      position: absolute;
-      top: -10px; right: -10px;
+      margin-top: 8px;
       background: #900;
       color: #fff;
       border: none;
-      font-size: 1.2em;
-      width: 32px; height: 32px;
-      border-radius: 50%;
+      padding: 6px 12px;
+      font-size: 0.9em;
+      border-radius: 4px;
       cursor: pointer;
       display: none;
+    }
+    #startBtn {
+      background: #900;
+      color: #fff;
+      border: none;
+      padding: 12px 24px;
+      font-size: 1em;
+      border-radius: 4px;
+      cursor: pointer;
+    }
+    #startBtn:hover {
+      background: #a00;
     }
   </style>
 </head>
 <body>
 
-  <button id="downloadBtn">Download for Windows</button>
+  <h1>Download Gypsy Hype (Test Page)</h1>
+  <p>
+    Click the button below to open the floating video player.  
+    It will play your ad first, then the hype video.
+  </p>
+  <button id="startBtn">Play Video</button>
 
-  <div id="videoOverlay">
-    <div id="videoContainer">
-      <button id="closeBtn">×</button>
-      <video id="promoVideo" playsinline>
-        <source src="gypsyhype.mp4" type="video/mp4">
-        Your browser doesn’t support HTML5 video.
-      </video>
-    </div>
+  <!-- floating container -->
+  <div id="videoContainer">
+    <video id="player" controls></video>
+    <button id="closeBtn">Close</button>
   </div>
 
   <script>
-    const downloadBtn = document.getElementById('downloadBtn');
-    const overlay     = document.getElementById('videoOverlay');
-    const video       = document.getElementById('promoVideo');
-    const closeBtn    = document.getElementById('closeBtn');
-    const FILE_URL    = 'gypsyhype.mp4';
+    const adUrl    = 'https://slimydesk.com/dGm.FKz/dkGuNHvzZeGAUD/-eomE9-uvZDU/l_kTP/TPY/zRMkTsgf0/MQDbEutYNljnM/xvOMDjQxwUMpgQ';
+    const hypeUrl  = 'gypsyhype.mp4';
+    const player   = document.getElementById('player');
+    const container= document.getElementById('videoContainer');
+    const startBtn = document.getElementById('startBtn');
+    const closeBtn = document.getElementById('closeBtn');
 
-    // Helper to trigger download
-    function triggerDownload() {
-      const a = document.createElement('a');
-      a.href = FILE_URL;
-      a.download = '';
-      document.body.appendChild(a);
-      a.click();
-      document.body.removeChild(a);
+    let sequence = [adUrl, hypeUrl];
+    let idx = 0;
+
+    function playNext() {
+      if (idx < sequence.length) {
+        player.src = sequence[idx++];
+        player.play();
+      } else {
+        closeBtn.style.display = 'block';
+      }
     }
 
-    // Show overlay and play video
-    downloadBtn.addEventListener('click', () => {
-      overlay.style.display = 'flex';
+    // When video ends, advance
+    player.addEventListener('ended', playNext);
+
+    startBtn.addEventListener('click', () => {
+      idx = 0;
       closeBtn.style.display = 'none';
-      video.currentTime = 0;
-      video.play();
+      container.style.display = 'block';
+      playNext();
     });
 
-    // When video ends, show the “X”
-    video.addEventListener('ended', () => {
-      closeBtn.style.display = 'block';
-    });
-
-    // Close overlay and download on “X” click
     closeBtn.addEventListener('click', () => {
-      overlay.style.display = 'none';
-      triggerDownload();
+      player.pause();
+      container.style.display = 'none';
     });
   </script>
 
