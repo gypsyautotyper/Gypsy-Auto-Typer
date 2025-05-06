@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title>Video.js Sequence Test</title>
+  <title>Video.js Sequential Playback Test</title>
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
   <!-- Video.js CSS -->
@@ -15,9 +15,22 @@
       text-align: center;
       padding: 50px;
     }
+    #startBtn {
+      background: #900;
+      color: #fff;
+      border: none;
+      padding: 15px 30px;
+      font-size: 1.2em;
+      border-radius: 5px;
+      cursor: pointer;
+    }
+    #startBtn:hover {
+      background: #a00;
+    }
     .video-container {
       max-width: 800px;
-      margin: auto;
+      margin: 30px auto;
+      display: none; /* hidden until button click */
     }
     .video-js {
       width: 100%;
@@ -28,9 +41,10 @@
 <body>
 
   <h1>Video.js Sequential Playback Test</h1>
-  <p>This will play the ad first, then play <code>gypsyhype.mp4</code>.</p>
+  <p>Click the button below to open the player. It will play your ad first, then <code>gypsyhype.mp4</code>.</p>
+  <button id="startBtn">Play Video</button>
 
-  <div class="video-container">
+  <div class="video-container" id="playerContainer">
     <video
       id="player"
       class="video-js vjs-default-skin"
@@ -51,33 +65,37 @@
   <!-- Video.js core library -->
   <script src="https://vjs.zencdn.net/8.10.0/video.min.js"></script>
   <script>
-    // 1) List your video sequence URLs here (must be direct media files, e.g. .mp4).
+    // Sequence of direct MP4 URLs
     const sequence = [
-      'ad.mp4',         // <-- replace with your ad MP4 filename or URL
+      'ad.mp4',         // replace with your ad MP4 filename or URL
       'gypsyhype.mp4'   // your main video
     ];
     let idx = 0;
 
-    // 2) Initialize Video.js player
+    // Initialize Video.js player
     const player = videojs('player');
+    const startBtn = document.getElementById('startBtn');
+    const container = document.getElementById('playerContainer');
 
-    // 3) Function to load & play the next video in the sequence
+    // Load & play next video in sequence
     function playNext() {
       if (idx < sequence.length) {
         player.src({ src: sequence[idx], type: 'video/mp4' });
         player.load();
-        player.play().catch(err => console.warn('Play() failed:', err));
+        player.play().catch(err => console.warn('Play failed:', err));
         idx++;
       } else {
         console.log('All videos played.');
       }
     }
 
-    // 4) When the current video ends, advance to the next
+    // Advance on end
     player.on('ended', playNext);
 
-    // 5) Kick things off once the player is ready
-    player.ready(() => {
+    // On button click: show player and start sequence
+    startBtn.addEventListener('click', () => {
+      idx = 0;
+      container.style.display = 'block';
       playNext();
     });
   </script>
