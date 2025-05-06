@@ -2,102 +2,83 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title>Video Overlay Test</title>
+  <title>Video.js Sequence Test</title>
   <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <!-- Video.js CSS -->
+  <link href="https://vjs.zencdn.net/8.10.0/video-js.css" rel="stylesheet" />
+
   <style>
     body {
-      font-family: sans-serif;
-      margin: 0; padding: 20px;
-      background: #f7f7f7;
+      background: #f4f4f4;
+      font-family: Arial, sans-serif;
+      text-align: center;
+      padding: 50px;
     }
-    h1 { color: #900; }
-    #startBtn {
-      background: #900; color: #fff; border: none;
-      padding: 12px 24px; font-size: 1em; border-radius: 4px;
-      cursor: pointer;
+    .video-container {
+      max-width: 800px;
+      margin: auto;
     }
-    #startBtn:hover { background: #a00; }
-
-    /* Full-screen overlay */
-    #videoOverlay {
-      position: fixed;
-      top: 0; left: 0; right: 0; bottom: 0;
-      background: rgba(0,0,0,0.85);
-      display: none;
-      align-items: center; justify-content: center;
-      z-index: 1000;
-    }
-    #videoContainer {
-      position: relative;
-      width: 80vw;
-      height: 80vh;
-      max-width: 1200px;
-      max-height: 800px;
-    }
-    #videoContainer video {
+    .video-js {
       width: 100%;
-      height: 100%;
-      background: #000;
-    }
-    #closeBtn {
-      position: absolute;
-      top: -10px; right: -10px;
-      background: #900; color: #fff; border: none;
-      width: 32px; height: 32px; border-radius: 50%;
-      font-size: 1.2em; cursor: pointer; display: none;
+      height: auto;
     }
   </style>
 </head>
 <body>
 
-  <h1>Video Overlay Centered Test</h1>
-  <p>Click to show the video. It will play the ad, then the main video.</p>
-  <button id="startBtn">Play Video</button>
+  <h1>Video.js Sequential Playback Test</h1>
+  <p>This will play the ad first, then play <code>gypsyhype.mp4</code>.</p>
 
-  <div id="videoOverlay">
-    <div id="videoContainer">
-      <button id="closeBtn">×</button>
-      <video id="player" controls autoplay muted></video>
-    </div>
+  <div class="video-container">
+    <video
+      id="player"
+      class="video-js vjs-default-skin"
+      controls
+      preload="auto"
+      data-setup='{}'
+    >
+      <p class="vjs-no-js">
+        To view this video please enable JavaScript, and consider upgrading to a
+        web browser that
+        <a href="https://videojs.com/html5-video-support/" target="_blank">
+          supports HTML5 video
+        </a>
+      </p>
+    </video>
   </div>
 
+  <!-- Video.js core library -->
+  <script src="https://vjs.zencdn.net/8.10.0/video.min.js"></script>
   <script>
-    const adUrl   = 'https://slimydesk.com/dGm.FKz/dkGuNHvzZeGAUD/-eomE9-uvZDU/l_kTP/TPY/zRMkTsgf0/MQDbEutYNljnM/xvOMDjQxwUMpgQ';
-    const mainUrl = 'gypsyhype.mp4'; // ensure this file exists in same directory
-    const sequence = [adUrl, mainUrl];
+    // 1) List your video sequence URLs here (must be direct media files, e.g. .mp4).
+    const sequence = [
+      'ad.mp4',         // <-- replace with your ad MP4 filename or URL
+      'gypsyhype.mp4'   // your main video
+    ];
     let idx = 0;
 
-    const overlay   = document.getElementById('videoOverlay');
-    const container = document.getElementById('videoContainer');
-    const player    = document.getElementById('player');
-    const startBtn  = document.getElementById('startBtn');
-    const closeBtn  = document.getElementById('closeBtn');
+    // 2) Initialize Video.js player
+    const player = videojs('player');
 
+    // 3) Function to load & play the next video in the sequence
     function playNext() {
       if (idx < sequence.length) {
-        player.src = sequence[idx++];
+        player.src({ src: sequence[idx], type: 'video/mp4' });
         player.load();
-        player.play().catch(err => {
-          console.warn('Playback error:', err);
-          alert('Unable to play video.');
-        });
+        player.play().catch(err => console.warn('Play() failed:', err));
+        idx++;
       } else {
-        closeBtn.style.display = 'block';
+        console.log('All videos played.');
       }
     }
 
-    player.addEventListener('ended', playNext);
+    // 4) When the current video ends, advance to the next
+    player.on('ended', playNext);
 
-    startBtn.addEventListener('click', () => {
-      idx = 0;
-      closeBtn.style.display = 'none';
-      overlay.style.display = 'flex';
+    // 5) Kick things off once the player is ready
+    player.ready(() => {
       playNext();
-    });
-
-    closeBtn.addEventListener('click', () => {
-      player.pause();
-      overlay.style.display = 'none';
     });
   </script>
 
