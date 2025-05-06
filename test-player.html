@@ -2,18 +2,22 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title>Video.js Sequential Playback Test</title>
+  <title>Fluid Player VAST Pre-roll Test</title>
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
-  <!-- Video.js CSS v8.22.0 -->
-  <link href="https://vjs.zencdn.net/8.22.0/video-js.css" rel="stylesheet" />
+  <!-- Fluid Player CSS -->
+  <link
+    rel="stylesheet"
+    href="https://cdn.fluidplayer.com/v3/current/fluidplayer.min.css"
+  />
 
   <style>
     body {
-      background: #f4f4f4;
       font-family: Arial, sans-serif;
+      background: #f4f4f4;
       text-align: center;
       padding: 50px;
+      margin: 0;
     }
     #startBtn {
       background: #900;
@@ -24,81 +28,62 @@
       border-radius: 5px;
       cursor: pointer;
     }
-    #startBtn:hover {
-      background: #a00;
-    }
-    .video-container {
-      max-width: 640px;
+    #startBtn:hover { background: #a00; }
+
+    /* Video container hidden until play */
+    #videoWrapper {
+      max-width: 800px;
       margin: 30px auto;
       display: none;
     }
-    .video-js {
+    #my-video {
       width: 100%;
       height: auto;
+      background: #000;
     }
   </style>
 </head>
 <body>
 
-  <h1>Video.js Sequential Playback Test</h1>
-  <p>Click the button below to open the player. It will play your ad first, then <code>gypsyhype.mp4</code>.</p>
+  <h1>Fluid Player Pre-roll VAST Test</h1>
+  <p>Click the button below to load the player, play the ad, then <code>gypsyhype.mp4</code>.</p>
   <button id="startBtn">Play Video</button>
 
-  <div class="video-container" id="playerContainer">
+  <div id="videoWrapper">
     <video
       id="my-video"
-      class="video-js vjs-default-skin"
+      class="fluid-video"
       controls
       preload="auto"
-      width="640"
-      height="264"
-      data-setup="{}"
+      poster=""
     >
-      <p class="vjs-no-js">
-        To view this video please enable JavaScript, and consider upgrading to a
-        web browser that
-        <a href="https://videojs.com/html5-video-support/" target="_blank">
-          supports HTML5 video
-        </a>
-      </p>
+      <source src="gypsyhype.mp4" type="video/mp4" />
+      Your browser does not support HTML5 video.
     </video>
   </div>
 
-  <!-- Video.js JS v8.22.0 -->
-  <script src="https://vjs.zencdn.net/8.22.0/video.min.js"></script>
+  <!-- Fluid Player JS -->
+  <script src="https://cdn.fluidplayer.com/v3/current/fluidplayer.min.js"></script>
   <script>
-    // 1. Define your sequence of MP4 files:
-    const sequence = [
-      'ad.mp4',         // your ad video filename or URL
-      'gypsyhype.mp4'   // your main video
-    ];
-    let idx = 0;
-
-    // 2. Initialize the Video.js player
-    const player = videojs('my-video');
     const startBtn = document.getElementById('startBtn');
-    const container = document.getElementById('playerContainer');
+    const wrapper  = document.getElementById('videoWrapper');
 
-    // 3. Function to load & play the next video
-    function playNext() {
-      if (idx < sequence.length) {
-        player.src({ src: sequence[idx], type: 'video/mp4' });
-        player.load();
-        player.play().catch(err => console.warn('Play failed:', err));
-        idx++;
-      } else {
-        console.log('All videos played.');
-      }
-    }
-
-    // 4. When the current video ends, go to the next
-    player.on('ended', playNext);
-
-    // 5. On button click: show the player and start sequence
     startBtn.addEventListener('click', () => {
-      idx = 0;
-      container.style.display = 'block';
-      playNext();
+      // Show the video wrapper
+      wrapper.style.display = 'block';
+
+      // Initialize Fluid Player with pre-roll VAST
+      fluidPlayer('my-video', {
+        layoutControls: {
+          primaryColor: "#900"
+        },
+        vastOptions: {
+          adList: [{
+            roll: 'preRoll',
+            vastTag: 'https://slimydesk.com/dGm.FKz/dkGuNHvzZeGAUD/-eomE9-uvZDU/l_kTP/TPY/zRMkTsgf0/MQDbEutYNljnM/xvOMDjQxwUMpgQ'
+          }]
+        }
+      });
     });
   </script>
 </body>
