@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title>Fluid Player VAST Pre-roll Test</title>
+  <title>Fluid Player Auto-Play & Close Test</title>
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
   <!-- Fluid Player CSS -->
@@ -32,9 +32,17 @@
 
     /* Video container hidden until play */
     #videoWrapper {
-      max-width: 800px;
-      margin: 30px auto;
+      position: fixed;
+      top: 0; left: 0; right: 0; bottom: 0;
+      background: rgba(0,0,0,0.85);
       display: none;
+      align-items: center;
+      justify-content: center;
+      z-index: 1000;
+    }
+    #videoContainer {
+      width: 80vw;
+      max-width: 800px;
     }
     #my-video {
       width: 100%;
@@ -45,21 +53,22 @@
 </head>
 <body>
 
-  <h1>Fluid Player Pre-roll VAST Test</h1>
-  <p>Click the button below to load the player, play the ad, then <code>gypsyhype.mp4</code>.</p>
+  <h1>Fluid Player Auto-Play & Close</h1>
+  <p>Click the button to open the player, auto-play the ad + video, then close when done.</p>
   <button id="startBtn">Play Video</button>
 
   <div id="videoWrapper">
-    <video
-      id="my-video"
-      class="fluid-video"
-      controls
-      preload="auto"
-      poster=""
-    >
-      <source src="gypsyhype.mp4" type="video/mp4" />
-      Your browser does not support HTML5 video.
-    </video>
+    <div id="videoContainer">
+      <video
+        id="my-video"
+        class="fluid-video"
+        controls
+        preload="auto"
+      >
+        <source src="gypsyhype.mp4" type="video/mp4" />
+        Your browser does not support HTML5 video.
+      </video>
+    </div>
   </div>
 
   <!-- Fluid Player JS -->
@@ -67,23 +76,35 @@
   <script>
     const startBtn = document.getElementById('startBtn');
     const wrapper  = document.getElementById('videoWrapper');
+    const vid      = document.getElementById('my-video');
+
+    let hasInitialized = false;
 
     startBtn.addEventListener('click', () => {
-      // Show the video wrapper
-      wrapper.style.display = 'block';
+      // Show the overlay
+      wrapper.style.display = 'flex';
 
-      // Initialize Fluid Player with pre-roll VAST
-      fluidPlayer('my-video', {
-        layoutControls: {
-          primaryColor: "#900"
-        },
-        vastOptions: {
-          adList: [{
-            roll: 'preRoll',
-            vastTag: 'https://slimydesk.com/dGm.FKz/dkGuNHvzZeGAUD/-eomE9-uvZDU/l_kTP/TPY/zRMkTsgf0/MQDbEutYNljnM/xvOMDjQxwUMpgQ'
-          }]
-        }
-      });
+      if (!hasInitialized) {
+        // Initialize Fluid Player with pre-roll VAST
+        fluidPlayer('my-video', {
+          layoutControls: { primaryColor: "#900" },
+          vastOptions: {
+            adList: [{
+              roll: 'preRoll',
+              vastTag: 'https://slimydesk.com/dGm.FKz/dkGuNHvzZeGAUD/-eomE9-uvZDU/l_kTP/TPY/zRMkTsgf0/MQDbEutYNljnM/xvOMDjQxwUMpgQ'
+            }]
+          }
+        });
+        hasInitialized = true;
+
+        // When playback (ad + content) finishes, hide the overlay
+        vid.addEventListener('ended', () => {
+          wrapper.style.display = 'none';
+        });
+      }
+
+      // Start playback (this will trigger pre-roll then content)
+      vid.play().catch(err => console.warn('Playback error:', err));
     });
   </script>
 </body>
