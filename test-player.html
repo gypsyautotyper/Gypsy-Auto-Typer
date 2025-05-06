@@ -2,31 +2,116 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title>Test Video Player</title>
+  <title>Download Gypsy Hype</title>
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <style>
     body {
-      background-color: #f4f4f4;
-      font-family: Arial, sans-serif;
-      text-align: center;
-      padding: 50px;
+      font-family: sans-serif;
+      background: #f7f7f7;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      height: 100vh;
+      margin: 0;
     }
-    video {
-      border: 2px solid #333;
-      border-radius: 8px;
-      max-width: 100%;
+    button#downloadBtn {
+      background: #900;
+      color: #fff;
+      border: none;
+      padding: 15px 30px;
+      font-size: 1.2em;
+      border-radius: 5px;
+      cursor: pointer;
+    }
+    button#downloadBtn:hover {
+      background: #a00;
+    }
+
+    /* Overlay */
+    #videoOverlay {
+      position: fixed;
+      top: 0; left: 0; right: 0; bottom: 0;
+      background: rgba(0,0,0,0.8);
+      display: none;
+      align-items: center;
+      justify-content: center;
+      z-index: 9999;
+    }
+    #videoContainer {
+      position: relative;
+      width: 80%;
+      max-width: 800px;
+    }
+    #videoContainer video {
+      width: 100%;
+      height: auto;
+      background: #000;
+    }
+    /* Close button */
+    #closeBtn {
+      position: absolute;
+      top: -10px; right: -10px;
+      background: #900;
+      color: #fff;
+      border: none;
+      font-size: 1.2em;
+      width: 32px; height: 32px;
+      border-radius: 50%;
+      cursor: pointer;
+      display: none;
     }
   </style>
 </head>
 <body>
-  <h1>Video Player Test</h1>
-  <p>If the video loads and plays, everything is working correctly.</p>
 
-  <video width="640" height="360" controls>
-    <source src="gypsyhype.mp4" type="video/mp4">
-    Your browser does not support the video tag.
-  </video>
+  <button id="downloadBtn">Download for Windows</button>
 
-  <p>If you don't see a video, make sure <strong>gypsyhype.mp4</strong> is uploaded to the same folder as this HTML file.</p>
+  <div id="videoOverlay">
+    <div id="videoContainer">
+      <button id="closeBtn">×</button>
+      <video id="promoVideo" playsinline>
+        <source src="gypsyhype.mp4" type="video/mp4">
+        Your browser doesn’t support HTML5 video.
+      </video>
+    </div>
+  </div>
+
+  <script>
+    const downloadBtn = document.getElementById('downloadBtn');
+    const overlay     = document.getElementById('videoOverlay');
+    const video       = document.getElementById('promoVideo');
+    const closeBtn    = document.getElementById('closeBtn');
+    const FILE_URL    = 'gypsyhype.mp4';
+
+    // Helper to trigger download
+    function triggerDownload() {
+      const a = document.createElement('a');
+      a.href = FILE_URL;
+      a.download = '';
+      document.body.appendChild(a);
+      a.click();
+      document.body.removeChild(a);
+    }
+
+    // Show overlay and play video
+    downloadBtn.addEventListener('click', () => {
+      overlay.style.display = 'flex';
+      closeBtn.style.display = 'none';
+      video.currentTime = 0;
+      video.play();
+    });
+
+    // When video ends, show the “X”
+    video.addEventListener('ended', () => {
+      closeBtn.style.display = 'block';
+    });
+
+    // Close overlay and download on “X” click
+    closeBtn.addEventListener('click', () => {
+      overlay.style.display = 'none';
+      triggerDownload();
+    });
+  </script>
+
 </body>
 </html>
