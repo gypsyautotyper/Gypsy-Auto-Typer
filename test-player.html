@@ -2,70 +2,31 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
+  <title>Test Video Player</title>
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>VAST Test Player</title>
-
-  <!-- Video.js core -->
-  <link
-    href="https://vjs.zencdn.net/7.24.1/video-js.css"
-    rel="stylesheet"
-  />
-  <script src="https://vjs.zencdn.net/7.24.1/video.min.js"></script>
-
-  <!-- videojs-ima plugin -->
-  <link
-    href="https://cdn.jsdelivr.net/npm/videojs-ima@1.8.0/dist/videojs.ima.css"
-    rel="stylesheet"
-  />
-  <script src="https://cdn.jsdelivr.net/npm/videojs-ima@1.8.0/dist/videojs.ima.js"></script>
-
   <style>
     body {
-      margin: 0;
-      background: #000;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      height: 100vh;
+      background-color: #f4f4f4;
+      font-family: Arial, sans-serif;
+      text-align: center;
+      padding: 50px;
     }
-    .video-js {
-      width: 90vw;
-      max-width: 800px;
-      height: auto;
+    video {
+      border: 2px solid #333;
+      border-radius: 8px;
+      max-width: 100%;
     }
   </style>
 </head>
 <body>
+  <h1>Video Player Test</h1>
+  <p>If the video loads and plays, everything is working correctly.</p>
 
-  <video
-    id="adVideo"
-    class="video-js vjs-default-skin"
-    controls
-    playsinline
-    poster=""
-    data-setup='{}'
-  ></video>
+  <video width="640" height="360" controls>
+    <source src="gypsyhype.mp4" type="video/mp4">
+    Your browser does not support the video tag.
+  </video>
 
-  <script>
-    // 1) Initialize Video.js
-    const player = videojs('adVideo');
-
-    // 2) Initialize IMA with your VAST tag URL
-    player.ima({
-      adTagUrl: 'https://speedyswim.com/d/m.FqzCdAGdNuvgZyGqUw/_eimP9HuyZGU/lykUP/TAYTz/MuTbgO0zMSDzE/tvNCjVMExUO/DHQlw_M/gc'
-    });
-
-    // 3) Request ads, then start playback
-    player.ready(() => {
-      // this will fetch the VAST, play the ad, then revert to content.
-      player.ima.requestAds();
-      player.play();
-    });
-
-    // 4) Optionally listen for when ad ends
-    player.on('ima-ad-end', () => {
-      console.log('Ad finished!');
-    });
-  </script>
+  <p>If you don't see a video, make sure <strong>gypsyhype.mp4</strong> is uploaded to the same folder as this HTML file.</p>
 </body>
 </html>
