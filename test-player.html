@@ -5,8 +5,8 @@
   <title>Video.js Sequential Playback Test</title>
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
-  <!-- Video.js CSS -->
-  <link href="https://vjs.zencdn.net/8.10.0/video-js.css" rel="stylesheet" />
+  <!-- Video.js CSS v8.22.0 -->
+  <link href="https://vjs.zencdn.net/8.22.0/video-js.css" rel="stylesheet" />
 
   <style>
     body {
@@ -28,9 +28,9 @@
       background: #a00;
     }
     .video-container {
-      max-width: 800px;
+      max-width: 640px;
       margin: 30px auto;
-      display: none; /* hidden until button click */
+      display: none;
     }
     .video-js {
       width: 100%;
@@ -46,11 +46,13 @@
 
   <div class="video-container" id="playerContainer">
     <video
-      id="player"
+      id="my-video"
       class="video-js vjs-default-skin"
       controls
       preload="auto"
-      data-setup='{}'
+      width="640"
+      height="264"
+      data-setup="{}"
     >
       <p class="vjs-no-js">
         To view this video please enable JavaScript, and consider upgrading to a
@@ -62,22 +64,22 @@
     </video>
   </div>
 
-  <!-- Video.js core library -->
-  <script src="https://vjs.zencdn.net/8.10.0/video.min.js"></script>
+  <!-- Video.js JS v8.22.0 -->
+  <script src="https://vjs.zencdn.net/8.22.0/video.min.js"></script>
   <script>
-    // Sequence of direct MP4 URLs
+    // 1. Define your sequence of MP4 files:
     const sequence = [
-      'ad.mp4',         // replace with your ad MP4 filename or URL
+      'ad.mp4',         // your ad video filename or URL
       'gypsyhype.mp4'   // your main video
     ];
     let idx = 0;
 
-    // Initialize Video.js player
-    const player = videojs('player');
+    // 2. Initialize the Video.js player
+    const player = videojs('my-video');
     const startBtn = document.getElementById('startBtn');
     const container = document.getElementById('playerContainer');
 
-    // Load & play next video in sequence
+    // 3. Function to load & play the next video
     function playNext() {
       if (idx < sequence.length) {
         player.src({ src: sequence[idx], type: 'video/mp4' });
@@ -89,16 +91,15 @@
       }
     }
 
-    // Advance on end
+    // 4. When the current video ends, go to the next
     player.on('ended', playNext);
 
-    // On button click: show player and start sequence
+    // 5. On button click: show the player and start sequence
     startBtn.addEventListener('click', () => {
       idx = 0;
       container.style.display = 'block';
       playNext();
     });
   </script>
-
 </body>
 </html>
