@@ -4,6 +4,9 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width,initial-scale=1.0">
   <title>Gypsy Auto Typer</title>
+  <!-- Favicon -->
+  <link rel="icon" href="favicon.ico" type="image/x-icon">
+
   <style>
     /* Reset & globals */
     * { margin:0; padding:0; box-sizing:border-box; }
@@ -14,24 +17,37 @@
     header, section, footer { padding: 60px 20px; }
     .container { max-width: 1200px; margin: 0 auto; }
 
+    /* Primary maroon accent */
+    :root { --brand: #800000; }
+
     /* Header / Hero */
     header {
-      background: #f7f9fa;
+      position: relative;
+      color: #fff;
       text-align: center;
+    }
+    /* Banner background */
+    header::before {
+      content: '';
+      position: absolute;
+      top:0; left:0; right:0; bottom:0;
+      background: url('tuff-gypsy.jpg') center/cover no-repeat;
+      filter: brightness(0.5);
+      z-index: -1;
     }
     .nav { display:flex; justify-content: space-between; align-items:center; }
     .nav ul { list-style:none; display:flex; gap:20px; }
-    .nav a { font-weight: 500; }
-    .hero-content { margin-top: 40px; }
+    .nav a { font-weight: 500; color: #fff; }
+    .hero-content { margin-top: 60px; }
     .hero-content h1 { font-size: 2.5rem; margin-bottom: 20px; }
     .hero-content p { font-size: 1.1rem; margin-bottom: 30px; }
-    .btn { display:inline-block; background:#28a745; color:#fff; padding:12px 30px; border-radius:4px; font-weight:600; }
+    .btn { display:inline-block; background:var(--brand); color:#fff; padding:12px 30px; border-radius:4px; font-weight:600; }
 
     /* Why section */
-    #why { background:#fff; }
+    #why { background:#fff; color:#333; }
     .grid-3 { display:grid; grid-template-columns:repeat(auto-fit, minmax(250px,1fr)); gap:40px; }
     .feature { text-align:center; padding:20px; }
-    .feature-icon { font-size:2rem; margin-bottom:15px; }
+    .feature-icon { font-size:2rem; margin-bottom:15px; color:var(--brand); }
 
     /* Key Features */
     #features { background:#f7f9fa; }
@@ -40,7 +56,7 @@
       .features-list { grid-template-columns:repeat(2,1fr); }
     }
     .feat-item { display:flex; gap:20px; }
-    .feat-item .icon { font-size:1.8rem; }
+    .feat-item .icon { font-size:1.8rem; color:var(--brand); }
 
     /* Pricing */
     #pricing { background:#fff; text-align:center; }
@@ -49,10 +65,11 @@
       .pricing-cards { grid-template-columns:1fr 1fr; }
     }
     .card { border:1px solid #e1e1e1; border-radius:6px; padding:30px; }
-    .card h3 { margin-bottom:20px; font-size:1.5rem; }
+    .card h3 { margin-bottom:20px; font-size:1.5rem; color:var(--brand); }
     .card .price { font-size:2rem; margin:20px 0; }
     .card ul { list-style: none; text-align:left; margin-bottom:20px; }
     .card li { margin:10px 0; }
+    .card .btn { background:var(--brand); }
 
     /* Footer */
     footer { background:#333; color:#fff; }
@@ -61,7 +78,7 @@
       .footer-cols { grid-template-columns:1fr 1fr; }
     }
     .social { display:flex; gap:15px; margin-top:15px; }
-
+    .social img { filter: brightness(0) invert(1); }
   </style>
 </head>
 <body>
@@ -69,8 +86,7 @@
   <!-- ===== 1. HERO ===== -->
   <header>
     <div class="container nav">
-      <!-- Replace ### with path to your logo -->
-      <a href="#"><img src="###/gypsy-logo.png" alt="Gypsy Auto Typer Logo" style="height:40px;"></a>
+      <a href="#"><img src="favicon.ico" alt="Gypsy Auto Typer Logo" style="height:40px;"></a>
       <ul>
         <li><a href="#why">Why Us</a></li>
         <li><a href="#features">Features</a></li>
@@ -79,8 +95,8 @@
       </ul>
     </div>
     <div class="container hero-content">
-      <h1>Automate Your Typing, Outsmart Detection</h1>
-      <p>Gypsy Auto Typer simulates real human typing to finish your assignments effortlessly—and stays completely undetectable.</p>
+      <h1>100% Free, Human-Like Typing—Undetectable</h1>
+      <p>Experience typing simulation that saves you hours while creating authentic, dynamic text. Gypsy Auto Typer is 100% free, no catches.</p>
       <a href="#pricing" class="btn">Get Started Free</a>
     </div>
   </header>
@@ -88,22 +104,22 @@
   <!-- ===== 2. WHY GYPSY AUTO TYPER ===== -->
   <section id="why">
     <div class="container">
-      <h2 style="text-align:center; margin-bottom:40px;">Why Choose Gypsy Auto Typer?</h2>
+      <h2 style="text-align:center; margin-bottom:40px;">Why Use Gypsy Auto Typer?</h2>
       <div class="grid-3">
         <div class="feature">
           <div class="feature-icon">⌨️</div>
-          <h3>Human-Like Typing</h3>
-          <p>Variable delays & mistakes mimic real keystrokes so your work passes any AI detector.</p>
+          <h3>Human-Like Simulation</h3>
+          <p>Mimics natural typing with pauses, speed shifts, and realistic errors :contentReference[oaicite:0]{index=0}.</p>
         </div>
         <div class="feature">
-          <div class="feature-icon">🤖</div>
-          <h3>Full Automation</h3>
-          <p>Upload your text or let us fetch it—Gypsy Auto Typer takes care of the rest.</p>
+          <div class="feature-icon">⚙️</div>
+          <h3>Custom Speed & Typos</h3>
+          <p>Adjust characters per minute and error rate sliders for perfect realism :contentReference[oaicite:1]{index=1}.</p>
         </div>
         <div class="feature">
-          <div class="feature-icon">☁️</div>
-          <h3>Cloud-Based</h3>
-          <p>Access from any device—no installs, no hassles, just seamless typing.</p>
+          <div class="feature-icon">🚫</div>
+          <h3>Bypass Review Tools</h3>
+          <p>Output looks manually typed—even through draft logs or revision histories :contentReference[oaicite:2]{index=2}.</p>
         </div>
       </div>
     </div>
@@ -115,31 +131,31 @@
       <h2 style="text-align:center; margin-bottom:40px;">Key Features</h2>
       <div class="features-list">
         <div class="feat-item">
-          <div class="icon">🔒</div>
+          <div class="icon">🆓</div>
           <div>
-            <h4>Undetectable Output</h4>
-            <p>Bypasses all major AI-detection tools—so your professors see only authentic work.</p>
+            <h4>100% Free</h4>
+            <p>No paywalls, no trials—every feature is unlocked from day one.</p>
           </div>
         </div>
         <div class="feat-item">
-          <div class="icon">⚡</div>
+          <div class="icon">☁️</div>
           <div>
-            <h4>Speed Control</h4>
-            <p>Customize typing speed and variability to match your personal style.</p>
+            <h4>Web-Based</h4>
+            <p>Access Gypsy Auto Typer anywhere—no installs or extensions needed.</p>
           </div>
         </div>
         <div class="feat-item">
           <div class="icon">📄</div>
           <div>
-            <h4>File Support</h4>
-            <p>Upload DOCX, TXT, PDF or paste text directly—no format left behind.</p>
+            <h4>Multi-Format Support</h4>
+            <p>Paste, upload TXT, DOCX or PDF and watch it type naturally.</p>
           </div>
         </div>
         <div class="feat-item">
           <div class="icon">💬</div>
           <div>
-            <h4>Live Preview</h4>
-            <p>Watch as your words appear on screen, just like you were typing them yourself.</p>
+            <h4>Instant Preview</h4>
+            <p>See every keystroke live, complete with realistic pauses.</p>
           </div>
         </div>
       </div>
@@ -149,28 +165,18 @@
   <!-- ===== 4. PRICING ===== -->
   <section id="pricing">
     <div class="container">
-      <h2>Pricing Plans</h2>
-      <p>Simple, transparent pricing. Cancel anytime.</p>
+      <h2>Always Free</h2>
+      <p>Every feature unlocked. Forever.</p>
       <div class="pricing-cards">
         <div class="card">
-          <h3>Basic</h3>
-          <div class="price">$9.99<span style="font-size:1rem;">/mo</span></div>
+          <h3>Gypsy Plan</h3>
+          <div class="price">$0<span style="font-size:1rem;">/mo</span></div>
           <ul>
-            <li>Unlimited Auto-Typing</li>
-            <li>Standard Speed Variability</li>
+            <li>Unlimited Typing Sessions</li>
+            <li>Full Speed & Error Control</li>
             <li>Email Support</li>
           </ul>
-          <a href="#" class="btn">Start Basic</a>
-        </div>
-        <div class="card">
-          <h3>Pro</h3>
-          <div class="price">$19.99<span style="font-size:1rem;">/mo</span></div>
-          <ul>
-            <li>All Basic Features</li>
-            <li>Advanced Human-Emulation</li>
-            <li>Priority Support</li>
-          </ul>
-          <a href="#" class="btn">Start Pro</a>
+          <a href="#" class="btn">Start Typing</a>
         </div>
       </div>
     </div>
@@ -180,26 +186,25 @@
   <footer id="contact">
     <div class="container footer-cols">
       <div>
-        <h4>Gypsy Auto Typer</h4>
-        <p>Your stealth typing companion.</p>
+        <h4 style="color:var(--brand);">Gypsy Auto Typer</h4>
+        <p>Your free stealth-typing companion.</p>
         <div class="social">
-          <!-- replace # with your social links -->
-          <a href="#"><img src="###/icon-facebook.svg" alt="Facebook" width="24"></a>
-          <a href="#"><img src="###/icon-twitter.svg" alt="Twitter" width="24"></a>
-          <a href="#"><img src="###/icon-instagram.svg" alt="Instagram" width="24"></a>
+          <a href="#"><img src="icon-facebook.svg" alt="Facebook" width="24"></a>
+          <a href="#"><img src="icon-twitter.svg" alt="Twitter" width="24"></a>
+          <a href="#"><img src="icon-instagram.svg" alt="Instagram" width="24"></a>
         </div>
       </div>
       <div>
         <h4>Quick Links</h4>
         <ul style="list-style:none; margin-top:15px;">
-          <li><a href="#why">Why Us</a></li>
+          <li><a href="#why">Why</a></li>
           <li><a href="#features">Features</a></li>
           <li><a href="#pricing">Pricing</a></li>
           <li><a href="#contact">Contact</a></li>
         </ul>
       </div>
     </div>
-    <p style="text-align:center; margin-top:40px; font-size:0.9rem;">© 2025 Gypsy Auto Typer. All rights reserved.</p>
+    <p style="text-align:center; margin-top:40px; font-size:0.9rem; color:#aaa;">© 2025 Gypsy Auto Typer. All rights reserved.</p>
   </footer>
 
 </body>
