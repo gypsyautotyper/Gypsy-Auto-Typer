@@ -3,19 +3,28 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Gypsy Auto Typer — Replica</title>
+  <title>Your Site Title Here</title>
 
-  <!-- Google Fonts -->
+  <!-- ======================================
+       FONTS & ICONS
+       ====================================== -->
   <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700&family=Roboto:wght@300;400;500&display=swap" rel="stylesheet">
+  <!-- (Optional) FontAwesome or other icon library -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css"/>
 
-  <!-- Slick Slider CSS (for hero carousel) -->
-  <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/slick-carousel@1.8.1/slick/slick.css"/>
+  <!-- ======================================
+       SLICK SLIDER (for hero carousel)
+       ====================================== -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/slick-carousel@1.8.1/slick/slick.css"/>
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/slick-carousel@1.8.1/slick/slick-theme.css"/>
 
+  <!-- ======================================
+       MAIN CSS
+       ====================================== -->
   <style>
     /* RESET & BASE */
     * { margin:0; padding:0; box-sizing:border-box; }
-    body { font-family: 'Roboto', sans-serif; color:#333; line-height:1.6; }
+    body { font-family:'Roboto', sans-serif; color:#333; line-height:1.6; }
     a { color:#900; text-decoration:none; }
     a:hover { text-decoration:underline; }
     img { display:block; max-width:100%; }
@@ -23,27 +32,38 @@
     /* CONTAINER */
     .container { width:90%; max-width:1200px; margin:0 auto; }
 
-    /* HEADER / NAV */
+    /* ===== HEADER & NAV ===== */
     header { background:#fff; border-bottom:1px solid #e0e0e0; }
-    .nav-wrapper { display:flex; align-items:center; justify-content:space-between; padding:20px 0; }
-    .logo { font-family:'Montserrat',sans-serif; font-size:1.8em; font-weight:700; color:#900; }
-    nav ul { display:flex; gap:30px; list-style:none; }
+    .nav-wrapper {
+      display:flex; align-items:center; justify-content:space-between;
+      padding:20px 0;
+    }
+    .logo {
+      font-family:'Montserrat',sans-serif; font-size:1.8em; font-weight:700; color:#900;
+    }
+    nav ul {
+      display:flex; gap:30px; list-style:none;
+    }
     nav li { font-weight:500; }
     nav a { font-size:0.95em; }
 
-    /* HERO SLIDER */
+    /* ===== HERO SLIDER ===== */
     .hero-slider { position:relative; overflow:hidden; }
-    .hero-slide { position:relative; height:500px; color:#fff; }
+    .hero-slide { position:relative; height:500px; }
+    .hero-slide img {
+      width:100%; height:500px; object-fit:cover;
+    }
     .hero-slide::before {
       content:''; position:absolute; top:0; left:0; width:100%; height:100%;
       background:rgba(0,0,0,0.4);
     }
-    .hero-slide img { width:100%; height:500px; object-fit:cover; }
     .hero-content {
       position:absolute; top:50%; left:50%; transform:translate(-50%,-50%);
-      text-align:center; z-index:2;
+      text-align:center; color:#fff; z-index:2;
     }
-    .hero-content h1 { font-family:'Montserrat',sans-serif; font-size:2.5em; margin-bottom:0.5em; }
+    .hero-content h1 {
+      font-family:'Montserrat',sans-serif; font-size:2.5em; margin-bottom:0.5em;
+    }
     .hero-content p { font-size:1.1em; margin-bottom:1em; }
     .hero-buttons button {
       background:#900; color:#fff; border:none; padding:12px 24px;
@@ -52,29 +72,42 @@
     }
     .hero-buttons button:hover { background:#a00; }
 
-    /* SECTION TITLES */
-    .section-title { text-align:center; font-family:'Montserrat',sans-serif; font-size:2em; margin-bottom:1em; color:#333; }
+    /* ===== SECTION TITLES ===== */
+    .section-title {
+      text-align:center; font-family:'Montserrat',sans-serif;
+      font-size:2em; margin-bottom:1em; color:#333;
+    }
 
-    /* FEATURES GRID */
-    .features { display:grid; grid-template-columns:repeat(auto-fit,minmax(250px,1fr)); gap:30px; }
+    /* ===== FEATURES GRID ===== */
+    .features {
+      display:grid;
+      grid-template-columns:repeat(auto-fit,minmax(250px,1fr));
+      gap:30px;
+    }
     .feature-box {
       background:#fff; border:1px solid #e0e0e0; border-radius:8px;
       padding:30px; text-align:center; transition:transform 0.2s;
     }
     .feature-box:hover { transform:translateY(-5px); }
-    .feature-box i { font-size:2em; margin-bottom:15px; color:#900; }
-    .feature-box h3 { font-family:'Montserrat',sans-serif; margin-bottom:0.5em; }
+    .feature-box i {
+      font-size:2em; margin-bottom:15px; color:#900;
+    }
+    .feature-box h3 {
+      font-family:'Montserrat',sans-serif; margin-bottom:0.5em;
+    }
 
-    /* SERVICES / INFO ROW */
-    .info-row { display:flex; flex-wrap:wrap; align-items:center; gap:30px; }
+    /* ===== INFO ROW ===== */
+    .info-row {
+      display:flex; flex-wrap:wrap; align-items:center; gap:30px;
+    }
     .info-row .text { flex:1 1 400px; }
     .info-row .img { flex:1 1 400px; }
     .info-row .img img { border-radius:8px; }
 
-    /* CTA BAR */
+    /* ===== CTA BAR ===== */
     .cta-bar {
-      background:#900; color:#fff; text-align:center; padding:40px 20px;
-      margin:60px 0;
+      background:#900; color:#fff; text-align:center;
+      padding:40px 20px; margin:60px 0;
     }
     .cta-bar h2 { font-size:1.8em; margin-bottom:0.5em; }
     .cta-bar button {
@@ -84,31 +117,59 @@
     }
     .cta-bar button:hover { background:#f5f5f5; }
 
-    /* TESTIMONIALS */
-    .testimonials { display:grid; grid-template-columns:repeat(auto-fit,minmax(280px,1fr)); gap:30px; }
+    /* ===== TESTIMONIALS ===== */
+    .testimonials {
+      display:grid;
+      grid-template-columns:repeat(auto-fit,minmax(280px,1fr));
+      gap:30px;
+    }
     .testimonial {
       background:#fff; border:1px solid #e0e0e0; border-radius:8px;
       padding:20px; position:relative;
     }
     .testimonial p { font-style:italic; margin-bottom:1em; }
-    .testimonial h4 { font-family:'Montserrat',sans-serif; font-size:1em; color:#900; }
+    .testimonial h4 {
+      font-family:'Montserrat',sans-serif; font-size:1em; color:#900;
+    }
 
-    /* BLOG PREVIEW */
-    .blog-grid { display:grid; grid-template-columns:repeat(auto-fit,minmax(280px,1fr)); gap:30px; }
-    .blog-post { background:#fff; border:1px solid #e0e0e0; border-radius:8px; overflow:hidden; }
-    .blog-post img { width:100%; height:180px; object-fit:cover; }
+    /* ===== BLOG PREVIEW ===== */
+    .blog-grid {
+      display:grid;
+      grid-template-columns:repeat(auto-fit,minmax(280px,1fr));
+      gap:30px;
+    }
+    .blog-post {
+      background:#fff; border:1px solid #e0e0e0; border-radius:8px; overflow:hidden;
+    }
+    .blog-post img {
+      width:100%; height:180px; object-fit:cover;
+    }
     .blog-post-content { padding:20px; }
-    .blog-post-content h4 { font-family:'Montserrat',sans-serif; margin-bottom:0.5em; }
+    .blog-post-content h4 {
+      font-family:'Montserrat',sans-serif; margin-bottom:0.5em;
+    }
     .blog-post-content p { font-size:0.9em; margin-bottom:1em; }
     .blog-post-content a { font-weight:600; }
 
-    /* FOOTER */
+    /* ===== FOOTER ===== */
     footer { background:#333; color:#fff; padding:40px 0; }
-    .footer-grid { display:grid; grid-template-columns:repeat(auto-fit,minmax(200px,1fr)); gap:30px; }
-    .footer-grid h5 { font-family:'Montserrat',sans-serif; margin-bottom:0.5em; color:#fff; }
-    .footer-grid a { color:#ccc; font-size:0.9em; display:block; margin-bottom:0.5em; }
-    .footer-bottom { text-align:center; margin-top:40px; font-size:0.85em; color:#aaa; }
+    .footer-grid {
+      display:grid;
+      grid-template-columns:repeat(auto-fit,minmax(200px,1fr));
+      gap:30px;
+    }
+    .footer-grid h5 {
+      font-family:'Montserrat',sans-serif; margin-bottom:0.5em; color:#fff;
+    }
+    .footer-grid a {
+      color:#ccc; font-size:0.9em; display:block; margin-bottom:0.5em;
+    }
+    .footer-bottom {
+      text-align:center; margin-top:40px;
+      font-size:0.85em; color:#aaa;
+    }
 
+    /* RESPONSIVE */
     @media(max-width:768px){
       .hero-content h1 { font-size:2em; }
       .hero-content p { font-size:1em; }
@@ -117,7 +178,7 @@
 </head>
 <body>
 
-  <!-- HEADER -->
+  <!-- ========== HEADER ========== -->
   <header>
     <div class="container nav-wrapper">
       <div class="logo">Gypsy Auto Typer</div>
@@ -134,10 +195,11 @@
     </div>
   </header>
 
-  <!-- HERO SLIDER -->
-  <section class="hero-slider">
+  <!-- ========== HERO SLIDER ========== -->
+  <section class="hero-slider" id="hero">
+    <!-- SLIDE 1 -->
     <div class="hero-slide">
-      <img src="<!-- IMAGE: hero1.jpg -->" alt="Hero 1">
+      <img src="img/slide1.jpg" alt="Slide 1"> <!-- IMAGE: replace with your path -->
       <div class="hero-content container">
         <h1>Realistic Typing Simulation</h1>
         <p>Create human-like typing recordings in seconds—and it’s 100% free.</p>
@@ -147,8 +209,10 @@
         </div>
       </div>
     </div>
+
+    <!-- SLIDE 2 -->
     <div class="hero-slide">
-      <img src="<!-- IMAGE: hero2.jpg -->" alt="Hero 2">
+      <img src="img/slide2.jpg" alt="Slide 2"> <!-- IMAGE: replace with your path -->
       <div class="hero-content container">
         <h1>Customize Speed & Errors</h1>
         <p>Tweak typing speed and error rate for authentic, varied output.</p>
@@ -157,44 +221,51 @@
         </div>
       </div>
     </div>
-    <!-- Add more slides as needed -->
+
+    <!-- (Add more slides exactly as above) -->
   </section>
 
-  <!-- FEATURES -->
+
+  <!-- ========== FEATURES ========== -->
   <section id="features" class="container">
     <h2 class="section-title">Key Features</h2>
     <div class="features">
+      <!-- FEATURE 1 -->
       <div class="feature-box">
-        <i><!-- ICON: fa fa-keyboard --></i>
+        <i class="fas fa-keyboard"></i>    <!-- ICON: replace or keep -->
         <h3>Natural Pauses</h3>
         <p>Pauses after sentences and paragraphs to mimic real typing.</p>
       </div>
+      <!-- FEATURE 2 -->
       <div class="feature-box">
-        <i><!-- ICON: fa fa-tachometer-alt --></i>
+        <i class="fas fa-tachometer-alt"></i>
         <h3>Speed Control</h3>
         <p>Adjust characters-per-minute from turtle to cheetah speeds.</p>
       </div>
+      <!-- FEATURE 3 -->
       <div class="feature-box">
-        <i><!-- ICON: fa fa-random --></i>
+        <i class="fas fa-random"></i>
         <h3>Error Simulation</h3>
         <p>Auto-generated typos and backspaces for authenticity.</p>
       </div>
+      <!-- FEATURE 4 -->
       <div class="feature-box">
-        <i><!-- ICON: fa fa-lock --></i>
+        <i class="fas fa-lock"></i>
         <h3>Privacy First</h3>
         <p>No data stored—everything runs locally in your browser/app.</p>
       </div>
     </div>
   </section>
 
-  <!-- INFO ROW -->
+
+  <!-- ========== INFO ROW ========== -->
   <section id="info" class="container info-row">
     <div class="img">
-      <img src="<!-- IMAGE: about.jpg -->" alt="About">
+      <img src="img/about.jpg" alt="About Image">  <!-- IMAGE: replace with your path -->
     </div>
     <div class="text">
       <h2>Why Choose Gypsy Auto Typer?</h2>
-      <p>Gypsy Auto Typer is a free, open-source typing simulator designed for writers, developers, and educators. It offers unmatched realism by simulating human typing patterns, errors, and pauses—so your demonstrations and tutorials look authentic.</p>
+      <p>Gypsy Auto Typer is a free, open-source typing simulator designed for writers, developers, and educators. It offers unmatched realism by simulating human typing patterns, errors, and pauses—so your demos look truly authentic.</p>
       <ul>
         <li>Fully customizable parameters</li>
         <li>Lightweight and fast</li>
@@ -204,7 +275,8 @@
     </div>
   </section>
 
-  <!-- CTA BAR -->
+
+  <!-- ========== CTA BAR ========== -->
   <section class="cta-bar">
     <div class="container">
       <h2>Ready to Elevate Your Demos?</h2>
@@ -213,18 +285,22 @@
     </div>
   </section>
 
-  <!-- TESTIMONIALS -->
+
+  <!-- ========== TESTIMONIALS ========== -->
   <section id="testimonials" class="container">
     <h2 class="section-title">What Our Users Say</h2>
     <div class="testimonials">
+      <!-- TESTIMONIAL 1 -->
       <div class="testimonial">
         <p>“This tool saved me hours when filming tutorials. The typing looks 100% real!”</p>
         <h4>— Alex R.</h4>
       </div>
+      <!-- TESTIMONIAL 2 -->
       <div class="testimonial">
         <p>“I love the error simulation feature—makes my screen recordings so much more believable.”</p>
         <h4>— Priya S.</h4>
       </div>
+      <!-- TESTIMONIAL 3 -->
       <div class="testimonial">
         <p>“Lightweight, easy to use, and completely free. Highly recommend!”</p>
         <h4>— Miguel L.</h4>
@@ -232,28 +308,32 @@
     </div>
   </section>
 
-  <!-- BLOG PREVIEW -->
+
+  <!-- ========== BLOG PREVIEW ========== -->
   <section id="blog" class="container">
     <h2 class="section-title">Latest Articles</h2>
     <div class="blog-grid">
+      <!-- POST 1 -->
       <div class="blog-post">
-        <img src="<!-- IMAGE: post1.jpg -->" alt="Post 1">
+        <img src="img/post1.jpg" alt="Post 1">  <!-- IMAGE: replace with your path -->
         <div class="blog-post-content">
           <h4>Getting Started with Gypsy Auto Typer</h4>
           <p>Learn how to set up and configure your first typing simulation.</p>
           <a href="#">Read More →</a>
         </div>
       </div>
+      <!-- POST 2 -->
       <div class="blog-post">
-        <img src="<!-- IMAGE: post2.jpg -->" alt="Post 2">
+        <img src="img/post2.jpg" alt="Post 2">
         <div class="blog-post-content">
           <h4>Advanced Speed & Error Settings</h4>
           <p>Tips for fine-tuning speed and typos for maximum realism.</p>
           <a href="#">Read More →</a>
         </div>
       </div>
+      <!-- POST 3 -->
       <div class="blog-post">
-        <img src="<!-- IMAGE: post3.jpg -->" alt="Post 3">
+        <img src="img/post3.jpg" alt="Post 3">
         <div class="blog-post-content">
           <h4>Integrating into Your Workflow</h4>
           <p>How to embed Gypsy Auto Typer recordings into your e-learning courses.</p>
@@ -263,13 +343,16 @@
     </div>
   </section>
 
-  <!-- FOOTER -->
+
+  <!-- ========== FOOTER ========== -->
   <footer>
     <div class="container footer-grid">
+      <!-- ABOUT -->
       <div>
         <h5>About</h5>
         <p>Gypsy Auto Typer is a free, open-source project to simulate real typing. Create authentic demos, tutorials, and more.</p>
       </div>
+      <!-- QUICK LINKS -->
       <div>
         <h5>Quick Links</h5>
         <a href="#hero">Home</a>
@@ -277,16 +360,18 @@
         <a href="#download">Download</a>
         <a href="#contact">Contact</a>
       </div>
+      <!-- CONTACT -->
       <div>
         <h5>Contact</h5>
         <p>Email: support@gypsyautotyper.com</p>
         <p>Phone: +1 (555) 123-4567</p>
       </div>
+      <!-- SOCIAL -->
       <div>
         <h5>Follow Us</h5>
-        <a href="#">Facebook</a>
-        <a href="#">Twitter</a>
-        <a href="#">GitHub</a>
+        <a href="#"><i class="fab fa-facebook-f"></i> Facebook</a>
+        <a href="#"><i class="fab fa-twitter"></i> Twitter</a>
+        <a href="#"><i class="fab fa-github"></i> GitHub</a>
       </div>
     </div>
     <div class="footer-bottom">
@@ -294,9 +379,11 @@
     </div>
   </footer>
 
-  <!-- Slick Slider JS -->
+  <!-- ======================================
+       SLICK SLIDER JS & INIT
+       ====================================== -->
   <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-  <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/slick-carousel@1.8.1/slick/slick.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/slick-carousel@1.8.1/slick/slick.min.js"></script>
   <script>
     $('.hero-slider').slick({
       dots: true,
