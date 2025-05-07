@@ -2,157 +2,183 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
+  <title>Fluid Player Pre-roll + Auto-Download</title>
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Download Gypsy AutoTyper</title>
 
-  <!-- Video.js CSS -->
-  <link href="https://vjs.zencdn.net/7.24.1/video-js.css" rel="stylesheet"/>
-
-  <!-- Google Analytics -->
-  <script async src="https://www.googletagmanager.com/gtag/js?id=G-EJN43EPM49"></script>
-  <script>
-    window.dataLayer = window.dataLayer || [];
-    function gtag(){dataLayer.push(arguments);}
-    gtag('js', new Date());
-    gtag('config', 'G-EJN43EPM49');
-  </script>
+  <!-- Fluid Player CSS -->
+  <link
+    rel="stylesheet"
+    href="https://cdn.fluidplayer.com/v3/current/fluidplayer.min.css"
+  />
 
   <style>
     body {
-      font-family: 'Times New Roman', Times, serif;
-      margin:0; padding:0;
-      background:#f7f7f7; color:#333;
-      line-height:1.6; text-align:center;
+      font-family: Arial, sans-serif;
+      background: #f4f4f4;
+      text-align: center;
+      padding: 50px;
+      margin: 0;
     }
-    .container {
-      width:90%; max-width:800px;
-      margin:40px auto;
-      background:#f5f0e6; border:2px solid #8b4513;
-      border-radius:8px; padding:30px;
+    #startBtn {
+      background: #900;
+      color: #fff;
+      border: none;
+      padding: 15px 30px;
+      font-size: 1.2em;
+      border-radius: 5px;
+      cursor: pointer;
     }
-    h1,h2 { color:#900; margin-bottom:20px; }
-    p, ul { margin-bottom:20px; }
-    ul { text-align:left; display:inline-block; }
-    a.download-link {
-      display:inline-block; background:#900; color:#fff;
-      padding:15px 30px; text-decoration:none;
-      font-size:1.2em; border-radius:5px;
-      box-shadow:0 4px 6px rgba(0,0,0,0.2);
-      transition:background .3s,transform .3s;
-      margin:0 10px;
-    }
-    a.download-link:hover {
-      background:#a00; transform:translateY(-2px);
-    }
+    #startBtn:hover { background: #a00; }
 
     /* Overlay */
-    #adOverlay {
-      position:fixed; top:0; left:0; right:0; bottom:0;
-      background:rgba(0,0,0,0.8);
-      display:none; align-items:center; justify-content:center;
-      z-index:1000;
-      flex-direction:column;
+    #videoOverlay {
+      position: fixed;
+      top: 0; left: 0; right: 0; bottom: 0;
+      background: rgba(0,0,0,0.85);
+      display: none;
+      align-items: center; justify-content: center;
+      z-index: 1000;
+      flex-direction: column;
     }
-    #adContainer {
-      position:relative;
-      width:640px; max-width:90vw;
+    #videoContainer {
+      position: relative;
+      width: 80vw;
+      max-width: 800px;
     }
-    .vjs-video-js {
-      border:4px solid maroon;
+    #my-video {
+      width: 100%;
+      height: auto;
+      background: #000;
     }
-    #skipBtn {
-      position:absolute; top:10px; right:10px;
-      background:rgba(0,0,0,0.5); color:#fff;
-      border:none; padding:8px 12px; cursor:pointer;
-      font-size:0.9em; display:none;
+    #closeBtn {
+      position: absolute;
+      top: 10px; right: 10px;
+      background: rgba(0,0,0,0.5);
+      color: #fff; border: none;
+      width: 30px; height: 30px;
+      border-radius: 50%;
+      font-size: 1.2em;
+      cursor: pointer;
+      display: none;
+    }
+
+    /* Countdown & fallback */
+    #countdownWrapper {
+      margin-top: 10px;
+      color: #fff;
+      font-size: 1em;
+      display: none;
+    }
+    #timer {
+      font-weight: bold;
+    }
+    #manualLink {
+      color: maroon;
+      text-decoration: underline;
+      cursor: pointer;
+      margin-left: 4px;
+      display: none;
     }
   </style>
 </head>
 <body>
 
-  <div class="container">
-    <h1>Download Gypsy AutoTyper</h1>
-    <h2>Version 2.1</h2>
-    <p>Gypsy AutoTyper is a work in progress! Check back for updates. New in 2.1:</p>
-    <ul>
-      <li>Adjustable typo rate</li>
-      <li>Pause duration feature</li>
-    </ul>
-    <p>Click below to download.</p>
-    <a id="startDownload" class="download-link">Download Now</a>
-    <a class="download-link" href="about.html">About</a>
-    <p><a href="index.html">Return to Home</a></p>
-  </div>
+  <h1>Fluid Player Pre-roll + Auto-Download</h1>
+  <p>Click “Play Video” to watch the ad, then the main video, and download will start automatically.</p>
+  <button id="startBtn">Play Video</button>
 
-  <!-- Ad Overlay -->
-  <div id="adOverlay">
-    <div id="adContainer">
-      <button id="skipBtn">Skip Ad</button>
-      <video
-        id="adVideo"
-        class="video-js vjs-default-skin"
-        controls
-        preload="auto"
-        width="640"
-        height="360"
-        data-setup='{}'
-      >
-        <source
-          src="https://speedyswim.com/d/m.FqzCdAGdNuvgZyGqUw/_eimP9HuyZGU/lykUP/TAYTz/MuTbgO0zMSDzE/tvNCjVMExUO/DHQlw_M/gc.m3u8"
-          type="application/x-mpegURL"
-        />
-        <p>Your browser does not support HTML5 video.</p>
+  <div id="videoOverlay">
+    <div id="videoContainer">
+      <video id="my-video" class="fluid-video" controls preload="auto">
+        <source src="gypsyhype.mp4" type="video/mp4" />
+        Your browser does not support HTML5 video.
       </video>
+      <button id="closeBtn">×</button>
+    </div>
+    <div id="countdownWrapper">
+      File will download after the ad. Skip in <span id="timer">15</span> seconds.
+      <span id="manualLink">If the file did not download automatically click here</span>
     </div>
   </div>
 
-  <!-- Video.js Script -->
-  <script src="https://vjs.zencdn.net/7.24.1/video.min.js"></script>
+  <!-- Fluid Player JS -->
+  <script src="https://cdn.fluidplayer.com/v3/current/fluidplayer.min.js"></script>
   <script>
-    (function(){
-      const DOWNLOAD_URL = 'Gypsy AutoTyper.exe';
-      const overlay = document.getElementById('adOverlay');
-      const skipBtn = document.getElementById('skipBtn');
-      const player = videojs('adVideo');
-      let timer;
+    const startBtn      = document.getElementById('startBtn');
+    const overlay       = document.getElementById('videoOverlay');
+    const videoEl       = document.getElementById('my-video');
+    const closeBtn      = document.getElementById('closeBtn');
+    const countdownWrap = document.getElementById('countdownWrapper');
+    const timerSpan     = document.getElementById('timer');
+    const manualLink    = document.getElementById('manualLink');
+    const DOWNLOAD_FILE = 'gypsyautotyper.exe';
 
-      function triggerDownload(){
-        const a = document.createElement('a');
-        a.href = DOWNLOAD_URL;
-        a.download = '';
-        document.body.appendChild(a);
-        a.click();
-        document.body.removeChild(a);
+    let countdown = 15;
+    let timerHandle;
+    let playerInitialized = false;
+
+    function triggerDownload(){
+      const a = document.createElement('a');
+      a.href = DOWNLOAD_FILE;
+      a.download = '';
+      document.body.appendChild(a);
+      a.click();
+      document.body.removeChild(a);
+    }
+
+    function startCountdown(){
+      countdown = 15;
+      timerSpan.textContent = countdown;
+      countdownWrap.style.display = 'block';
+      manualLink.style.display = 'none';
+      timerHandle = setInterval(() => {
+        countdown--;
+        timerSpan.textContent = countdown;
+        if(countdown <= 0){
+          clearInterval(timerHandle);
+          triggerDownload();
+          manualLink.style.display = 'inline';
+          closeBtn.style.display = 'inline';
+        }
+      }, 1000);
+    }
+
+    startBtn.addEventListener('click', () => {
+      overlay.style.display = 'flex';
+
+      if(!playerInitialized){
+        fluidPlayer('my-video', {
+          layoutControls: { primaryColor: "#900" },
+          vastOptions: {
+            adList: [{
+              roll: 'preRoll',
+              vastTag: 'https://slimydesk.com/dGm.FKz/dkGuNHvzZeGAUD/-eomE9-uvZDU/l_kTP/TPY/zRMkTsgf0/MQDbEutYNljnM/xvOMDjQxwUMpgQ'
+            }]
+          }
+        });
+        playerInitialized = true;
+
+        // Start countdown when ad begins
+        videoEl.addEventListener('playing', () => {
+          // only start countdown once (at start)
+          if(countdownWrap.style.display === 'none') {
+            startCountdown();
+          }
+        });
       }
 
-      function showOverlay(){
-        overlay.style.display = 'flex';
-        player.play();
+      videoEl.play().catch(console.warn);
+    });
 
-        // show skip after 5s
-        timer = setTimeout(()=>{
-          skipBtn.style.display = 'block';
-        }, 5000);
-      }
+    // Close button hides countdown/UI only
+    closeBtn.addEventListener('click', () => {
+      closeBtn.style.display = 'none';
+      countdownWrap.style.display = 'none';
+      clearInterval(timerHandle);
+    });
 
-      function closeOverlayAndDownload(){
-        overlay.style.display = 'none';
-        clearTimeout(timer);
-        triggerDownload();
-        player.pause();
-        player.currentTime(0);
-      }
-
-      document.getElementById('startDownload')
-        .addEventListener('click', showOverlay);
-
-      // when video ends
-      player.on('ended', closeOverlayAndDownload);
-
-      // skip button
-      skipBtn.addEventListener('click', closeOverlayAndDownload);
-    })();
+    // Manual download link
+    manualLink.addEventListener('click', triggerDownload);
   </script>
-
 </body>
 </html>
