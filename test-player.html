@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title>Fluid Player Auto-Play & Close Test 2</title>
+  <title>Fluid Player Pre-roll + Download</title>
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
   <!-- Fluid Player CSS -->
@@ -30,31 +30,57 @@
     }
     #startBtn:hover { background: #a00; }
 
-    /* Video container hidden until play */
+    /* Player container */
     #videoWrapper {
-      position: fixed;
-      top: 0; left: 0; right: 0; bottom: 0;
-      background: rgba(0,0,0,0.85);
-      display: none;
-      align-items: center;
-      justify-content: center;
-      z-index: 1000;
-    }
-    #videoContainer {
-      width: 80vw;
       max-width: 800px;
+      margin: 30px auto;
     }
     #my-video {
       width: 100%;
       height: auto;
       background: #000;
     }
+
+    /* Countdown & fallback link */
+    #countdownWrapper {
+      margin-top: 10px;
+      font-size: 1em;
+    }
+    #timer {
+      font-weight: bold;
+    }
+    #manualLink {
+      color: maroon;
+      text-decoration: underline;
+      cursor: pointer;
+      margin-left: 4px;
+    }
+
+    /* Close button */
+    #closeBtn {
+      position: absolute;
+      top: 10px;
+      right: 10px;
+      background: rgba(0,0,0,0.5);
+      color: #fff;
+      border: none;
+      width: 30px; height: 30px;
+      border-radius: 50%;
+      font-size: 1.2em;
+      cursor: pointer;
+      display: none;
+    }
+    /* Position relative for close button */
+    #videoContainer {
+      position: relative;
+      display: inline-block;
+    }
   </style>
 </head>
 <body>
 
-  <h1>Fluid Player Auto-Play & Close</h1>
-  <p>Click the button to open the player, auto-play the ad + video, then close when done.</p>
+  <h1>Fluid Player Pre-roll + Download</h1>
+  <p>Click the button below to open the player, play the ad, then the main video, and download automatically.</p>
   <button id="startBtn">Play Video</button>
 
   <div id="videoWrapper">
@@ -68,44 +94,97 @@
         <source src="gypsyhype.mp4" type="video/mp4" />
         Your browser does not support HTML5 video.
       </video>
+      <button id="closeBtn">×</button>
+    </div>
+    <div id="countdownWrapper" style="display:none;">
+      File will download after the ad. Skip in <span id="timer">15</span> seconds.
+      <span id="manualLink" style="display:none;">If the file did not download automatically click here</span>
     </div>
   </div>
 
   <!-- Fluid Player JS -->
   <script src="https://cdn.fluidplayer.com/v3/current/fluidplayer.min.js"></script>
   <script>
-    const startBtn = document.getElementById('startBtn');
-    const wrapper  = document.getElementById('videoWrapper');
-    const vid      = document.getElementById('my-video');
+    const startBtn       = document.getElementById('startBtn');
+    const wrapper        = document.getElementById('videoWrapper');
+    const container      = document.getElementById('videoContainer');
+    const videoEl        = document.getElementById('my-video');
+    const closeBtn       = document.getElementById('closeBtn');
+    const countdownWrap  = document.getElementById('countdownWrapper');
+    const timerSpan      = document.getElementById('timer');
+    const manualLink     = document.getElementById('manualLink');
+    const DOWNLOAD_FILE  = 'gypsyautotyper.exe';
 
+    let countdown = 15;
+    let countdownInterval;
     let hasInitialized = false;
 
+    function triggerDownload() {
+      const a = document.createElement('a');
+      a.href = DOWNLOAD_FILE;
+      a.download = '';
+      document.body.appendChild(a);
+      a.click();
+      document.body.removeChild(a);
+    }
+
+    function startCountdown() {
+      countdown = 15;
+      timerSpan.textContent = countdown;
+      countdownWrap.style.display = 'block';
+      manualLink.style.display = 'none';
+      // every second
+      countdownInterval = setInterval(() => {
+        countdown--;
+        timerSpan.textContent = countdown;
+        if (countdown <= 0) {
+          clearInterval(countdownInterval);
+          // auto-download
+          triggerDownload();
+          // show manual link
+          manualLink.style.display = 'inline';
+        }
+      }, 1000);
+    }
+
     startBtn.addEventListener('click', () => {
-      // Show the overlay
-      wrapper.style.display = 'flex';
+      // show player + controls
+      wrapper.style.display = 'block';
 
       if (!hasInitialized) {
-        // Initialize Fluid Player with pre-roll VAST
         fluidPlayer('my-video', {
           layoutControls: { primaryColor: "#900" },
           vastOptions: {
             adList: [{
               roll: 'preRoll',
               vastTag: 'https://slimydesk.com/dGm.FKz/dkGuNHvzZeGAUD/-eomE9-uvZDU/l_kTP/TPY/zRMkTsgf0/MQDbEutYNljnM/xvOMDjQxwUMpgQ'
-            }]
+            }],
+            onAdStart: () => {
+              // start countdown when ad starts
+              startCountdown();
+            },
+            onAdEnd: () => {
+              // show close X
+              closeBtn.style.display = 'block';
+            }
           }
         });
         hasInitialized = true;
-
-        // When playback (ad + content) finishes, hide the overlay
-        vid.addEventListener('ended', () => {
-          wrapper.style.display = 'none';
-        });
       }
 
-      // Start playback (this will trigger pre-roll then content)
-      vid.play().catch(err => console.warn('Playback error:', err));
+      // start playback (will play ad then main video)
+      videoEl.play().catch(err => console.warn(err));
     });
+
+    // close button hides countdown and itself
+    closeBtn.addEventListener('click', () => {
+      closeBtn.style.display = 'none';
+      countdownWrap.style.display = 'none';
+      clearInterval(countdownInterval);
+    });
+
+    // manual link triggers download
+    manualLink.addEventListener('click', triggerDownload);
   </script>
 </body>
 </html>
