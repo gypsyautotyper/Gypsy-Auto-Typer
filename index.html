@@ -24,7 +24,59 @@
             color: inherit;
         }
         
-        /* Navigation Styles (removed) */
+        /* Navigation Styles */
+        .navbar {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            padding: 1rem 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background-color: rgba(0, 0, 0, 0.5);
+            backdrop-filter: blur(5px);
+            z-index: 1000;
+            transition: background-color 0.3s;
+        }
+        
+        .navbar-logo {
+            display: flex;
+            align-items: center;
+        }
+        
+        .navbar-logo img {
+            height: 40px;
+            margin-right: 10px;
+        }
+        
+        .navbar-menu {
+            display: flex;
+            gap: 1.5rem;
+        }
+        
+        .navbar-menu a {
+            color: white;
+            font-weight: 600;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            transition: color 0.3s;
+            font-size: 0.9rem;
+        }
+        
+        .navbar-menu a:hover {
+            color: #8b1a1a;
+        }
+        
+        /* Mobile Menu Button */
+        .menu-toggle {
+            display: none;
+            background: none;
+            border: none;
+            color: white;
+            font-size: 1.5rem;
+            cursor: pointer;
+        }
         
         /* Hero Section */
         .hero {
@@ -330,10 +382,47 @@
             .content-text {
                 padding: 3rem 1.5rem;
             }
+            
+            .navbar {
+                padding: 1rem;
+            }
+            
+            .navbar-menu {
+                display: none;
+                position: absolute;
+                top: 100%;
+                left: 0;
+                width: 100%;
+                background: rgba(0, 0, 0, 0.9);
+                flex-direction: column;
+                padding: 1rem 0;
+                text-align: center;
+            }
+            
+            .navbar-menu.active {
+                display: flex;
+            }
+            
+            .menu-toggle {
+                display: block;
+            }
         }
     </style>
 </head>
 <body>
+    <!-- Navigation Bar -->
+    <nav class="navbar">
+        <div class="navbar-logo">
+            <img src="favicon.ico" alt="Spectral Logo">
+        </div>
+        <div class="navbar-menu">
+            <a href="index.html">Home</a>
+            <a href="download.html">Download</a>
+            <a href="about.html">About</a>
+        </div>
+        <button class="menu-toggle">☰</button>
+    </nav>
+
     <!-- Hero Section -->
     <section class="hero">
         <h1>Spectral</h1>
@@ -493,5 +582,27 @@
             © UNTITLED | DESIGN: HTML5 UP | DEMO IMAGES: UNSPLASH
         </div>
     </footer>
+
+    <!-- JavaScript for Mobile Menu Toggle -->
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const menuToggle = document.querySelector('.menu-toggle');
+            const navbarMenu = document.querySelector('.navbar-menu');
+            
+            menuToggle.addEventListener('click', function() {
+                navbarMenu.classList.toggle('active');
+            });
+            
+            // Change navbar background on scroll
+            window.addEventListener('scroll', function() {
+                const navbar = document.querySelector('.navbar');
+                if (window.scrollY > 50) {
+                    navbar.style.backgroundColor = 'rgba(0, 0, 0, 0.8)';
+                } else {
+                    navbar.style.backgroundColor = 'rgba(0, 0, 0, 0.5)';
+                }
+            });
+        });
+    </script>
 </body>
 </html>
