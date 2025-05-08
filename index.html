@@ -1,287 +1,502 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <!-- Infolinks -->
-  <script type="text/javascript">
-    var infolinks_pid = 3435748;
-    var infolinks_wsid = 0;
-  </script>
-  <script type="text/javascript" src="http://resources.infolinks.com/js/infolinks_main.js"></script>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Spectral</title>
+    <style>
+        /* Reset and Base Styles */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Helvetica Neue', Arial, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            overflow-x: hidden;
+        }
+        
+        a {
+            text-decoration: none;
+            color: inherit;
+        }
+        
+        /* Navigation Styles */
+        .top-bar {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            background: #f5f5f5;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0.5rem 1rem;
+            z-index: 100;
+            border-bottom: 1px solid #e0e0e0;
+        }
+        
+        .brand {
+            font-weight: bold;
+            color: #333;
+        }
+        
+        .device-switcher {
+            display: flex;
+        }
+        
+        .device-switcher button {
+            padding: 0.3rem 0.6rem;
+            margin: 0 0.2rem;
+            background: transparent;
+            border: none;
+            cursor: pointer;
+            font-size: 0.8rem;
+        }
+        
+        .device-switcher button.active {
+            background: #333;
+            color: white;
+            border-radius: 3px;
+        }
+        
+        .social-actions {
+            display: flex;
+            align-items: center;
+        }
+        
+        .social-actions button {
+            margin-left: 0.5rem;
+            padding: 0.2rem 0.5rem;
+            background: #eee;
+            border: 1px solid #ddd;
+            border-radius: 3px;
+            font-size: 0.8rem;
+            cursor: pointer;
+        }
+        
+        .download-btn {
+            background: #f25c54 !important;
+            color: white !important;
+            font-weight: bold;
+        }
 
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Best FREE Auto Typer - Gypsy Auto Typer</title>
-  <link rel="icon" href="favicon.ico" />
-
-  <!-- Google Analytics -->
-  <script async src="https://www.googletagmanager.com/gtag/js?id=G-EJN43EPM49"></script>
-  <script>
-    window.dataLayer = window.dataLayer || [];
-    function gtag(){ dataLayer.push(arguments); }
-    gtag('js', new Date());
-    gtag('config', 'G-EJN43EPM49');
-  </script>
-
-  <style>
-    @font-face {
-      font-family: "Gypsy Road";
-      src: url("gypsyroad.ttf") format("truetype");
-    }
-    body {
-      font-family: 'Gypsy Road', serif;
-      margin: 0; padding: 0;
-      background: #fafafa; color: #333;
-      line-height: 1.6;
-    }
-    a { color: #900; text-decoration: none; }
-    a:hover { text-decoration: underline; }
-
-    .container { width: 90%; max-width: 1200px; margin: auto; }
-
-    header {
-      background: #fff;
-      border-bottom: 2px solid #900;
-      padding: 20px 0;
-    }
-    nav ul {
-      display: flex; justify-content: center; gap: 30px;
-      list-style: none; margin: 0; padding: 0;
-    }
-    nav a { font-weight: bold; font-size: 1.1em; }
-
-    /* Hero */
-    #hero {
-      position: relative;
-      background: url("tuffgypsy.png") center/cover no-repeat;
-      color: #fff; text-align: center;
-      padding: 120px 0;
-    }
-    #hero::after {
-      content: '';
-      position: absolute; top:0; left:0; right:0; bottom:0;
-      background: rgba(50,20,20,0.6);
-    }
-    #hero .container { position: relative; z-index: 1; }
-    #hero h1 { font-size: 3em; margin-bottom: 0.5em; }
-    #hero p { font-size: 1.2em; margin-bottom: 1em; }
-    #hero .btn-group button {
-      background: #900; color: #fff; border: none;
-      padding: 12px 24px; margin: 0 8px;
-      border-radius: 5px; cursor: pointer;
-      transition: background 0.3s;
-    }
-    #hero .btn-group button:hover { background: #a00; }
-
-    section { padding: 60px 0; }
-
-    /* Flex grid */
-    .flex { display: flex; gap: 20px; flex-wrap: wrap; }
-    .flex .col { flex: 1 1 300px; }
-
-    /* Ad slot styling */
-    .ad-slot {
-      width: 300px; height: 250px;
-      border: 2px solid #900;
-      display: flex; align-items: center;
-      justify-content: center; position: relative;
-      background: #fff;
-    }
-    .ad-slot .ad-label {
-      position: absolute; top: 4px; right: 4px;
-      background: #900; color: #fff;
-      font-size: 0.75em; padding: 2px 6px;
-      border-radius: 3px;
-    }
-
-    /* Image placeholder styling */
-    .image-slot {
-      width: 100%; height: auto;
-      max-height: 300px;
-      background: #eee;
-      border: 2px dashed #ccc;
-      display: flex; align-items: center;
-      justify-content: center;
-      color: #666; font-style: italic;
-      padding: 20px;
-    }
-
-    /* Section variations */
-    #why-use { background: #f5f0e6; }
-    #features { background: #fff; }
-    #features .feature-item {
-      background: #fafafa;
-      border: 1px solid #ddd;
-      border-radius: 8px;
-      padding: 20px;
-      box-shadow: 0 2px 4px rgba(0,0,0,0.1);
-      transition: transform 0.2s;
-    }
-    #features .feature-item:hover { transform: scale(1.02); }
-
-    #cta { background: #fff; text-align: center; }
-
-    #instructions {
-      background: #f5f0e6;
-      border-top: 2px solid #8b4513;
-      border-bottom: 2px solid #8b4513;
-      border-radius: 8px;
-      padding: 40px;
-      max-width: 800px; margin: auto;
-    }
-
-    @media (max-width: 767px) {
-      .ad-slot { display: none; }
-    }
-  </style>
+        .menu-btn {
+            background: transparent;
+            border: none;
+            padding: 0.5rem;
+            font-weight: bold;
+            cursor: pointer;
+        }
+        
+        /* Hero Section */
+        .hero {
+            height: 100vh;
+            background: linear-gradient(rgba(0, 0, 0, 0.4), rgba(0, 0, 0, 0.4)), url('tuffgypsy.jpg') center/cover no-repeat;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            color: white;
+            padding: 0 1rem;
+        }
+        
+        .hero h1 {
+            font-size: 2.5rem;
+            letter-spacing: 3px;
+            margin-bottom: 1rem;
+            text-transform: uppercase;
+        }
+        
+        .hero p {
+            max-width: 600px;
+            margin-bottom: 2rem;
+            font-size: 1.1rem;
+        }
+        
+        .btn {
+            display: inline-block;
+            padding: 0.8rem 2rem;
+            background: #f25c54;
+            color: white;
+            border: none;
+            border-radius: 3px;
+            font-weight: bold;
+            text-transform: uppercase;
+            cursor: pointer;
+            transition: background 0.3s;
+        }
+        
+        .btn:hover {
+            background: #e04a42;
+        }
+        
+        .scroll-indicator {
+            position: absolute;
+            bottom: 2rem;
+            left: 50%;
+            transform: translateX(-50%);
+            font-size: 1.5rem;
+            animation: bounce 2s infinite;
+        }
+        
+        @keyframes bounce {
+            0%, 20%, 50%, 80%, 100% {
+                transform: translateY(0) translateX(-50%);
+            }
+            40% {
+                transform: translateY(-20px) translateX(-50%);
+            }
+            60% {
+                transform: translateY(-10px) translateX(-50%);
+            }
+        }
+        
+        /* Feature Section */
+        .feature-section {
+            padding: 5rem 2rem;
+            text-align: center;
+            background: #8b1a1a;
+            color: white;
+        }
+        
+        .feature-section h2 {
+            font-size: 1.8rem;
+            margin-bottom: 1.5rem;
+            text-transform: uppercase;
+        }
+        
+        .feature-section p {
+            max-width: 800px;
+            margin: 0 auto 3rem;
+        }
+        
+        .icon-group {
+            display: flex;
+            justify-content: center;
+            gap: 3rem;
+            margin-top: 2rem;
+        }
+        
+        .icon {
+            font-size: 1.8rem;
+        }
+        
+        /* Content Sections */
+        .content-section {
+            display: flex;
+            min-height: 400px;
+        }
+        
+        .content-section.bg-dark {
+            background: #2b303b;
+            color: white;
+        }
+        
+        .content-image {
+            flex: 1;
+            background: url('/api/placeholder/600/400') center/cover no-repeat;
+        }
+        
+        .content-text {
+            flex: 1;
+            padding: 4rem 3rem;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+        
+        .content-text h3 {
+            font-size: 1.5rem;
+            margin-bottom: 1rem;
+            text-transform: uppercase;
+        }
+        
+        .content-text p {
+            margin-bottom: 1rem;
+            opacity: 0.9;
+        }
+        
+        /* Grid Section */
+        .grid-section {
+            padding: 5rem 2rem;
+            text-align: center;
+            background: #7d2222;
+            color: white;
+        }
+        
+        .grid-section h2 {
+            font-size: 1.8rem;
+            margin-bottom: 1.5rem;
+            text-transform: uppercase;
+        }
+        
+        .grid-section > p {
+            max-width: 800px;
+            margin: 0 auto 3rem;
+        }
+        
+        .grid-container {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 2rem;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        
+        .grid-item {
+            padding: 2rem;
+            text-align: left;
+            position: relative;
+        }
+        
+        .grid-item .icon {
+            position: absolute;
+            top: 2rem;
+            left: 0;
+            color: #ff9191;
+        }
+        
+        .grid-item h4 {
+            margin-left: 2rem;
+            color: #ff9191;
+            margin-bottom: 1rem;
+            text-transform: uppercase;
+        }
+        
+        .grid-item p {
+            margin-left: 2rem;
+            opacity: 0.9;
+        }
+        
+        /* Call to Action */
+        .cta-section {
+            padding: 5rem 2rem;
+            text-align: center;
+            background: linear-gradient(rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0.7)), url('/api/placeholder/1200/800') center/cover no-repeat;
+            color: white;
+        }
+        
+        .cta-section h2 {
+            font-size: 1.8rem;
+            margin-bottom: 1.5rem;
+            text-transform: uppercase;
+        }
+        
+        .cta-section p {
+            max-width: 600px;
+            margin: 0 auto 2rem;
+        }
+        
+        .btn-group {
+            display: flex;
+            justify-content: center;
+            gap: 1rem;
+        }
+        
+        /* Footer */
+        footer {
+            background: #1e2129;
+            color: white;
+            text-align: center;
+            padding: 3rem 1rem;
+        }
+        
+        .social-links {
+            margin-bottom: 2rem;
+        }
+        
+        .social-links a {
+            display: inline-block;
+            margin: 0 0.5rem;
+            width: 40px;
+            height: 40px;
+            line-height: 40px;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            border-radius: 50%;
+            transition: all 0.3s;
+        }
+        
+        .social-links a:hover {
+            background: rgba(255, 255, 255, 0.1);
+        }
+        
+        .footer-credits {
+            font-size: 0.8rem;
+            opacity: 0.7;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+        
+        /* Responsive Design */
+        @media (max-width: 992px) {
+            .content-section {
+                flex-direction: column;
+            }
+            
+            .content-image, .content-text {
+                flex: none;
+                width: 100%;
+            }
+            
+            .content-image {
+                min-height: 300px;
+            }
+            
+            .grid-container {
+                grid-template-columns: 1fr;
+            }
+            
+            .icon-group {
+                flex-direction: column;
+                gap: 1.5rem;
+            }
+        }
+        
+        @media (max-width: 768px) {
+            .hero h1 {
+                font-size: 2rem;
+            }
+            
+            .content-text {
+                padding: 3rem 1.5rem;
+            }
+        }
+    </style>
 </head>
 <body>
-
-  <!-- Header / Nav -->
-  <header>
-    <div class="container">
-      <nav>
-        <ul>
-          <li><a href="#hero">Home</a></li>
-          <li><a href="#why-use">Why Use</a></li>
-          <li><a href="#features">Features</a></li>
-          <li><a href="#cta">Download</a></li>
-          <li><a href="#feedback">Feedback</a></li>
-        </ul>
-      </nav>
-    </div>
-  </header>
-
-  <!-- Hero Section -->
-  <section id="hero">
-    <div class="container">
-      <!-- IMAGE SLOT: Replace the src with your logo -->
-      <div class="image-slot">
-        <!-- IMAGE SLOT: Put your logo here (e.g. <img src="Gypsy.png" alt="Gypsy Logo">) -->
-        Logo Here
-      </div>
-      <h1>Gypsy Auto Typer</h1>
-      <div id="gypsy-quote" style="font-style:italic; color:#eee; margin-bottom:30px;"></div>
-      <p>Experience human-like typing simulation that saves your time while producing authentic, dynamic text. And it's 100% FREE.</p>
-      <div class="btn-group">
-        <button onclick="location.href='download.html'">Get It Now</button>
-        <button onclick="location.href='about.html'">About</button>
-        <button onclick="window.open('https://docs.google.com/forms/d/e/...','_blank')">Feedback</button>
-      </div>
-    </div>
-  </section>
-
-  <!-- Why Use Section -->
-  <section id="why-use">
-    <div class="container flex">
-      <div class="col">
-        <h2>Why Use Gypsy Auto Typer?</h2>
-        <p>If you're under time constraints or tired of tedious manual typing, the free Gypsy Auto Typer is the best solution to help you write essays, papers, or scripts effortlessly. Its realistic simulation ensures authenticity—saving you valuable time while delivering human-like results.</p>
-      </div>
-      <div class="ad-slot">
-        <!-- AD SLOT: Paste your 300×250 ad code here -->
-        <div class="ad-label">Ad</div>
-        Ad Code Here
-      </div>
-    </div>
-  </section>
-
-  <!-- Features Section -->
-  <section id="features">
-    <div class="container flex">
-      <div class="col">
-        <h2>Features</h2>
-        <div class="feature-item">
-          <h3>Human-like Typing Simulation</h3>
-          <p>Mimics natural typing with pauses, speed variations, and realistic errors.</p>
+    <!-- Top Navigation Bar -->
+    <div class="top-bar">
+        <div class="brand">Spectral</div>
+        <div class="device-switcher">
+            <button class="active">Desktop</button>
+            <button>Tablet</button>
+            <button>Tablet (Portrait)</button>
+            <button>Mobile</button>
         </div>
-        <div class="feature-item">
-          <h3>Customizable Speed & Error Rate</h3>
-          <p>Adjust the typing speed and error frequency to match your desired realism.</p>
+        <div class="social-actions">
+            <button>Like 0</button>
+            <button>Tweet</button>
+            <button>Back</button>
+            <button class="download-btn">Download (178 KB)</button>
         </div>
-        <div class="feature-item">
-          <h3>Bypass Review Tools</h3>
-          <p>Output appears to be manually typed, even under systems like Draftback or Revision History.</p>
-        </div>
-        <div class="feature-item">
-          <h3>Superior Auto Typer</h3>
-          <p>Enjoy better accuracy, usability, and customization compared to other free auto typers.</p>
-        </div>
-      </div>
-      <div class="col">
-        <div class="ad-slot">
-          <!-- AD SLOT: Paste your 300×250 ad code here -->
-          <div class="ad-label">Ad</div>
-          Ad Code Here
-        </div>
-        <div class="ad-slot">
-          <!-- AD SLOT: Paste your 300×250 ad code here -->
-          <div class="ad-label">Ad</div>
-          Ad Code Here
-        </div>
-      </div>
+        <button class="menu-btn">MENU ☰</button>
     </div>
-  </section>
 
-  <!-- Call to Action Section -->
-  <section id="cta">
-    <div class="container flex">
-      <div class="col">
-        <h2>Ready to Get Started?</h2>
-        <p>Explore Gypsy Auto Typer and discover how effortlessly you can produce authentic text.</p>
-        <button class="download-btn" onclick="location.href='download.html'">Download Now</button>
-      </div>
-      <div class="ad-slot">
-        <!-- AD SLOT: Paste your 300×250 ad code here -->
-        <div class="ad-label">Ad</div>
-        Ad Code Here
-      </div>
-    </div>
-  </section>
+    <!-- Hero Section -->
+    <section class="hero">
+        <h1>Spectral</h1>
+        <p>ANOTHER FINE RESPONSIVE SITE TEMPLATE FREEBIE CRAFTED BY HTML5 UP</p>
+        <button class="btn">Activate</button>
+        <div>
+            <p>LEARN MORE</p>
+            <div class="scroll-indicator">↓</div>
+        </div>
+    </section>
 
-  <!-- Feedback Section -->
-  <section id="feedback">
-    <div class="container">
-      <h2>Feedback</h2>
-      <p>We value your feedback! Please
-        <a href="https://docs.google.com/forms/d/e/..." target="_blank">click here</a>
-        to submit your comments and suggestions.
-      </p>
-    </div>
-  </section>
+    <!-- Feature Section -->
+    <section class="feature-section">
+        <h2>ARCU ALIQUET VEL LOBORTIS ATA NISL<br>EGET AUGUE AMET ALIQUET NISL CEP DONEC</h2>
+        <p>Aliquam ut ex ut augue consectetur interdum. Donec amet imperdiet eleifend fringilla tincidunt. Nullam dui leo Aenean mi ligula, rhoncus ullamcorper.</p>
+        <div class="icon-group">
+            <div class="icon">♦</div>
+            <div class="icon">♥</div>
+            <div class="icon">&lt;/&gt;</div>
+        </div>
+    </section>
 
-  <!-- Instructions Section -->
-  <section id="instructions">
-    <div class="container">
-      <h2>Instructions</h2>
-      <p>
-        Just paste in the text and let the gypsy do the rest.<br><br>
-        Use the sliders to choose characters per minute and typo frequency.<br>
-        The Auto Typer will start 5 seconds after the start button is pressed.<br><br>
-        <strong>Pause Duration Instructions:</strong><br>
-        All pauses will happen after a paragraph that is 200–characters or longer.<br>
-        Short = 10–15 seconds<br>
-        Medium = 15–30 seconds<br>
-        Long = 30–45 seconds
-      </p>
-    </div>
-  </section>
+    <!-- Content Section 1 -->
+    <section class="content-section bg-dark">
+        <div class="content-image"></div>
+        <div class="content-text">
+            <h3>MAGNA PRIMIS LOBORTIS<br>SED ULLAMCORPER</h3>
+            <p>Aliquam ut ex ut augue consectetur interdum. Donec hendrerit imperdiet. Mauris eleifend fringilla nullam aenean mi ligula.</p>
+        </div>
+    </section>
 
-  <!-- Random Gypsy Quote -->
-  <script>
-    const gypsyQuotes = [
-      "Gypsies cannot be touched, they must be felt with the heart. - Hellen Keller",
-      "A gypsy thinks himself to be wise, but a wise man knows himself to be a gypsy. - William Shakespeare",
-      "Gypsies aren't something you find. A gypsy is something that finds you. - John F. Kennedy",
-      "You can't tame a gypsy; the gypsy tames the world. - Theodore Roosevelt",
-      "To a gypsy, homelessness is just another word for freedom. - Nelson Mandela",
-      "A gypsy blends in with the darkness so that they can beg in the light. - Aristotle",
-      "The only way to beat a gypsy, is to become the gypsy. - Sun Tzu",
-      "The journey of a thousand gypsies begins with a single carnival. - Mahatma Gandhi",
-      "There are two types of gypsies, those who beg for profit and those who beg for passion. - Luke Belmar"
-    ];
-    document.getElementById("gypsy-quote").textContent =
-      gypsyQuotes[Math.floor(Math.random()*gypsyQuotes.length)];
-  </script>
+    <!-- Content Section 2 -->
+    <section class="content-section bg-dark">
+        <div class="content-text">
+            <h3>TORTOR DOLORE FEUGIAT<br>ELEMENTUM MAGNA</h3>
+            <p>Aliquam ut ex ut augue consectetur interdum. Donec hendrerit imperdiet. Mauris eleifend fringilla nullam aenean mi ligula.</p>
+        </div>
+        <div class="content-image" style="background-image: url('/api/placeholder/600/400')"></div>
+    </section>
 
+    <!-- Content Section 3 -->
+    <section class="content-section bg-dark">
+        <div class="content-image" style="background-image: url('/api/placeholder/600/400')"></div>
+        <div class="content-text">
+            <h3>AUGUE ELIFEND ALIQUET<br>SED CONDIMENTUM</h3>
+            <p>Aliquam ut ex ut augue consectetur interdum. Donec hendrerit imperdiet. Mauris eleifend fringilla nullam aenean mi ligula.</p>
+        </div>
+    </section>
+
+    <!-- Grid Section -->
+    <section class="grid-section">
+        <h2>ACCUMSAN MUS TORTOR NUNC ALIQUET</h2>
+        <p>Aliquam ut ex ut augue consectetur interdum. Donec amet imperdiet eleifend fringilla tincidunt. Nullam dui leo Aenean mi ligula, rhoncus ullamcorper.</p>
+        
+        <div class="grid-container">
+            <div class="grid-item">
+                <div class="icon">⚪</div>
+                <h4>ARCU ACCUMSAN</h4>
+                <p>Augue consectetur sed interdum imperdiet et ipsum. Mauris lorem tincidunt nullam amet leo Aenean ligula consequat consequat.</p>
+            </div>
+            <div class="grid-item">
+                <div class="icon">🔘</div>
+                <h4>AC AUGUE EGET</h4>
+                <p>Augue consectetur sed interdum imperdiet et ipsum. Mauris lorem tincidunt nullam amet leo Aenean ligula consequat consequat.</p>
+            </div>
+            <div class="grid-item">
+                <div class="icon">⚪</div>
+                <h4>MUS SCELERISQUE</h4>
+                <p>Augue consectetur sed interdum imperdiet et ipsum. Mauris lorem tincidunt nullam amet leo Aenean ligula consequat consequat.</p>
+            </div>
+            <div class="grid-item">
+                <div class="icon">🔘</div>
+                <h4>MAURIS IMPERDIET</h4>
+                <p>Augue consectetur sed interdum imperdiet et ipsum. Mauris lorem tincidunt nullam amet leo Aenean ligula consequat consequat.</p>
+            </div>
+            <div class="grid-item">
+                <div class="icon">♡</div>
+                <h4>AENEAN PRIMIS</h4>
+                <p>Augue consectetur sed interdum imperdiet et ipsum. Mauris lorem tincidunt nullam amet leo Aenean ligula consequat consequat.</p>
+            </div>
+            <div class="grid-item">
+                <div class="icon">🔳</div>
+                <h4>TORTOR UT</h4>
+                <p>Augue consectetur sed interdum imperdiet et ipsum. Mauris lorem tincidunt nullam amet leo Aenean ligula consequat consequat.</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Call to Action Section -->
+    <section class="cta-section">
+        <h2>ARCUE UT VEL COMMODO</h2>
+        <p>Aliquam ut ex ut augue consectetur interdum endrerit imperdiet amet eleifend fringilla.</p>
+        <div class="btn-group">
+            <button class="btn">Activate</button>
+            <button class="btn" style="background: transparent; border: 2px solid white;">Learn More</button>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer>
+        <div class="social-links">
+            <a href="#">🐦</a>
+            <a href="#">📘</a>
+            <a href="#">🅸</a>
+            <a href="#">📷</a>
+            <a href="#">✉️</a>
+        </div>
+        <div class="footer-credits">
+            © UNTITLED | DESIGN: HTML5 UP | DEMO IMAGES: UNSPLASH
+        </div>
+    </footer>
 </body>
 </html>
