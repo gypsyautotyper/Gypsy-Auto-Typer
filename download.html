@@ -1,126 +1,3 @@
-
-
-<!DOCTYPE html> <html lang="en"> <head> <meta charset="UTF-8"> <meta name="viewport" content="width=device-width, initial-scale=1.0"> <title>Download - Gypsy Auto Typer</title> <link rel="icon" href="favicon.ico" type="image/x-icon"> <!-- Fluid Player CSS --> <link re
-
-pasted
-
-I have a problem with the fluid player on my html website, it opens but then does not play anything, why is that
-
-Edit
-Looking at your HTML code, I can see some issues with your video player setup. Let me help you identify and solve the problem.
-
-The main issue is that while you have the Fluid Player CSS included in your HTML, there's no initialization of the Fluid Player itself. You have standard HTML5 video elements, but you're not actually using the Fluid Player functionality.
-
-Here are the specific problems and how to fix them:
-
-You've linked the Fluid Player CSS but haven't included the JavaScript library
-Your video player isn't being initialized as a Fluid Player
-You're referencing a video file "black.mp4" that might not be working
-Here's how to fix these issues:
-
-First, add the Fluid Player JavaScript to your page
-Initialize the Fluid Player properly
-Make sure your video file is accessible
-Let me provide you with the code changes needed:
-
-
-Updated HTML with Fluid Player Fix
-Code 
-I've identified why your Fluid Player isn't working properly. Here are the issues and fixes:
-
-Main Problems
-Missing JavaScript Library: You've included the Fluid Player CSS but not the JavaScript library that powers it.
-Player Not Initialized: You're using a standard HTML5 video element but not initializing it as a Fluid Player.
-Video Element Structure: For Fluid Player to work properly, the video element should have a specific structure.
-Solutions Implemented
-In the updated code, I've made the following changes:
-
-Added the Fluid Player JavaScript library:
-html
-<script src="https://cdn.fluidplayer.com/v3/current/fluidplayer.min.js"></script>
-Modified the video tag to work with Fluid Player:
-html
-<video id="video-player">
-    <source src="black.mp4" type="video/mp4" />
-</video>
-Added the Fluid Player initialization code:
-javascript
-const player = fluidPlayer(
-    'video-player',
-    {
-        layoutControls: {
-            primaryColor: "#8b1a1a",
-            playButtonShowing: true,
-            playPauseAnimation: true,
-            fillToContainer: true,
-            autoPlay: false
-        }
-    }
-);
-Updated the play/pause functions to use the Fluid Player API instead of the native video methods:
-javascript
-player.play();  // Instead of videoPlayer.play()
-player.pause(); // Instead of videoPlayer.pause()
-Additionally, make sure that your "black.mp4" video file is properly accessible and exists in the same directory as your HTML file.
-
-Would you like me to explain any part of these changes in more detail?
-
-
-
-
-
-Could you give me the full code
-
-Edit
-Certainly! Here's the complete updated code with all the Fluid Player fixes and your original styling:
-
-
-Complete HTML with Fluid Player Implementation
-Code 
-Here's the complete code with the Fluid Player properly implemented. I've made the following key changes:
-
-Added the Fluid Player JavaScript library in the <head> section:
-html
-<script src="https://cdn.fluidplayer.com/v3/current/fluidplayer.min.js"></script>
-Modified the video element structure to work with Fluid Player:
-html
-<video id="video-player">
-    <source src="black.mp4" type="video/mp4" />
-</video>
-Added the initialization code for Fluid Player with customizations that match your site's color scheme:
-javascript
-const player = fluidPlayer(
-    'video-player',
-    {
-        layoutControls: {
-            primaryColor: "#8b1a1a",
-            playButtonShowing: true,
-            playPauseAnimation: true,
-            fillToContainer: true,
-            autoPlay: false
-        }
-    }
-);
-Updated the JavaScript to use the Fluid Player API for controlling playback rather than the native video methods:
-javascript
-// Play video
-player.play();
-
-// Pause video
-player.pause();
-Removed references to videoPlayer variable where possible and used the player object instead.
-Be sure that your "black.mp4" file is in the same directory as your HTML file, or update the path if it's located elsewhere. This should solve your original issue where the player opens but doesn't play the video.
-
-Let me know if you encounter any other issues with the implementation!
-
-
-
-
-
-
-You are out of free messages until 3:00 PM
-
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -466,7 +343,7 @@ You are out of free messages until 3:00 PM
     <div id="video-overlay">
         <div class="video-container">
             <button id="close-btn">✕</button>
-            <!-- Modified video element for Fluid Player -->
+            <!-- Modified video element for Fluid Player with vastAds -->
             <video id="video-player">
                 <source src="black.mp4" type="video/mp4" />
             </video>
@@ -530,20 +407,6 @@ You are out of free messages until 3:00 PM
                 }
             });
             
-            // Initialize Fluid Player
-            const player = fluidPlayer(
-                'video-player',
-                {
-                    layoutControls: {
-                        primaryColor: "#8b1a1a",
-                        playButtonShowing: true,
-                        playPauseAnimation: true,
-                        fillToContainer: true,
-                        autoPlay: false
-                    }
-                }
-            );
-            
             // Video player and download functionality setup
             const downloadBtn = document.getElementById('download-btn');
             const overlay = document.getElementById('video-overlay');
@@ -553,6 +416,48 @@ You are out of free messages until 3:00 PM
             const manualLink = document.getElementById('manual-link');
             let countdownTimer;
             let secondsLeft = 15;
+            let videoPlayed = false;
+            let playerInstance;
+
+            // Initialize Fluid Player with ads option
+            playerInstance = fluidPlayer(
+                'video-player',
+                {
+                    layoutControls: {
+                        primaryColor: "#8b1a1a",
+                        playButtonShowing: true,
+                        playPauseAnimation: true,
+                        fillToContainer: true,
+                        autoPlay: false,
+                        mute: false
+                    },
+                    vastOptions: {
+                        adList: [
+                            {
+                                // If you have an ad tag URL, use it here
+                                roll: 'preRoll',
+                                vastTag: 'your-vast-tag-url-or-remove-this-line',
+                                adText: 'Advertisement'
+                            }
+                        ],
+                        skipButtonCaption: 'Skip ad in [seconds] seconds',
+                        skipButtonClickCaption: 'Skip Ad <span class="skip_button_icon"></span>',
+                        adText: null,
+                        adTextPosition: 'top left',
+                        adCTAText: 'Visit now!',
+                        adCTATextPosition: 'bottom right'
+                    }
+                }
+            );
+
+            // Register event listener for video end
+            playerInstance.on('ended', function() {
+                videoPlayed = true;
+                // Show manual download link after video ends
+                if (secondsLeft <= 0) {
+                    manualLink.style.display = 'block';
+                }
+            });
 
             // Open overlay & start video + countdown when download button is clicked
             downloadBtn.addEventListener('click', () => {
@@ -563,9 +468,13 @@ You are out of free messages until 3:00 PM
                 manualLink.style.display = 'none';
                 secondsLeft = 15;
                 secondsEl.textContent = secondsLeft;
+                videoPlayed = false;
                 
-                // Play the video using Fluid Player API
-                player.play();
+                // Use a slight delay to ensure the player is ready
+                setTimeout(() => {
+                    // Play the video explicitly
+                    playerInstance.play();
+                }, 100);
                 
                 // Start countdown
                 startCountdown();
@@ -574,8 +483,7 @@ You are out of free messages until 3:00 PM
             // Close overlay when X button is clicked
             closeBtn.addEventListener('click', () => {
                 overlay.style.display = 'none';
-                // Pause the video using Fluid Player API
-                player.pause();
+                playerInstance.pause();
                 clearInterval(countdownTimer);
             });
 
