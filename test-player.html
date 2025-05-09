@@ -7,13 +7,12 @@
 <style>
   /* Overlay & Container */
   #video-overlay {
-    display: none;
+    display: none;               /* stay hidden by default */
     position: fixed;
     inset: 0;
     background: rgba(0,0,0,0.8);
     z-index: 10000;
-    display: flex;
-    flex-direction: column;
+    flex-direction: column;      /* will apply once JS sets display:flex */
     justify-content: center;
     align-items: center;
     padding: 1rem;
@@ -72,7 +71,7 @@
   }
 </style>
 
-<!-- Place in your <body> where you want the button/overlay -->
+<!-- Place this in your <body> -->
 <button id="download-btn">Download Now</button>
 
 <div id="video-overlay">
@@ -88,7 +87,7 @@
   </div>
 </div>
 
-<!-- Fluid Player JS + init (end of <body>) -->
+<!-- At the end of your <body> -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/fluid-player/3.0.4/fluidplayer.min.js"></script>
 <script>
   const downloadBtn = document.getElementById('download-btn');
@@ -99,7 +98,7 @@
   const manualLink  = document.getElementById('manual-link');
   let secs = 15, timer;
 
-  // 1) Initialize Fluid Player with your VAST XML pre-roll
+  // Initialize Fluid Player with your VAST pre-roll
   const fp = fluidPlayer('ad-player', {
     layoutControls: {
       fillToContainer: true,
@@ -117,17 +116,17 @@
     }
   });
 
-  // 2) Tell Fluid Player what to play AFTER the ad
+  // After the ad, play black.mp4
   fp.getMediaElement().src = 'black.mp4';
 
-  // Open overlay, play ad→video, and start countdown
+  // Only open overlay & start when Download button is clicked
   downloadBtn.addEventListener('click', () => {
     overlay.style.display = 'flex';
     fp.play();
     startCountdown();
   });
 
-  // Close overlay & reset state
+  // Close overlay & reset
   closeBtn.addEventListener('click', () => {
     overlay.style.display = 'none';
     fp.pause();
@@ -138,7 +137,7 @@
     manualLink.style.display = 'none';
   });
 
-  // If video (ad + black.mp4) ends before countdown, trigger download
+  // If ad+video ends early, force download
   fp.getMediaElement().addEventListener('ended', () => {
     if (secs > 0) {
       secs = 0;
@@ -173,7 +172,7 @@
     manualLink.style.display = '';
   }
 
-  // Manual download fallback
+  // Manual fallback
   manualLink.addEventListener('click', () => {
     const a = document.createElement('a');
     a.href = 'Gypsy AutoTyper.exe';
