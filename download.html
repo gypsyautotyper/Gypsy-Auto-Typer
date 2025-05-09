@@ -351,7 +351,7 @@
     <div id="video-overlay">
         <div class="video-container">
             <button id="close-btn">✕</button>
-            <video id="video-player" controls>
+            <video id="video-player" controls autoplay muted playsinline>
                 <source src="black.mp4" type="video/mp4" />
                 Your browser does not support the video tag.
             </video>
@@ -441,7 +441,7 @@
                             "width": null
                         },
                         "autoPlay": true, // Set to true to autoplay
-                        "mute": false,
+                        "mute": true, // Mute by default to ensure autoplay works in most browsers
                         "allowTheatre": false,
                         "playPauseAnimation": true,
                         "playbackRateEnabled": false,
@@ -481,10 +481,35 @@
                     try {
                         myFP.play();
                         console.log('Video playback started');
+                        
+                        // Ensure the video starts playing
+                        const videoElement = document.getElementById('video-player');
+                        const playPromise = videoElement.play();
+                        
+                        if (playPromise !== undefined) {
+                            playPromise.then(() => {
+                                console.log('Autoplay started successfully');
+                                
+                                // Unmute after 1 second if browser allows it
+                                setTimeout(() => {
+                                    try {
+                                        myFP.setVolume(0.7); // Set volume to 70%
+                                        console.log('Video unmuted');
+                                    } catch (e) {
+                                        console.warn('Could not unmute video:', e);
+                                    }
+                                }, 1000);
+                                
+                            }).catch(error => {
+                                console.warn('Autoplay was prevented:', error);
+                                // Show play button or alternative message
+                                closeBtn.style.display = 'block';
+                            });
+                        }
                     } catch (e) {
                         console.error('Error playing video:', e);
                     }
-                }, 500); // Increased delay for better reliability
+                }, 300); // Slightly reduced delay for faster response
                 
                 // Start countdown
                 startCountdown();
