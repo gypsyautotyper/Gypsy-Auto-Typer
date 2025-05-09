@@ -135,7 +135,10 @@
         /* Video Player Modal */
         #video-overlay {
             position: fixed;
-            inset: 0;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
             background: rgba(0,0,0,0.9);
             display: none;
             justify-content: center;
@@ -196,6 +199,13 @@
             text-decoration: underline;
             cursor: pointer;
             font-weight: bold;
+        }
+
+        /* Video player styling */
+        #video-player {
+            width: 100%;
+            height: auto;
+            display: block;
         }
 
         /* Feature Section */
@@ -331,7 +341,7 @@
     <div id="video-overlay">
         <div class="video-container">
             <button id="close-btn">✕</button>
-            <video id="video-id"></video>
+            <video id="video-player" controls src="black.mp4"></video>
         </div>
         <div id="countdown">
             The file will download in <span id="seconds">15</span> seconds
@@ -372,8 +382,6 @@
     </footer>
 
     <!-- Scripts -->
-    <!-- Fluid Player JS -->
-    <script src="https://cdn.fluidplayer.com/v3/current/fluidplayer.min.js"></script>
     <script>
         document.addEventListener('DOMContentLoaded', () => {
             // Mobile menu toggle
@@ -398,51 +406,12 @@
             const downloadBtn = document.getElementById('download-btn');
             const overlay = document.getElementById('video-overlay');
             const closeBtn = document.getElementById('close-btn');
+            const videoPlayer = document.getElementById('video-player');
             const secondsEl = document.getElementById('seconds');
             const countdownEl = document.getElementById('countdown');
             const manualLink = document.getElementById('manual-link');
             let countdownTimer;
             let secondsLeft = 15;
-
-            // Initialize Fluid Player with VAST ad
-            const myFP = fluidPlayer(
-                'video-id',	{
-                "layoutControls": {
-                    "controlBar": {
-                        "autoHideTimeout": 3,
-                        "animated": true,
-                        "autoHide": false
-                    },
-                    "htmlOnPauseBlock": {
-                        "html": null,
-                        "height": null,
-                        "width": null
-                    },
-                    "autoPlay": false,
-                    "mute": false,
-                    "allowTheatre": false,
-                    "playPauseAnimation": false,
-                    "playbackRateEnabled": false,
-                    "allowDownload": false,
-                    "playButtonShowing": false,
-                    "fillToContainer": true,
-                    "posterImage": ""
-                },
-                "vastOptions": {
-                    "adList": [
-                        {
-                            "roll": "preRoll",
-                            "vastTag": "https://superior-funeral.com/dwmGFwzyd.G/NjvwZrGSUE/Regmh9zuVZIUPlmkaPNTBY/zbMaTzgl0_MdDgE/taNAjUMfxSOXDUQFwEMRgV",
-                            "adText": ""
-                        }
-                    ],
-                    "adCTAText": false,
-                    "adCTATextPosition": ""
-                }
-            });
-
-            // Add video source - this will play after the ad
-            myFP.setPlayerSrc('video.mp4');
 
             // Open overlay & start video + countdown when download button is clicked
             downloadBtn.addEventListener('click', () => {
@@ -454,8 +423,8 @@
                 secondsLeft = 15;
                 secondsEl.textContent = secondsLeft;
                 
-                // Start video
-                myFP.play();
+                // Play the video
+                videoPlayer.play();
                 
                 // Start countdown
                 startCountdown();
@@ -464,7 +433,7 @@
             // Close overlay when X button is clicked
             closeBtn.addEventListener('click', () => {
                 overlay.style.display = 'none';
-                myFP.pause();
+                videoPlayer.pause();
                 clearInterval(countdownTimer);
             });
 
