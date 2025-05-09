@@ -171,7 +171,7 @@
             height: 32px;
             border-radius: 50%;
             cursor: pointer;
-            z-index: 2;
+            z-index: 10001; /* Increased z-index */
             display: none; /* Hidden initially */
         }
         
@@ -208,6 +208,14 @@
             width: 100%;
             height: auto;
             display: block;
+            min-height: 400px; /* Added minimum height */
+        }
+        
+        /* Make sure Fluid Player components appear properly */
+        .fluid_video_wrapper {
+            width: 100% !important;
+            height: auto !important;
+            min-height: 400px; /* Added minimum height */
         }
 
         /* Feature Section */
@@ -343,8 +351,9 @@
     <div id="video-overlay">
         <div class="video-container">
             <button id="close-btn">✕</button>
-            <video id="video-player">
+            <video id="video-player" controls>
                 <source src="black.mp4" type="video/mp4" />
+                Your browser does not support the video tag.
             </video>
         </div>
         <div id="countdown">
@@ -431,14 +440,14 @@
                             "height": null,
                             "width": null
                         },
-                        "autoPlay": false,
+                        "autoPlay": true, // Set to true to autoplay
                         "mute": false,
                         "allowTheatre": false,
-                        "playPauseAnimation": false,
+                        "playPauseAnimation": true,
                         "playbackRateEnabled": false,
                         "allowDownload": false,
-                        "playButtonShowing": false,
-                        "fillToContainer": false,
+                        "playButtonShowing": true,
+                        "fillToContainer": true, // Set to true to fill container
                         "posterImage": ""
                     },
                     "vastOptions": {
@@ -469,8 +478,13 @@
                 
                 // Play video with a slight delay to ensure modal is visible
                 setTimeout(function() {
-                    myFP.play();
-                }, 200);
+                    try {
+                        myFP.play();
+                        console.log('Video playback started');
+                    } catch (e) {
+                        console.error('Error playing video:', e);
+                    }
+                }, 500); // Increased delay for better reliability
                 
                 // Start countdown
                 startCountdown();
@@ -478,8 +492,12 @@
             
             // Close button click handler
             closeBtn.addEventListener('click', function() {
+                try {
+                    myFP.pause();
+                } catch (e) {
+                    console.error('Error pausing video:', e);
+                }
                 overlay.style.display = 'none';
-                myFP.pause();
                 clearInterval(countdownTimer);
             });
             
@@ -515,6 +533,16 @@
                 downloadLink.click();
                 document.body.removeChild(downloadLink);
             }
+            
+            // Add error handling for video playback
+            const videoPlayer = document.getElementById('video-player');
+            videoPlayer.addEventListener('error', function(e) {
+                console.error('Video error:', e);
+                // Show manual download link in case of video error
+                countdownEl.style.display = 'none';
+                manualLink.style.display = 'block';
+                closeBtn.style.display = 'block';
+            });
         });
     </script>
 </body>
