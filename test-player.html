@@ -1,4 +1,4 @@
-<!-- Include Fluid Player CSS -->
+<!-- Fluid Player CSS (in your <head>) -->
 <link
   rel="stylesheet"
   href="https://cdnjs.cloudflare.com/ajax/libs/fluid-player/3.0.4/fluidplayer.min.css"
@@ -12,9 +12,10 @@
     inset: 0;
     background: rgba(0,0,0,0.8);
     z-index: 10000;
+    display: flex;
+    flex-direction: column;
     justify-content: center;
     align-items: center;
-    flex-direction: column;
     padding: 1rem;
   }
   .video-container {
@@ -40,9 +41,6 @@
     border-radius: 50%;
     cursor: pointer;
     z-index: 2;
-  }
-  #close-btn:hover {
-    background: rgba(0,0,0,0.9);
   }
 
   /* Countdown & Manual Link */
@@ -72,15 +70,11 @@
     border-radius: 4px;
     cursor: pointer;
   }
-  #download-btn:hover {
-    background: #7a1717;
-  }
 </style>
 
-<!-- Your Download Button -->
+<!-- Place in your <body> where you want the button/overlay -->
 <button id="download-btn">Download Now</button>
 
-<!-- Video + Countdown Overlay -->
 <div id="video-overlay">
   <div class="video-container">
     <button id="close-btn">✕</button>
@@ -89,101 +83,101 @@
   <div id="countdown">
     The file will download in <span id="seconds">15</span> seconds
   </div>
-  <div id="manual-link">If the file didn’t download automatically, click here</div>
+  <div id="manual-link">
+    If the file didn’t download automatically, click here
+  </div>
 </div>
 
-<!-- Fluid Player JS -->
+<!-- Fluid Player JS + init (end of <body>) -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/fluid-player/3.0.4/fluidplayer.min.js"></script>
 <script>
-  document.addEventListener('DOMContentLoaded', () => {
-    const downloadBtn  = document.getElementById('download-btn');
-    const overlay      = document.getElementById('video-overlay');
-    const closeBtn     = document.getElementById('close-btn');
-    const secondsEl    = document.getElementById('seconds');
-    const countdownEl  = document.getElementById('countdown');
-    const manualLink   = document.getElementById('manual-link');
-    let timer, secs = 15;
+  const downloadBtn = document.getElementById('download-btn');
+  const overlay     = document.getElementById('video-overlay');
+  const closeBtn    = document.getElementById('close-btn');
+  const secondsEl   = document.getElementById('seconds');
+  const countdownEl = document.getElementById('countdown');
+  const manualLink  = document.getElementById('manual-link');
+  let secs = 15, timer;
 
-    // 1) initialize Fluid Player with your VAST XML and fallback
-    const fp = fluidPlayer('ad-player', {
-      layoutControls: {
-        fillToContainer: true,
-        primaryColor: '#8b1a1a',
-        autoPlay: false,
-        playButtonShowing: true,
-        allowDownload: false
-      },
-      vastOptions: {
-        adList: [{
-          roll: 'preRoll',
-          vastTag: 'https://superior-funeral.com/djmRF/z.doGWNZv/ZxGnUR/ieomD9Hu/ZkUEl-kFP/TvYzzuMBTSgE0SMRDjEEtRNejsMlxTOOD/QIwGMKgC'
-        }],
-        adCTAText: false
-      }
-    });
+  // 1) Initialize Fluid Player with your VAST XML pre-roll
+  const fp = fluidPlayer('ad-player', {
+    layoutControls: {
+      fillToContainer: true,
+      primaryColor: '#8b1a1a',
+      autoPlay: false,
+      playButtonShowing: true,
+      allowDownload: false
+    },
+    vastOptions: {
+      adList: [{
+        roll: 'preRoll',
+        vastTag: 'https://superior-funeral.com/djmRF/z.doGWNZv/ZxGnUR/ieomD9Hu/ZkUEl-kFP/TvYzzuMBTSgE0SMRDjEEtRNejsMlxTOOD/QIwGMKgC'
+      }],
+      adCTAText: false
+    }
+  });
 
-    // after ad finishes, FP automatically plays <video> source, so set it now:
-    fp.getMediaElement().src = 'black.mp4';
+  // 2) Tell Fluid Player what to play AFTER the ad
+  fp.getMediaElement().src = 'black.mp4';
 
-    // open overlay & start ad + countdown
-    downloadBtn.addEventListener('click', () => {
-      overlay.style.display = 'flex';
-      fp.play();       // plays pre-roll → then black.mp4
-      startCountdown();
-    });
+  // Open overlay, play ad→video, and start countdown
+  downloadBtn.addEventListener('click', () => {
+    overlay.style.display = 'flex';
+    fp.play();
+    startCountdown();
+  });
 
-    // close overlay & reset
-    closeBtn.addEventListener('click', () => {
-      overlay.style.display = 'none';
-      fp.pause();
-      clearInterval(timer);
-      secs = 15;
+  // Close overlay & reset state
+  closeBtn.addEventListener('click', () => {
+    overlay.style.display = 'none';
+    fp.pause();
+    clearInterval(timer);
+    secs = 15;
+    secondsEl.textContent = secs;
+    countdownEl.style.display = '';
+    manualLink.style.display = 'none';
+  });
+
+  // If video (ad + black.mp4) ends before countdown, trigger download
+  fp.getMediaElement().addEventListener('ended', () => {
+    if (secs > 0) {
+      secs = 0;
+      secondsEl.textContent = 0;
+      triggerDownload();
+    }
+  });
+
+  function startCountdown() {
+    clearInterval(timer);
+    timer = setInterval(() => {
+      secs--;
       secondsEl.textContent = secs;
-      countdownEl.style.display = 'block';
-      manualLink.style.display = 'none';
-    });
-
-    // listen for video end (ad + content)
-    fp.getMediaElement().addEventListener('ended', () => {
-      if (secs > 0) {
-        secs = 0;
-        secondsEl.textContent = 0;
+      if (secs <= 0) {
+        clearInterval(timer);
         triggerDownload();
       }
-    });
+    }, 1000);
+  }
 
-    function startCountdown() {
-      clearInterval(timer);
-      timer = setInterval(() => {
-        secs--;
-        secondsEl.textContent = secs;
-        if (secs <= 0) {
-          clearInterval(timer);
-          triggerDownload();
-        }
-      }, 1000);
-    }
+  function triggerDownload() {
+    // Auto-download
+    const a = document.createElement('a');
+    a.href = 'Gypsy AutoTyper.exe';
+    a.download = '';
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
 
-    function triggerDownload() {
-      // auto-trigger download
-      const a = document.createElement('a');
-      a.href = 'Gypsy AutoTyper.exe';
-      a.download = '';
-      document.body.appendChild(a);
-      a.click();
-      document.body.removeChild(a);
+    // Show manual link
+    countdownEl.style.display = 'none';
+    manualLink.style.display = '';
+  }
 
-      // show manual link
-      countdownEl.style.display = 'none';
-      manualLink.style.display = 'block';
-    }
-
-    // manual link click
-    manualLink.addEventListener('click', () => {
-      const a = document.createElement('a');
-      a.href = 'Gypsy AutoTyper.exe';
-      a.download = '';
-      a.click();
-    });
+  // Manual download fallback
+  manualLink.addEventListener('click', () => {
+    const a = document.createElement('a');
+    a.href = 'Gypsy AutoTyper.exe';
+    a.download = '';
+    a.click();
   });
 </script>
