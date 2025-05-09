@@ -5,7 +5,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Download - Gypsy Auto Typer</title>
     <link rel="icon" href="favicon.ico" type="image/x-icon">
-    <link href="https://vjs.zencdn.net/7.20.3/video-js.css" rel="stylesheet" />
+    <!-- Fluid Player CSS -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/fluid-player/3.0.4/fluidplayer.min.css">
     <style>
         /* Reset and Base Styles */
         * {
@@ -84,7 +85,7 @@
         /* Download Hero Section */
         .download-hero {
             height: 100vh;
-            background: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), url('/api/placeholder/1200/800') center/cover no-repeat;
+            background: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), url('gypsycarnival.jpg') center/cover no-repeat;
             display: flex;
             flex-direction: column;
             justify-content: center;
@@ -156,10 +157,9 @@
             overflow: hidden;
         }
         
-        .video-js {
+        /* Fluid Player styling */
+        .fluid_video_wrapper {
             width: 100%;
-            height: 0;
-            padding-bottom: 56.25%; /* 16:9 Aspect Ratio */
         }
         
         .close-btn {
@@ -345,18 +345,10 @@
     <div class="video-overlay" id="video-overlay">
         <div class="video-container">
             <button class="close-btn" id="close-btn">✕</button>
-            <video
-                id="ad-player"
-                class="video-js"
-                controls
-                preload="auto"
-                data-setup="{}"
-            >
+            <!-- Fluid Player Video -->
+            <video id="ad-player" controls>
                 <source src="https://superior-funeral.com/dkm.F/zFdLGCNgvdZqGzUr/-egmV9/uAZcUEl/kKPcTEYJzHMJT-gu0bMXD/EHtLNZjaMpxVORD/QiwvMkgB" type="application/x-mpegURL">
-                <p class="vjs-no-js">
-                    To view this video please enable JavaScript, and consider upgrading to a
-                    web browser that supports HTML5 video
-                </p>
+                Your browser does not support HTML5 video.
             </video>
         </div>
         <div class="countdown-container" id="countdown-container">
@@ -398,7 +390,8 @@
     </footer>
 
     <!-- Scripts -->
-    <script src="https://vjs.zencdn.net/7.20.3/video.min.js"></script>
+    <!-- Fluid Player JS -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/fluid-player/3.0.4/fluidplayer.min.js"></script>
     <script>
         document.addEventListener('DOMContentLoaded', function() {
             // Mobile menu toggle
@@ -431,29 +424,54 @@
             let countdownTimer;
             let secondsLeft = 15;
             
-            // Initialize the video player
+            // Initialize the Fluid Player
+            const fluidPlayer = fluidPlayer('ad-player', {
+                layoutControls: {
+                    primaryColor: "#8b1a1a",
+                    fillToContainer: true,
+                    autoPlay: false,
+                    playButtonShowing: true,
+                    playPauseAnimation: true,
+                    mute: false,
+                    loop: false,
+                    allowDownload: false,
+                    autoHideControls: true,
+                    controlBar: {
+                        autoHide: true,
+                        autoHideTimeout: 3,
+                        animated: true
+                    },
+                    htmlOnPauseBlock: {
+                        html: null,
+                        height: null,
+                        width: null
+                    }
+                },
+                vastOptions: {
+                    adList: [],
+                    adCTAText: false,
+                    adCTATextPosition: ""
+                }
+            });
+            
+            // Download button handler
             downloadBtn.addEventListener('click', function() {
                 videoOverlay.style.display = 'flex';
                 
-                // Initialize video.js player if not already done
-                if (!player) {
-                    player = videojs('ad-player');
-                    
-                    player.on('play', function() {
-                        startCountdown();
-                    });
-                    
-                    player.on('ended', function() {
-                        if (secondsLeft > 0) {
-                            secondsLeft = 0;
-                            countdownSeconds.textContent = secondsLeft;
-                            triggerDownload();
-                        }
-                    });
-                }
+                // Play the video with Fluid Player
+                fluidPlayer.play();
                 
-                // Play the video
-                player.play();
+                // Start countdown when video starts playing
+                startCountdown();
+                
+                // Add event listeners to Fluid Player
+                document.getElementById('ad-player').addEventListener('ended', function() {
+                    if (secondsLeft > 0) {
+                        secondsLeft = 0;
+                        countdownSeconds.textContent = secondsLeft;
+                        triggerDownload();
+                    }
+                });
             });
             
             // Close button handler
@@ -463,9 +481,8 @@
             
             function closeVideoOverlay() {
                 videoOverlay.style.display = 'none';
-                if (player) {
-                    player.pause();
-                }
+                fluidPlayer.pause();
+                
                 if (countdownTimer) {
                     clearInterval(countdownTimer);
                 }
