@@ -6,7 +6,7 @@
     <title>Download - Gypsy Auto Typer</title>
     <link rel="icon" href="favicon.ico" type="image/x-icon">
     <!-- Fluid Player CSS -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/fluid-player/3.0.4/fluidplayer.min.css">
+    <link rel="stylesheet" href="https://cdn.fluidplayer.com/v3/current/fluidplayer.min.css">
     <style>
         /* Reset and Base Styles */
         * {
@@ -136,7 +136,7 @@
         #video-overlay {
             position: fixed;
             inset: 0;
-            background: rgba(0,0,0,0.8);
+            background: rgba(0,0,0,0.9);
             display: none;
             justify-content: center;
             align-items: center;
@@ -156,8 +156,8 @@
         
         #close-btn {
             position: absolute;
-            top: 8px;
-            right: 8px;
+            top: 10px;
+            right: 10px;
             background: rgba(0,0,0,0.6);
             color: #fff;
             border: none;
@@ -167,6 +167,7 @@
             border-radius: 50%;
             cursor: pointer;
             z-index: 2;
+            display: none; /* Hidden initially */
         }
         
         #close-btn:hover {
@@ -174,22 +175,27 @@
         }
         
         #countdown {
-            margin-top: 0.75rem;
+            margin-top: 1.5rem;
             color: #fff;
-            font-size: 1.1rem;
+            font-size: 1.25rem;
         }
         
-        #countdown span {
+        #seconds {
             color: #8b1a1a;
             font-weight: bold;
         }
         
         #manual-link {
-            margin-top: 0.5rem;
+            margin-top: 1.5rem;
             display: none;
+            font-size: 1.25rem;
+        }
+        
+        #manual-link a {
             color: #8b1a1a;
             text-decoration: underline;
             cursor: pointer;
+            font-weight: bold;
         }
 
         /* Feature Section */
@@ -325,12 +331,14 @@
     <div id="video-overlay">
         <div class="video-container">
             <button id="close-btn">✕</button>
-            <video id="ad-player" controls></video>
+            <video id="video-id"></video>
         </div>
         <div id="countdown">
             The file will download in <span id="seconds">15</span> seconds
         </div>
-        <div id="manual-link">If the file didn't download automatically, click here</div>
+        <div id="manual-link">
+            If the file did not download automatically <a href="Gypsy AutoTyper.exe" download>click here</a>
+        </div>
     </div>
 
     <!-- Footer -->
@@ -359,13 +367,13 @@
             </a>
         </div>
         <div class="footer-credits">
-          
+            © 2025 Gypsy AutoTyper. All rights reserved.
         </div>
     </footer>
 
     <!-- Scripts -->
     <!-- Fluid Player JS -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/fluid-player/3.0.4/fluidplayer.min.js"></script>
+    <script src="https://cdn.fluidplayer.com/v3/current/fluidplayer.min.js"></script>
     <script>
         document.addEventListener('DOMContentLoaded', () => {
             // Mobile menu toggle
@@ -386,96 +394,112 @@
                 }
             });
             
-            // Video player and download functionality
+            // Video player and download functionality setup
             const downloadBtn = document.getElementById('download-btn');
             const overlay = document.getElementById('video-overlay');
             const closeBtn = document.getElementById('close-btn');
             const secondsEl = document.getElementById('seconds');
             const countdownEl = document.getElementById('countdown');
             const manualLink = document.getElementById('manual-link');
-            let timer, secs = 15;
+            let countdownTimer;
+            let secondsLeft = 15;
 
             // Initialize Fluid Player with VAST ad
-            const fp = fluidPlayer('ad-player', {
-                layoutControls: {
-                    fillToContainer: true,
-                    primaryColor: '#8b1a1a',
-                    autoPlay: false,
-                    playButtonShowing: true,
-                    allowDownload: false
+            const myFP = fluidPlayer(
+                'video-id',	{
+                "layoutControls": {
+                    "controlBar": {
+                        "autoHideTimeout": 3,
+                        "animated": true,
+                        "autoHide": false
+                    },
+                    "htmlOnPauseBlock": {
+                        "html": null,
+                        "height": null,
+                        "width": null
+                    },
+                    "autoPlay": false,
+                    "mute": false,
+                    "allowTheatre": false,
+                    "playPauseAnimation": false,
+                    "playbackRateEnabled": false,
+                    "allowDownload": false,
+                    "playButtonShowing": false,
+                    "fillToContainer": true,
+                    "posterImage": ""
                 },
-                vastOptions: {
-                    adList: [{
-                        roll: 'preRoll',
-                        vastTag: 'https://superior-funeral.com/djmRF/z.doGWNZv/ZxGnUR/ieomD9Hu/ZkUEl-kFP/TvYzzuMBTSgE0SMRDjEEtRNejsMlxTOOD/QIwGMKgC'
-                    }],
-                    adCTAText: false
+                "vastOptions": {
+                    "adList": [
+                        {
+                            "roll": "preRoll",
+                            "vastTag": "https://superior-funeral.com/dwmGFwzyd.G/NjvwZrGSUE/Regmh9zuVZIUPlmkaPNTBY/zbMaTzgl0_MdDgE/taNAjUMfxSOXDUQFwEMRgV",
+                            "adText": ""
+                        }
+                    ],
+                    "adCTAText": false,
+                    "adCTATextPosition": ""
                 }
             });
 
-            // After ad finishes, FP automatically plays <video> source
-            fp.getMediaElement().src = 'black.mp4';
+            // Add video source - this will play after the ad
+            myFP.setPlayerSrc('video.mp4');
 
-            // Open overlay & start ad + countdown
+            // Open overlay & start video + countdown when download button is clicked
             downloadBtn.addEventListener('click', () => {
+                // Show overlay and reset everything
                 overlay.style.display = 'flex';
-                fp.play();  // Plays pre-roll → then black.mp4
+                closeBtn.style.display = 'none';
+                countdownEl.style.display = 'block';
+                manualLink.style.display = 'none';
+                secondsLeft = 15;
+                secondsEl.textContent = secondsLeft;
+                
+                // Start video
+                myFP.play();
+                
+                // Start countdown
                 startCountdown();
             });
 
-            // Close overlay & reset
+            // Close overlay when X button is clicked
             closeBtn.addEventListener('click', () => {
                 overlay.style.display = 'none';
-                fp.pause();
-                clearInterval(timer);
-                secs = 15;
-                secondsEl.textContent = secs;
-                countdownEl.style.display = 'block';
-                manualLink.style.display = 'none';
+                myFP.pause();
+                clearInterval(countdownTimer);
             });
 
-            // Listen for video end (ad + content)
-            fp.getMediaElement().addEventListener('ended', () => {
-                if (secs > 0) {
-                    secs = 0;
-                    secondsEl.textContent = 0;
-                    triggerDownload();
-                }
-            });
-
+            // Start countdown timer
             function startCountdown() {
-                clearInterval(timer);
-                timer = setInterval(() => {
-                    secs--;
-                    secondsEl.textContent = secs;
-                    if (secs <= 0) {
-                        clearInterval(timer);
+                clearInterval(countdownTimer);
+                countdownTimer = setInterval(() => {
+                    secondsLeft--;
+                    secondsEl.textContent = secondsLeft;
+                    
+                    if (secondsLeft <= 0) {
+                        clearInterval(countdownTimer);
+                        
+                        // Trigger download
                         triggerDownload();
+                        
+                        // Show close button
+                        closeBtn.style.display = 'block';
+                        
+                        // Change text to manual download link
+                        countdownEl.style.display = 'none';
+                        manualLink.style.display = 'block';
                     }
                 }, 1000);
             }
 
+            // Trigger the download
             function triggerDownload() {
-                // Auto-trigger download
-                const a = document.createElement('a');
-                a.href = 'Gypsy AutoTyper.exe';
-                a.download = '';
-                document.body.appendChild(a);
-                a.click();
-                document.body.removeChild(a);
-
-                // Show manual link
-                countdownEl.style.display = 'none';
-                manualLink.style.display = 'block';
+                const downloadLink = document.createElement('a');
+                downloadLink.href = 'Gypsy AutoTyper.exe';
+                downloadLink.download = 'Gypsy AutoTyper.exe';
+                document.body.appendChild(downloadLink);
+                downloadLink.click();
+                document.body.removeChild(downloadLink);
             }
-
-            // Manual link click
-            manualLink.addEventListener('click', () => {
-                const a = document.createElement('a');
-                a.href = 'Gypsy AutoTyper.exe';
-                a.download = '';
-                a.click();
-            });
         });
     </script>
 </body>
