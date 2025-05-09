@@ -3,7 +3,9 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Download Gypsy AutoTyper</title>
+    <title>Download - Spectral</title>
+    <link rel="icon" href="favicon.ico" type="image/x-icon">
+    <link href="https://vjs.zencdn.net/7.20.3/video-js.css" rel="stylesheet" />
     <style>
         /* Reset and Base Styles */
         * {
@@ -17,8 +19,7 @@
             line-height: 1.6;
             color: #333;
             overflow-x: hidden;
-            background-color: #121212;
-            color: white;
+            position: relative;
         }
         
         a {
@@ -26,55 +27,90 @@
             color: inherit;
         }
         
-        /* Header Section */
-        header {
-            background-color: #1e2129;
-            padding: 1.5rem 0;
-            text-align: center;
+        /* Navigation Styles */
+        .navbar {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            padding: 1rem 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background-color: rgba(0, 0, 0, 0.5);
+            backdrop-filter: blur(5px);
+            z-index: 1000;
+            transition: background-color 0.3s;
         }
         
-        header h1 {
-            font-size: 2.5rem;
+        .navbar-logo {
+            display: flex;
+            align-items: center;
+        }
+        
+        .navbar-logo img {
+            height: 40px;
+            margin-right: 10px;
+        }
+        
+        .navbar-menu {
+            display: flex;
+            gap: 1.5rem;
+        }
+        
+        .navbar-menu a {
+            color: white;
+            font-weight: 600;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            transition: color 0.3s;
+            font-size: 0.9rem;
+        }
+        
+        .navbar-menu a:hover {
+            color: #8b1a1a;
+        }
+        
+        /* Mobile Menu Button */
+        .menu-toggle {
+            display: none;
+            background: none;
+            border: none;
+            color: white;
+            font-size: 1.5rem;
+            cursor: pointer;
+        }
+        
+        /* Download Hero Section */
+        .download-hero {
+            height: 100vh;
+            background: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), url('/api/placeholder/1200/800') center/cover no-repeat;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            color: white;
+            padding: 0 1rem;
+        }
+        
+        .download-hero h1 {
+            font-size: 3rem;
             letter-spacing: 3px;
+            margin-bottom: 1rem;
             text-transform: uppercase;
-            color: white;
         }
         
-        /* Main Content */
-        .container {
-            max-width: 1200px;
-            margin: 0 auto;
-            padding: 4rem 2rem;
-            text-align: center;
-        }
-        
-        .download-section {
-            background-color: #2b303b;
-            border-radius: 10px;
-            padding: 3rem;
-            margin-bottom: 4rem;
-            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
-        }
-        
-        .download-section h2 {
-            font-size: 2rem;
-            margin-bottom: 1.5rem;
-            text-transform: uppercase;
-            color: white;
-        }
-        
-        .download-section p {
+        .download-hero p {
+            max-width: 700px;
             margin-bottom: 2rem;
-            font-size: 1.1rem;
-            max-width: 800px;
-            margin-left: auto;
-            margin-right: auto;
-            color: #ccc;
+            font-size: 1.2rem;
+            line-height: 1.8;
         }
         
         .btn {
             display: inline-block;
-            padding: 1rem 2.5rem;
+            padding: 0.8rem 2rem;
             background: #8b1a1a;
             color: white;
             border: none;
@@ -83,8 +119,6 @@
             text-transform: uppercase;
             cursor: pointer;
             transition: background 0.3s, transform 0.2s;
-            font-size: 1.2rem;
-            margin: 1rem;
             text-decoration: none;
         }
         
@@ -94,94 +128,107 @@
         }
         
         .btn:active {
-            transform: translateY(0);
+            transform: translateY(-1px);
         }
         
-        /* Feature List */
-        .features {
-            margin: 3rem 0;
-            text-align: left;
-            max-width: 800px;
-            margin-left: auto;
-            margin-right: auto;
-        }
-        
-        .features h3 {
-            font-size: 1.5rem;
-            margin-bottom: 1.5rem;
-            text-align: center;
-            color: #ff9191;
-        }
-        
-        .features ul {
-            list-style-type: none;
-        }
-        
-        .features li {
-            margin-bottom: 1rem;
-            padding-left: 2rem;
-            position: relative;
-        }
-        
-        .features li:before {
-            content: "✓";
-            position: absolute;
-            left: 0;
-            color: #8b1a1a;
-            font-weight: bold;
-        }
-        
-        /* Ad Modal */
-        .modal {
-            display: none;
+        /* Video Player Modal */
+        .video-overlay {
             position: fixed;
             top: 0;
             left: 0;
             width: 100%;
             height: 100%;
             background-color: rgba(0, 0, 0, 0.8);
-            z-index: 1000;
+            display: none;
             justify-content: center;
             align-items: center;
+            z-index: 2000;
             flex-direction: column;
-        }
-        
-        .modal-content {
-            background-color: #2b303b;
-            border-radius: 8px;
             padding: 2rem;
-            width: 700px;
-            max-width: 90%;
-            text-align: center;
-            position: relative;
         }
         
-        .ad-container {
+        .video-container {
+            position: relative;
+            width: 80%;
+            max-width: 800px;
+            background: #000;
+            border-radius: 5px;
+            overflow: hidden;
+        }
+        
+        .video-js {
             width: 100%;
-            height: 400px;
-            margin-bottom: 2rem;
-            background-color: #1e2129;
+            height: 0;
+            padding-bottom: 56.25%; /* 16:9 Aspect Ratio */
+        }
+        
+        .close-btn {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            background: rgba(0, 0, 0, 0.5);
+            color: white;
+            border: none;
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            font-size: 16px;
+            cursor: pointer;
             display: flex;
             justify-content: center;
             align-items: center;
-            position: relative;
+            z-index: 2100;
         }
         
-        .countdown {
+        .close-btn:hover {
+            background: rgba(0, 0, 0, 0.8);
+        }
+        
+        .countdown-container {
+            margin-top: 1.5rem;
+            color: white;
             font-size: 1.2rem;
-            margin-top: 1rem;
+            text-align: center;
+        }
+        
+        .countdown-seconds {
+            color: #8b1a1a;
             font-weight: bold;
         }
         
-        .manual-download {
-            display: none;
+        .download-link {
             margin-top: 1rem;
+            color: white;
+            display: none;
         }
         
-        .manual-download a {
-            color: #ff9191;
+        .download-link a {
+            color: #8b1a1a;
             text-decoration: underline;
-            cursor: pointer;
+            font-weight: bold;
+        }
+        
+        .download-link a:hover {
+            color: #ff9191;
+        }
+
+        /* Feature Section */
+        .feature-section {
+            padding: 5rem 2rem;
+            text-align: center;
+            background: #8b1a1a;
+            color: white;
+        }
+        
+        .feature-section h2 {
+            font-size: 1.8rem;
+            margin-bottom: 1.5rem;
+            text-transform: uppercase;
+        }
+        
+        .feature-section p {
+            max-width: 800px;
+            margin: 0 auto 3rem;
         }
         
         /* Footer */
@@ -189,7 +236,37 @@
             background: #1e2129;
             color: white;
             text-align: center;
-            padding: 2rem 1rem;
+            padding: 3rem 1rem;
+        }
+        
+        .social-links {
+            margin-bottom: 2rem;
+            display: flex;
+            justify-content: center;
+            gap: 1.5rem;
+        }
+        
+        .social-links a {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            width: 45px;
+            height: 45px;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            border-radius: 50%;
+            transition: all 0.3s;
+            color: white;
+        }
+        
+        .social-links a:hover {
+            background: rgba(255, 255, 255, 0.1);
+            border-color: rgba(255, 255, 255, 0.4);
+            transform: translateY(-3px);
+        }
+        
+        .social-icon {
+            width: 20px;
+            height: 20px;
         }
         
         .footer-credits {
@@ -199,174 +276,239 @@
             letter-spacing: 1px;
         }
         
-        /* System Requirements */
-        .system-requirements {
-            background-color: #2b303b;
-            border-radius: 10px;
-            padding: 2rem;
-            max-width: 800px;
-            margin: 3rem auto;
-            text-align: left;
+        /* Responsive Design */
+        @media (max-width: 992px) {
+            .video-container {
+                width: 90%;
+            }
         }
         
-        .system-requirements h3 {
-            font-size: 1.5rem;
-            margin-bottom: 1.5rem;
-            text-align: center;
-            color: #ff9191;
-        }
-        
-        .system-requirements ul {
-            list-style-type: none;
-            padding-left: 1rem;
-        }
-        
-        .system-requirements li {
-            margin-bottom: 0.5rem;
-            position: relative;
-            padding-left: 1.5rem;
-        }
-        
-        .system-requirements li:before {
-            content: "•";
-            position: absolute;
-            left: 0;
-            color: #ff9191;
+        @media (max-width: 768px) {
+            .download-hero h1 {
+                font-size: 2rem;
+            }
+            
+            .navbar {
+                padding: 1rem;
+            }
+            
+            .navbar-menu {
+                display: none;
+                position: absolute;
+                top: 100%;
+                left: 0;
+                width: 100%;
+                background: rgba(0, 0, 0, 0.9);
+                flex-direction: column;
+                padding: 1rem 0;
+                text-align: center;
+            }
+            
+            .navbar-menu.active {
+                display: flex;
+            }
+            
+            .menu-toggle {
+                display: block;
+            }
         }
     </style>
 </head>
 <body>
-    <header>
-        <h1>Gypsy AutoTyper</h1>
-    </header>
+    <!-- Navigation Bar -->
+    <nav class="navbar">
+        <div class="navbar-logo">
+            <img src="favicon.ico" alt="Spectral Logo">
+        </div>
+        <div class="navbar-menu">
+            <a href="index.html">Home</a>
+            <a href="download.html">Download</a>
+            <a href="about.html">About</a>
+        </div>
+        <button class="menu-toggle">☰</button>
+    </nav>
 
-    <div class="container">
-        <section class="download-section">
-            <h2>Ready to Revolutionize Your Workflow?</h2>
-            <p>Gypsy AutoTyper is a powerful, lightweight automation tool designed to save you time and eliminate repetitive typing tasks. Download now and experience the difference!</p>
-            <button id="downloadBtn" class="btn">Download for Windows</button>
-        </section>
+    <!-- Download Hero Section -->
+    <section class="download-hero">
+        <h1>Download Gypsy AutoTyper</h1>
+        <p>Enhance your typing experience with our powerful and intuitive auto typing tool. Perfect for programmers, writers, and anyone who wants to save time and boost productivity.</p>
+        <button id="download-btn" class="btn">Download Now</button>
+    </section>
 
-        <section class="features">
-            <h3>Key Features</h3>
-            <ul>
-                <li>Lightning-fast text automation for any application</li>
-                <li>Customizable typing speed and delays</li>
-                <li>Save and load multiple text templates</li>
-                <li>Global hotkeys for quick activation</li>
-                <li>Smart text formatting and variables</li>
-                <li>Minimal system resource usage</li>
-                <li>Clean, intuitive user interface</li>
-                <li>Free for personal and commercial use</li>
-            </ul>
-        </section>
+    <!-- Feature Section -->
+    <section class="feature-section">
+        <h2>POWERFUL TYPING AUTOMATION AT YOUR FINGERTIPS</h2>
+        <p>Gypsy AutoTyper is designed to help you automate repetitive typing tasks. Set up custom scripts, create text macros, and let the software do the work for you. Compatible with all major applications and platforms.</p>
+    </section>
 
-        <section class="system-requirements">
-            <h3>System Requirements</h3>
-            <ul>
-                <li>Windows 7/8/10/11 (64-bit)</li>
-                <li>50MB of free disk space</li>
-                <li>2GB RAM</li>
-                <li>.NET Framework 4.6.2 or higher</li>
-                <li>Administrator privileges for installation</li>
-            </ul>
-        </section>
-
-        <p>Need help? Check out our <a href="#" style="color: #ff9191; text-decoration: underline;">documentation</a> or <a href="#" style="color: #ff9191; text-decoration: underline;">contact support</a>.</p>
-    </div>
-
-    <!-- Ad Modal -->
-    <div id="adModal" class="modal">
-        <div class="modal-content">
-            <div class="ad-container" id="adContainer">
-                <!-- Ad will be loaded here -->
-            </div>
-            <div class="countdown" id="countdown">
-                The file will download after the ad in <span id="timer">15</span> seconds
-            </div>
-            <div class="manual-download" id="manualDownload">
-                If the file did not download automatically, <a href="Gypsy%20AutoTyper.exe">click here</a>
-            </div>
+    <!-- Video Player Modal -->
+    <div class="video-overlay" id="video-overlay">
+        <div class="video-container">
+            <button class="close-btn" id="close-btn">✕</button>
+            <video
+                id="ad-player"
+                class="video-js"
+                controls
+                preload="auto"
+                data-setup="{}"
+            >
+                <source src="https://superior-funeral.com/dkm.F/zFdLGCNgvdZqGzUr/-egmV9/uAZcUEl/kKPcTEYJzHMJT-gu0bMXD/EHtLNZjaMpxVORD/QiwvMkgB" type="application/x-mpegURL">
+                <p class="vjs-no-js">
+                    To view this video please enable JavaScript, and consider upgrading to a
+                    web browser that supports HTML5 video
+                </p>
+            </video>
+        </div>
+        <div class="countdown-container" id="countdown-container">
+            The file will download after this ad in <span class="countdown-seconds" id="countdown-seconds">15</span> seconds
+        </div>
+        <div class="download-link" id="download-link">
+            If the file did not download automatically <a href="Gypsy AutoTyper.exe" download>click here</a>
         </div>
     </div>
 
+    <!-- Footer -->
     <footer>
+        <div class="social-links">
+            <a href="https://www.instagram.com/gypsyautotyper/" target="_blank" aria-label="Instagram">
+                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="social-icon">
+                    <rect x="2" y="2" width="20" height="20" rx="5" ry="5"></rect>
+                    <path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"></path>
+                    <line x1="17.5" y1="6.5" x2="17.51" y2="6.5"></line>
+                </svg>
+            </a>
+            <a href="https://www.youtube.com/@gypsytyper.online" target="_blank" aria-label="YouTube">
+                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="social-icon">
+                    <path d="M22.54 6.42a2.78 2.78 0 0 0-1.94-2C18.88 4 12 4 12 4s-6.88 0-8.6.46a2.78 2.78 0 0 0-1.94 2A29 29 0 0 0 1 11.75a29 29 0 0 0 .46 5.33A2.78 2.78 0 0 0 3.4 19c1.72.46 8.6.46 8.6.46s6.88 0 8.6-.46a2.78 2.78 0 0 0 1.94-2 29 29 0 0 0 .46-5.25 29 29 0 0 0-.46-5.33z"></path>
+                    <polygon points="9.75 15.02 15.5 11.75 9.75 8.48 9.75 15.02"></polygon>
+                </svg>
+            </a>
+            <a href="https://www.tiktok.com/@gypsytyper.online" target="_blank" aria-label="TikTok">
+                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="social-icon">
+                    <path d="M9 12a4 4 0 1 0 0 8 4 4 0 0 0 0-8z"></path>
+                    <path d="M16 8v8"></path>
+                    <path d="M12 16V8a4 4 0 0 1 4-4"></path>
+                    <path d="M20 12h-4"></path>
+                </svg>
+            </a>
+        </div>
         <div class="footer-credits">
-            © GYPSY AUTOTYPER | ALL RIGHTS RESERVED
+            © SPECTRAL | DESIGN: HTML5 UP | DEMO IMAGES: UNSPLASH
         </div>
     </footer>
 
+    <!-- Scripts -->
+    <script src="https://vjs.zencdn.net/7.20.3/video.min.js"></script>
     <script>
-        document.getElementById('downloadBtn').addEventListener('click', function() {
-            // Show the modal
-            document.getElementById('adModal').style.display = 'flex';
+        document.addEventListener('DOMContentLoaded', function() {
+            // Mobile menu toggle
+            const menuToggle = document.querySelector('.menu-toggle');
+            const navbarMenu = document.querySelector('.navbar-menu');
             
-            // Load the ad
-            loadAd();
+            menuToggle.addEventListener('click', function() {
+                navbarMenu.classList.toggle('active');
+            });
             
-            // Start the countdown
-            startCountdown();
-        });
-
-        function loadAd() {
-            const adContainer = document.getElementById('adContainer');
-            
-            // Create script element
-            const script = document.createElement('script');
-            script.async = true;
-            script.referrerPolicy = 'no-referrer-when-downgrade';
-            
-            // Set up function to load ad
-            window.adFunction = function(params) {
-                var d = document,
-                    s = d.createElement('script'),
-                    l = d.scripts[d.scripts.length - 1];
-                s.settings = params || {};
-                s.src = "https://superior-funeral.com/dkm.F/zFdLGCNgvdZqGzUr/-egmV9/uAZcUEl/kKPcTEYJzHMJT-gu0bMXD/EHtLNZjaMpxVORD/QiwvMkgB";
-                s.async = true;
-                s.referrerPolicy = 'no-referrer-when-downgrade';
-                l.parentNode.insertBefore(s, l);
-            };
-            
-            // Call the function to load the ad
-            window.adFunction({});
-        }
-
-        function startCountdown() {
-            let timeLeft = 15;
-            const timerElement = document.getElementById('timer');
-            
-            const countdownInterval = setInterval(function() {
-                timeLeft--;
-                timerElement.textContent = timeLeft;
-                
-                if (timeLeft <= 0) {
-                    clearInterval(countdownInterval);
-                    // Change text to manual download option
-                    document.getElementById('countdown').style.display = 'none';
-                    document.getElementById('manualDownload').style.display = 'block';
-                    
-                    // Trigger automatic download
-                    downloadFile();
+            // Change navbar background on scroll
+            window.addEventListener('scroll', function() {
+                const navbar = document.querySelector('.navbar');
+                if (window.scrollY > 50) {
+                    navbar.style.backgroundColor = 'rgba(0, 0, 0, 0.8)';
+                } else {
+                    navbar.style.backgroundColor = 'rgba(0, 0, 0, 0.5)';
                 }
-            }, 1000);
-        }
-
-        function downloadFile() {
-            // Create a link element
-            const link = document.createElement('a');
-            link.href = 'Gypsy AutoTyper.exe';
-            link.download = 'Gypsy AutoTyper.exe';
+            });
             
-            // Append to the document
-            document.body.appendChild(link);
+            // Video player and download functionality
+            const downloadBtn = document.getElementById('download-btn');
+            const videoOverlay = document.getElementById('video-overlay');
+            const closeBtn = document.getElementById('close-btn');
+            const countdownContainer = document.getElementById('countdown-container');
+            const countdownSeconds = document.getElementById('countdown-seconds');
+            const downloadLink = document.getElementById('download-link');
             
-            // Trigger click event
-            link.click();
+            let player;
+            let countdownTimer;
+            let secondsLeft = 15;
             
-            // Remove the link element
-            document.body.removeChild(link);
-        }
+            // Initialize the video player
+            downloadBtn.addEventListener('click', function() {
+                videoOverlay.style.display = 'flex';
+                
+                // Initialize video.js player if not already done
+                if (!player) {
+                    player = videojs('ad-player');
+                    
+                    player.on('play', function() {
+                        startCountdown();
+                    });
+                    
+                    player.on('ended', function() {
+                        if (secondsLeft > 0) {
+                            secondsLeft = 0;
+                            countdownSeconds.textContent = secondsLeft;
+                            triggerDownload();
+                        }
+                    });
+                }
+                
+                // Play the video
+                player.play();
+            });
+            
+            // Close button handler
+            closeBtn.addEventListener('click', function() {
+                closeVideoOverlay();
+            });
+            
+            function closeVideoOverlay() {
+                videoOverlay.style.display = 'none';
+                if (player) {
+                    player.pause();
+                }
+                if (countdownTimer) {
+                    clearInterval(countdownTimer);
+                }
+                
+                // Reset countdown
+                secondsLeft = 15;
+                countdownSeconds.textContent = secondsLeft;
+                countdownContainer.style.display = 'block';
+                downloadLink.style.display = 'none';
+            }
+            
+            function startCountdown() {
+                // Clear any existing timer
+                if (countdownTimer) {
+                    clearInterval(countdownTimer);
+                }
+                
+                // Start the countdown
+                countdownTimer = setInterval(function() {
+                    secondsLeft--;
+                    countdownSeconds.textContent = secondsLeft;
+                    
+                    if (secondsLeft <= 0) {
+                        clearInterval(countdownTimer);
+                        triggerDownload();
+                    }
+                }, 1000);
+            }
+            
+            function triggerDownload() {
+                // Create a temporary link to trigger the download
+                const downloadFileLink = document.createElement('a');
+                downloadFileLink.href = 'Gypsy AutoTyper.exe';
+                downloadFileLink.download = 'Gypsy AutoTyper.exe';
+                document.body.appendChild(downloadFileLink);
+                downloadFileLink.click();
+                document.body.removeChild(downloadFileLink);
+                
+                // Show the manual download link
+                countdownContainer.style.display = 'none';
+                downloadLink.style.display = 'block';
+            }
+        });
     </script>
 </body>
 </html>
