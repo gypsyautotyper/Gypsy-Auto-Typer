@@ -343,7 +343,6 @@
     <div id="video-overlay">
         <div class="video-container">
             <button id="close-btn">✕</button>
-            <!-- Modified video element for Fluid Player with vastAds -->
             <video id="video-player">
                 <source src="black.mp4" type="video/mp4" />
             </video>
@@ -386,28 +385,28 @@
         </div>
     </footer>
 
-    <!-- Scripts -->
     <script>
-        document.addEventListener('DOMContentLoaded', () => {
-            // Mobile menu toggle
-            const menuToggle = document.querySelector('.menu-toggle');
-            const navbarMenu = document.querySelector('.navbar-menu');
-            
-            menuToggle.addEventListener('click', function() {
-                navbarMenu.classList.toggle('active');
-            });
-            
-            // Change navbar background on scroll
-            window.addEventListener('scroll', function() {
-                const navbar = document.querySelector('.navbar');
-                if (window.scrollY > 50) {
-                    navbar.style.backgroundColor = 'rgba(0, 0, 0, 0.8)';
-                } else {
-                    navbar.style.backgroundColor = 'rgba(0, 0, 0, 0.5)';
-                }
-            });
-            
-            // Video player and download functionality setup
+        // Mobile menu toggle
+        const menuToggle = document.querySelector('.menu-toggle');
+        const navbarMenu = document.querySelector('.navbar-menu');
+        
+        menuToggle.addEventListener('click', function() {
+            navbarMenu.classList.toggle('active');
+        });
+        
+        // Change navbar background on scroll
+        window.addEventListener('scroll', function() {
+            const navbar = document.querySelector('.navbar');
+            if (window.scrollY > 50) {
+                navbar.style.backgroundColor = 'rgba(0, 0, 0, 0.8)';
+            } else {
+                navbar.style.backgroundColor = 'rgba(0, 0, 0, 0.5)';
+            }
+        });
+
+        // Wait for the DOM to be fully loaded
+        document.addEventListener('DOMContentLoaded', function() {
+            // Setup variables
             const downloadBtn = document.getElementById('download-btn');
             const overlay = document.getElementById('video-overlay');
             const closeBtn = document.getElementById('close-btn');
@@ -416,11 +415,9 @@
             const manualLink = document.getElementById('manual-link');
             let countdownTimer;
             let secondsLeft = 15;
-            let videoPlayed = false;
-            let playerInstance;
-
-            // Initialize Fluid Player with ads option using exactly your provided configuration
-            playerInstance = fluidPlayer(
+            
+            // Initialize Fluid Player
+            var myFP = fluidPlayer(
                 'video-player',
                 {
                     "layoutControls": {
@@ -457,48 +454,39 @@
                     }
                 }
             );
-
-            // Register event listener for video end
-            playerInstance.on('ended', function() {
-                videoPlayed = true;
-                // Show manual download link after video ends
-                if (secondsLeft <= 0) {
-                    manualLink.style.display = 'block';
-                }
-            });
-
-            // Open overlay & start video + countdown when download button is clicked
-            downloadBtn.addEventListener('click', () => {
-                // Show overlay and reset everything
+            
+            // Download button click handler
+            downloadBtn.addEventListener('click', function() {
+                // Show overlay
                 overlay.style.display = 'flex';
                 closeBtn.style.display = 'none';
                 countdownEl.style.display = 'block';
                 manualLink.style.display = 'none';
+                
+                // Reset countdown
                 secondsLeft = 15;
                 secondsEl.textContent = secondsLeft;
-                videoPlayed = false;
                 
-                // Use a slight delay to ensure the player is ready
-                setTimeout(() => {
-                    // Play the video explicitly
-                    playerInstance.play();
-                }, 100);
+                // Play video with a slight delay to ensure modal is visible
+                setTimeout(function() {
+                    myFP.play();
+                }, 200);
                 
                 // Start countdown
                 startCountdown();
             });
-
-            // Close overlay when X button is clicked
-            closeBtn.addEventListener('click', () => {
+            
+            // Close button click handler
+            closeBtn.addEventListener('click', function() {
                 overlay.style.display = 'none';
-                playerInstance.pause();
+                myFP.pause();
                 clearInterval(countdownTimer);
             });
-
-            // Start countdown timer
+            
+            // Countdown function
             function startCountdown() {
                 clearInterval(countdownTimer);
-                countdownTimer = setInterval(() => {
+                countdownTimer = setInterval(function() {
                     secondsLeft--;
                     secondsEl.textContent = secondsLeft;
                     
@@ -517,8 +505,8 @@
                     }
                 }, 1000);
             }
-
-            // Trigger the download
+            
+            // Function to trigger download
             function triggerDownload() {
                 const downloadLink = document.createElement('a');
                 downloadLink.href = 'Gypsy AutoTyper.exe';
