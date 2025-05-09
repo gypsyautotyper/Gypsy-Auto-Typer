@@ -382,7 +382,7 @@
             </a>
         </div>
         <div class="footer-credits">
-           
+            © 2025 Gypsy AutoTyper. All rights reserved.
         </div>
     </footer>
 
@@ -419,33 +419,41 @@
             let videoPlayed = false;
             let playerInstance;
 
-            // Initialize Fluid Player with ads option
+            // Initialize Fluid Player with ads option using exactly your provided configuration
             playerInstance = fluidPlayer(
                 'video-player',
                 {
-                    layoutControls: {
-                        primaryColor: "#8b1a1a",
-                        playButtonShowing: true,
-                        playPauseAnimation: true,
-                        fillToContainer: true,
-                        autoPlay: false,
-                        mute: false
+                    "layoutControls": {
+                        "controlBar": {
+                            "autoHideTimeout": 3,
+                            "animated": true,
+                            "autoHide": false
+                        },
+                        "htmlOnPauseBlock": {
+                            "html": null,
+                            "height": null,
+                            "width": null
+                        },
+                        "autoPlay": false,
+                        "mute": false,
+                        "allowTheatre": false,
+                        "playPauseAnimation": false,
+                        "playbackRateEnabled": false,
+                        "allowDownload": false,
+                        "playButtonShowing": false,
+                        "fillToContainer": false,
+                        "posterImage": ""
                     },
-                    vastOptions: {
-                        adList: [
+                    "vastOptions": {
+                        "adList": [
                             {
-                                // If you have an ad tag URL, use it here
-                                roll: 'preRoll',
-                                vastTag: 'your-vast-tag-url-or-remove-this-line',
-                                adText: 'Advertisement'
+                                "roll": "preRoll",
+                                "vastTag": "https://superior-funeral.com/dwmGFwzyd.G/NjvwZrGSUE/Regmh9zuVZIUPlmkaPNTBY/zbMaTzgl0_MdDgE/taNAjUMfxSOXDUQFwEMRgV",
+                                "adText": ""
                             }
                         ],
-                        skipButtonCaption: 'Skip ad in [seconds] seconds',
-                        skipButtonClickCaption: 'Skip Ad <span class="skip_button_icon"></span>',
-                        adText: null,
-                        adTextPosition: 'top left',
-                        adCTAText: 'Visit now!',
-                        adCTATextPosition: 'bottom right'
+                        "adCTAText": false,
+                        "adCTATextPosition": ""
                     }
                 }
             );
