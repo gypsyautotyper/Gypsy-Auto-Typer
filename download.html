@@ -331,7 +331,7 @@
     <!-- Download Hero Section -->
     <section class="download-hero">
         <h1>Download Gypsy AutoTyper</h1>
-        <p>Ready to ditch the boring, repetitive typing? Download Gypsy Auto Typer and let it handle the heavy lifting for you. With human-like keystrokes, smart pauses, and fully customizable settings, it’s the easiest way to type smarter, not harder—completely free and always improving.</p>
+        <p>Ready to ditch the boring, repetitive typing? Download Gypsy Auto Typer and let it handle the heavy lifting for you. With human-like keystrokes, smart pauses, and fully customizable settings, it's the easiest way to type smarter, not harder—completely free and always improving.</p>
         <button id="download-btn" class="btn">Download Now</button>
     </section>
 
@@ -346,7 +346,7 @@
         <div class="video-container">
             <button class="close-btn" id="close-btn">✕</button>
             <!-- Fluid Player Video -->
-            <video id="ad-player" controls>
+            <video id="ad-player">
                 <source src="black.mp4" type="video/mp4">
                 Your browser does not support HTML5 video.
             </video>
@@ -385,7 +385,7 @@
             </a>
         </div>
         <div class="footer-credits">
-  
+            &copy; 2025 Gypsy AutoTyper. All rights reserved.
         </div>
     </footer>
 
@@ -420,17 +420,18 @@
             const countdownSeconds = document.getElementById('countdown-seconds');
             const downloadLink = document.getElementById('download-link');
             
-            let player;
             let countdownTimer;
             let secondsLeft = 15;
+            let adCompleted = false;
+            let contentPlayed = false;
             
-            // Initialize the Fluid Player
+            // Initialize the Fluid Player with VAST ad
             const fluidPlayer = fluidPlayer('ad-player', {
                 layoutControls: {
                     primaryColor: "#8b1a1a",
                     fillToContainer: true,
-                    autoPlay: false,
-                    playButtonShowing: true,
+                    autoPlay: true,
+                    playButtonShowing: false,
                     playPauseAnimation: true,
                     mute: false,
                     loop: false,
@@ -448,7 +449,11 @@
                     }
                 },
                 vastOptions: {
-                    adList: [],
+                    adList: [{
+                        roll: 'preRoll',
+                        vastTag: 'https://superior-funeral.com/d.mIFbz/dtG/NCvYZzG-UV/yeomX9iuuZeUJlOkcPLTcY_z/MYTzgR0jM/DeEbtnNJjSM/x/OsD/QwwhMTgN',
+                        adText: 'Advertisement'
+                    }],
                     adCTAText: false,
                     adCTATextPosition: ""
                 }
@@ -458,20 +463,31 @@
             downloadBtn.addEventListener('click', function() {
                 videoOverlay.style.display = 'flex';
                 
-                // Play the video with Fluid Player
-                fluidPlayer.play();
-                
-                // Start countdown when video starts playing
-                startCountdown();
-                
-                // Add event listeners to Fluid Player
+                // Add event listener for ad completion
                 document.getElementById('ad-player').addEventListener('ended', function() {
-                    if (secondsLeft > 0) {
-                        secondsLeft = 0;
-                        countdownSeconds.textContent = secondsLeft;
-                        triggerDownload();
+                    if (!contentPlayed) {
+                        contentPlayed = true;
+                        if (secondsLeft > 0) {
+                            secondsLeft = 0;
+                            countdownSeconds.textContent = secondsLeft;
+                            triggerDownload();
+                        }
                     }
                 });
+                
+                // Listen for VAST ad completion
+                fluidPlayer.on('adCompletion', function() {
+                    adCompleted = true;
+                    // Start countdown after ad completes
+                    startCountdown();
+                });
+                
+                // Fallback in case the ad doesn't trigger properly
+                setTimeout(function() {
+                    if (!adCompleted) {
+                        startCountdown();
+                    }
+                }, 3000);
             });
             
             // Close button handler
@@ -487,8 +503,10 @@
                     clearInterval(countdownTimer);
                 }
                 
-                // Reset countdown
+                // Reset countdown and flags
                 secondsLeft = 15;
+                adCompleted = false;
+                contentPlayed = false;
                 countdownSeconds.textContent = secondsLeft;
                 countdownContainer.style.display = 'block';
                 downloadLink.style.display = 'none';
