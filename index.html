@@ -427,7 +427,7 @@
     <!-- Hero Section -->
     <section class="hero">
         <h1>Gypsy Auto Typer</h1>
-        <p class="quote">"The only way to beat a gypsy, is to become the gypsy." - Sun Tzu</p>
+        <p class="quote" id="random-quote"></p>
         <a href="download.html" class="btn">Get It For FREE Now!</a>
         <div>
             <a href="about.html"><p>LEARN MORE</p></a>
@@ -520,7 +520,7 @@
     <!-- Grid Section -->
     <section class="grid-section">
         <h2>Unlock Your Writing Superpower</h2>
-        <p>Discover how Gypsy Auto Typer’s human-like precision, full customization, and student-focused tools turn tedious typing into a breeze—100% free and always evolving.</p>
+        <p>Discover how Gypsy Auto Typer's human-like precision, full customization, and student-focused tools turn tedious typing into a breeze—100% free and always evolving.</p>
         
         <div class="grid-container">
             <div class="grid-item">
@@ -633,9 +633,10 @@
 }
 </style>
 
-    <!-- JavaScript for Mobile Menu Toggle -->
+    <!-- JavaScript for Mobile Menu Toggle and Random Quotes -->
     <script>
         document.addEventListener('DOMContentLoaded', function() {
+            // Mobile menu toggle
             const menuToggle = document.querySelector('.menu-toggle');
             const navbarMenu = document.querySelector('.navbar-menu');
             
@@ -652,6 +653,30 @@
                     navbar.style.backgroundColor = 'rgba(0, 0, 0, 0.5)';
                 }
             });
+            
+            // Random quotes functionality
+            const quotes = [
+                '"A gypsy blends in with the darkness so that they can beg in the light." - Aristotle',
+                '"If you want to live a happy life, tie it to a gypsy, not to people or things." - Albert Einstein',
+                '"The only way to beat a gypsy, is to become the gypsy." - Sun Tzu',
+                '"A gypsy thinks himself to be wise, but a wise man knows himself to be a gypsy." - William Shakespeare',
+                '"You can\'t tame a gypsy; the gypsy tames the world." - Theodore Roosevelt',
+                '"Every gypsy that you can imagine is real." - Pablo Picasso',
+                '"Gypsies aren\'t something you find. A gypsy is something that finds you." - John F. Kennedy',
+                '"There are two types of Gypsies, those who beg for profit, and those who beg for passion." - Luke Belmar',
+                '"The journey of a thousand gypsies begins with a single carnival." - Mahatma Gandhi',
+                '"Gypsies cannot be touched, they must be felt with the heart." - Hellen Keller'
+            ];
+            
+            // Get random quote
+            function getRandomQuote() {
+                const randomIndex = Math.floor(Math.random() * quotes.length);
+                return quotes[randomIndex];
+            }
+            
+            // Display random quote
+            const quoteElement = document.getElementById('random-quote');
+            quoteElement.textContent = getRandomQuote();
         });
     </script>
 </body>
