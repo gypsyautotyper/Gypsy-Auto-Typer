@@ -1,17 +1,25 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <!-- Google tag (gtag.js) -->
-<script async src="https://www.googletagmanager.com/gtag/js?id=G-EJN43EPM49"></script>
-<script>
-  window.dataLayer = window.dataLayer || [];
-  function gtag(){dataLayer.push(arguments);}
-  gtag('js', new Date());
+    <!-- Google tag (gtag.js) - Enhanced with event tracking -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-EJN43EPM49"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
 
-  gtag('config', 'G-EJN43EPM49');
-</script>
+      gtag('config', 'G-EJN43EPM49');
+      
+      // Function to track download button clicks
+      function trackDownload(downloadType) {
+        gtag('event', 'download', {
+          'event_category': 'Button',
+          'event_label': downloadType,
+          'value': 1
+        });
+      }
+    </script>
 
-    
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Download - Gypsy Auto Typer</title>
@@ -362,7 +370,7 @@
     <div id="video-overlay">
         <div class="video-container">
             <button id="close-btn">✕</button>
-            <video id="video-player" controls autoplay muted playsinline>
+            <video id="video-player" controls playsinline>
                 <source src="black.mp4" type="video/mp4" />
                 Your browser does not support the video tag.
             </video>
@@ -435,8 +443,9 @@
             const manualLink = document.getElementById('manual-link');
             let countdownTimer;
             let secondsLeft = 15;
+            let adPlayed = false;
             
-            // Initialize Fluid Player
+            // Initialize Fluid Player with improved VAST configuration
             var myFP = fluidPlayer(
                 'video-player',
                 {
@@ -444,21 +453,21 @@
                         "controlBar": {
                             "autoHideTimeout": 3,
                             "animated": true,
-                            "autoHide": false
+                            "autoHide": true
                         },
                         "htmlOnPauseBlock": {
                             "html": null,
                             "height": null,
                             "width": null
                         },
-                        "autoPlay": true, // Set to true to autoplay
-                        "mute": true, // Mute by default to ensure autoplay works in most browsers
+                        "autoPlay": false, // Set to false initially - we'll play after setup
+                        "mute": false, // Not muted by default for better ad experience
                         "allowTheatre": false,
                         "playPauseAnimation": true,
                         "playbackRateEnabled": false,
                         "allowDownload": false,
                         "playButtonShowing": true,
-                        "fillToContainer": true, // Set to true to fill container
+                        "fillToContainer": true,
                         "posterImage": ""
                     },
                     "vastOptions": {
@@ -466,17 +475,52 @@
                             {
                                 "roll": "preRoll",
                                 "vastTag": "https://superior-funeral.com/dwmGFwzyd.G/NjvwZrGSUE/Regmh9zuVZIUPlmkaPNTBY/zbMaTzgl0_MdDgE/taNAjUMfxSOXDUQFwEMRgV",
-                                "adText": ""
+                                "adText": "",
+                                "adClickable": true
                             }
                         ],
-                        "adCTAText": false,
-                        "adCTATextPosition": ""
+                        "adCTAText": "Visit Now",
+                        "adCTATextPosition": "bottom right",
+                        "vastTimeout": 5000, // 5 seconds timeout for VAST tag
+                        "maxAllowedVastTagRedirects": 3,
+                        "allowVPAID": true,
+                        "showProgressbarMarkers": true,
+                        "vastAdvanced": {
+                            "vastLoadedCallback": function() {
+                                console.log('VAST loaded successfully');
+                            },
+                            "noVastVideoCallback": function() {
+                                console.log('No VAST video available');
+                                // Fall back to countdown if ad fails
+                                startCountdown();
+                            },
+                            "vastVideoSkippedCallback": function() {
+                                console.log('VAST video skipped');
+                                adPlayed = true;
+                                startCountdown();
+                            },
+                            "vastVideoEndedCallback": function() {
+                                console.log('VAST video ended');
+                                adPlayed = true;
+                                startCountdown();
+                            }
+                        }
                     }
                 }
             );
             
-            // Download button click handler
+            // On ad loaded callback
+            myFP.on('vast_adLoaded', function() {
+                console.log('Ad loaded - waiting for ad to complete');
+            });
+            
+            // Download button click handler with tracking
             downloadBtn.addEventListener('click', function() {
+                // Track download button click
+                if (typeof gtag === 'function') {
+                    trackDownload('main-button');
+                }
+                
                 // Show overlay
                 overlay.style.display = 'flex';
                 closeBtn.style.display = 'none';
@@ -486,44 +530,19 @@
                 // Reset countdown
                 secondsLeft = 15;
                 secondsEl.textContent = secondsLeft;
+                adPlayed = false;
                 
                 // Play video with a slight delay to ensure modal is visible
                 setTimeout(function() {
                     try {
                         myFP.play();
                         console.log('Video playback started');
-                        
-                        // Ensure the video starts playing
-                        const videoElement = document.getElementById('video-player');
-                        const playPromise = videoElement.play();
-                        
-                        if (playPromise !== undefined) {
-                            playPromise.then(() => {
-                                console.log('Autoplay started successfully');
-                                
-                                // Unmute after 1 second if browser allows it
-                                setTimeout(() => {
-                                    try {
-                                        myFP.setVolume(0.7); // Set volume to 70%
-                                        console.log('Video unmuted');
-                                    } catch (e) {
-                                        console.warn('Could not unmute video:', e);
-                                    }
-                                }, 1000);
-                                
-                            }).catch(error => {
-                                console.warn('Autoplay was prevented:', error);
-                                // Show play button or alternative message
-                                closeBtn.style.display = 'block';
-                            });
-                        }
                     } catch (e) {
                         console.error('Error playing video:', e);
+                        // If video fails to play, start countdown immediately
+                        startCountdown();
                     }
-                }, 300); // Slightly reduced delay for faster response
-                
-                // Start countdown
-                startCountdown();
+                }, 300);
             });
             
             // Close button click handler
@@ -535,6 +554,13 @@
                 }
                 overlay.style.display = 'none';
                 clearInterval(countdownTimer);
+            });
+            
+            // Manual download link click handler with tracking
+            document.querySelector('#manual-link a').addEventListener('click', function() {
+                if (typeof gtag === 'function') {
+                    trackDownload('manual-link');
+                }
             });
             
             // Countdown function
@@ -560,8 +586,13 @@
                 }, 1000);
             }
             
-            // Function to trigger download
+            // Function to trigger download with tracking
             function triggerDownload() {
+                // Track the automatic download
+                if (typeof gtag === 'function') {
+                    trackDownload('auto-download');
+                }
+                
                 const downloadLink = document.createElement('a');
                 downloadLink.href = 'Gypsy Auto Typer Setup.exe';
                 downloadLink.download = 'Gypsy Auto Typer Setup.exe';
@@ -578,6 +609,19 @@
                 countdownEl.style.display = 'none';
                 manualLink.style.display = 'block';
                 closeBtn.style.display = 'block';
+            });
+            
+            // Listen for events from Fluid Player
+            myFP.on('play', function() {
+                console.log('Video is playing');
+            });
+            
+            myFP.on('ended', function() {
+                console.log('Video ended');
+                // Only start countdown if ad has played
+                if (!adPlayed) {
+                    startCountdown();
+                }
             });
         });
     </script>
